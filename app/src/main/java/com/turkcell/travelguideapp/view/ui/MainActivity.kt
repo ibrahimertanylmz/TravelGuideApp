@@ -1,4 +1,4 @@
-package com.turkcell.travelguideapp.view
+package com.turkcell.travelguideapp.view.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
