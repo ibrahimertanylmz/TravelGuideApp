@@ -3,4 +3,14 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">Map</string>
+    <string name="add_location">Konum Ekle</string>
+    <string name="edt_place_name">Yer adı giriniz</string>
+    <string name="edt_definition_hint">Tanım bilgisi giriniz</string>
+    <string name="edt_description_hint">Kısa açıklama giriniz</string>
+    <string name="tw_definition_text">Yer Kısa Tanım</string>
+    <string name="tw_description_text">Kısa Açıklama</string>
+    <string name="visit_date_text">12.10.2020</string>
+    <string name="edt_desc_hint">Açıklama</string>
+    <string name="tw_visit_date_text">Ziyaret Tarihi</string>
+    <string name="visit_desc_text">Ziyaret Açıklaması</string>
 </resources>
