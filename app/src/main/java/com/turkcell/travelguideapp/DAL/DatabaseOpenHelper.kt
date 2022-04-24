@@ -14,7 +14,7 @@ class DatabaseOpenHelper(
         val queryForeingKey = "PRAGMA foreign_keys = ON"
         db.execSQL(queryForeingKey)
         val queryPlace =
-            "CREATE TABLE Place(Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Name TEXT, Latitude TEXT, Longitude TEXT, Description TEXT, Priority TEXT)"
+            "CREATE TABLE Place(Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Name TEXT, Latitude TEXT, Longitude TEXT, Description TEXT, Definition TEXT, Priority TEXT)"
         db.execSQL(queryPlace)
         val queryVisitation =
             "CREATE TABLE Visitation(Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Date TEXT, Description TEXT, FOREIGN KEY(PlaceId) REFERENCES Place(Id) ON DELETE CASCADE)"
