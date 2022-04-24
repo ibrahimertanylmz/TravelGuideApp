@@ -27,8 +27,8 @@ class PlacesVisitedFragment : Fragment() {
         return binding.root
     }
 
-    fun itemClick(){
-        val action = PlacesVisitedFragmentDirections.actionPlacesVisitedFragmentToPlaceDetailsFragment(-1)
+    fun itemClick(position: Int){
+        val action = PlacesVisitedFragmentDirections.actionPlacesVisitedFragmentToPlaceDetailsFragment(position)
         findNavController().navigate(action)
     }
 
