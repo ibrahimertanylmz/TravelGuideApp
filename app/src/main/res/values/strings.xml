@@ -15,4 +15,8 @@
     <string name="edt_desc_hint">Açıklama</string>
     <string name="tw_visit_date_text">Ziyaret Tarihi</string>
     <string name="visit_desc_text">Ziyaret Açıklaması</string>
+    <string name="app_name_lined">Gezi\nRehberim</string>
+    <string name="save">kaydet</string>
+    <string name="go">git</string>
+    <string name="tab_image">tab image</string>
 </resources>
