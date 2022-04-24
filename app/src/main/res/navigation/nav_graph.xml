@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/placesToVisitFragment">
+
+    <fragment
+        android:id="@+id/addPlaceFragment"
+        android:name="com.turkcell.travelguideapp.view.ui.AddPlaceFragment"
+        android:label="fragment_add_place"
+        tools:layout="@layout/fragment_add_place" >
+        <action
+            android:id="@+id/action_addPlaceFragment_to_placesToVisitFragment"
+            app:destination="@id/placesToVisitFragment" />
+        <action
+            android:id="@+id/action_addPlaceFragment_to_placesVisitedFragment"
+            app:destination="@id/placesVisitedFragment" />
+        <argument
+            android:name="id"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
+    <fragment
+        android:id="@+id/placesToVisitFragment"
+        android:name="com.turkcell.travelguideapp.view.ui.PlacesToVisitFragment"
+        android:label="fragment_places_to_visit"
+        tools:layout="@layout/fragment_places_to_visit" >
+        <action
+            android:id="@+id/action_placesToVisitFragment_to_addPlaceFragment"
+            app:destination="@id/addPlaceFragment" />
+        <action
+            android:id="@+id/action_placesToVisitFragment_to_placeDetailsFragment"
+            app:destination="@id/placeDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/placesVisitedFragment"
+        android:name="com.turkcell.travelguideapp.view.ui.PlacesVisitedFragment"
+        android:label="PlacesVisitedFragment" >
+        <action
+            android:id="@+id/action_placesVisitedFragment_to_addPlaceFragment"
+            app:destination="@id/addPlaceFragment" />
+        <action
+            android:id="@+id/action_placesVisitedFragment_to_placeDetailsFragment"
+            app:destination="@id/placeDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addVisitationFragment"
+        android:name="com.turkcell.travelguideapp.view.ui.AddVisitationFragment"
+        android:label="fragment_add_visitation"
+        tools:layout="@layout/fragment_add_visitation" >
+        <action
+            android:id="@+id/action_addVisitationFragment_to_placeDetailsFragment"
+            app:destination="@id/placeDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/placeDetailsFragment"
+        android:name="com.turkcell.travelguideapp.view.ui.PlaceDetailsFragment"
+        android:label="fragment_place_details"
+        tools:layout="@layout/fragment_place_details" >
+        <action
+            android:id="@+id/action_placeDetailsFragment_to_addVisitationFragment"
+            app:destination="@id/addVisitationFragment" />
+        <argument
+            android:name="add_visitation_id"
+            app:argType="integer"
+            android:defaultValue="-1" />
+        <action
+            android:id="@+id/action_placeDetailsFragment_to_placesToVisitFragment"
+            app:destination="@id/placesToVisitFragment" />
+        <action
+            android:id="@+id/action_placeDetailsFragment_to_placesVisitedFragment"
+            app:destination="@id/placesVisitedFragment" />
+    </fragment>
+</navigation>
