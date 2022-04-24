@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.turkcell.travelguideapp.R
 import com.turkcell.travelguideapp.databinding.FragmentPlaceDetailsBinding
+import com.turkcell.travelguideapp.model.visitationList
 
 class PlaceDetailsFragment : Fragment() {
     private lateinit var binding: FragmentPlaceDetailsBinding
@@ -20,10 +22,9 @@ class PlaceDetailsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentPlaceDetailsBinding.inflate(inflater)
-
 
         val liste= arrayListOf<String>("Eleman1","Eleman2","Eleman3","Eleman4","Eleman5","Eleman6","Eleman1","Eleman2","Eleman3","Eleman4","Eleman5","Eleman6","Eleman1","Eleman2","Eleman3","Eleman4","Eleman5","Eleman6")
 
@@ -32,8 +33,14 @@ class PlaceDetailsFragment : Fragment() {
         binding.spinner.adapter=adap
         adap.notifyDataSetChanged()// işlemler yapıldıktan sonra kullanılır, adapter'in yenilenmesini sağlar böylece yeni elemanlar gözükür
 
-
+        setupRvVisitHistory()
 
         return binding.root
     }
+
+    private fun setupRvVisitHistory() {
+        binding.rvVisitHistory.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+        binding.rvVisitHistory.adapter = VisitationAdapter(requireActivity(), visitationList)
+    }
+
 }
