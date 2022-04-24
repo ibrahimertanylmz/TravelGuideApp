@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/clBottom"
     android:layout_width="match_parent"
-    android:layout_height="100dp">
+    android:layout_height="100dp"
+    android:background="@drawable/rounded_button">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
