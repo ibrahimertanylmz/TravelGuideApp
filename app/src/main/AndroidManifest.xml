@@ -18,18 +18,18 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".view.ui.SplashActivity"/>
-
-        <activity android:name=".view.ui.MapsActivity"
-            android:exported="true"
-            android:label="Map">
+            android:name=".view.ui.SplashActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".view.ui.MapsActivity"
+            android:exported="false"
+            android:label="Map">
+        </activity>
         <activity android:name=".view.ui.MainActivity"
             android:exported="false"/>
     </application>

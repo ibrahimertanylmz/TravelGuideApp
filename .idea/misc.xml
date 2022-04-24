@@ -3,13 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/ASUS/AndroidStudioProjects/TravelGuideApp/app/src/main/res/drawable/circle_button.xml" value="0.1815" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/TravelGuideApp/app/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.1815" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/TravelGuideApp/app/src/main/res/drawable/rounded_button.xml" value="0.1815" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/TravelGuideApp/app/src/main/res/layout/activity_main.xml" value="0.221875" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/TravelGuideApp/app/src/main/res/layout/activity_maps.xml" value="0.2" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/TravelGuideApp/app/src/main/res/layout/activity_splash.xml" value="0.2" />
+        <entry key="..\:/Users/ASUS/AndroidStudioProjects/TravelGuideApp/app/src/main/res/layout/custom_tab.xml" value="0.536" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/TravelGuideApp/app/src/main/res/layout/fragment_add_place.xml" value="0.221875" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/TravelGuideApp/app/src/main/res/layout/fragment_add_visitation.xml" value="0.221875" />
+        <entry key="..\:/Users/ASUS/AndroidStudioProjects/TravelGuideApp/app/src/main/res/layout/fragment_places_to_visit.xml" value="0.221875" />
+        <entry key="..\:/Users/ASUS/AndroidStudioProjects/TravelGuideApp/app/src/main/res/layout/main_bottom_bar.xml" value="0.5173611111111112" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/TravelGuideApp/app/src/main/res/layout/top_bar.xml" value="0.264" />
       </map>
     </option>
