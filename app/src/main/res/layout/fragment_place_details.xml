@@ -183,14 +183,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-    <Spinner
-        android:id="@+id/spinner"
+    <TextView
+        android:id="@+id/tvPriority"
         android:layout_width="100dp"
         android:layout_height="20dp"
+        android:text="@string/text_priority"
+        android:paddingLeft="5dp"
+        android:textSize="10dp"
+        android:gravity="center_vertical"
+        android:textStyle="bold"
+        android:textColor="#4B4848"
         android:layout_marginStart="18dp"
         android:layout_marginTop="13dp"
         android:layout_marginBottom="13dp"
-        android:background="#FFFFFF"
+        android:background="@drawable/text_background"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewPager2" />
@@ -203,8 +209,8 @@
         android:layout_marginEnd="6dp"
         android:layout_marginBottom="4dp"
         android:src="@drawable/rv_oval_item_blue"
-        app:layout_constraintBottom_toBottomOf="@+id/spinner"
-        app:layout_constraintEnd_toEndOf="@+id/spinner"
-        app:layout_constraintTop_toTopOf="@+id/spinner" />
+        app:layout_constraintBottom_toBottomOf="@+id/tvPriority"
+        app:layout_constraintEnd_toEndOf="@+id/tvPriority"
+        app:layout_constraintTop_toTopOf="@+id/tvPriority" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
