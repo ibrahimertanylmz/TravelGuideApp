@@ -52,6 +52,10 @@
         <action
             android:id="@+id/action_addVisitationFragment_to_placeDetailsFragment"
             app:destination="@id/placeDetailsFragment" />
+        <argument
+            android:name="place_id_for_add_visitation"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
     <fragment
         android:id="@+id/placeDetailsFragment"
@@ -62,7 +66,7 @@
             android:id="@+id/action_placeDetailsFragment_to_addVisitationFragment"
             app:destination="@id/addVisitationFragment" />
         <argument
-            android:name="add_visitation_id"
+            android:name="place_id_for_place_details"
             app:argType="integer"
             android:defaultValue="-1" />
         <action
