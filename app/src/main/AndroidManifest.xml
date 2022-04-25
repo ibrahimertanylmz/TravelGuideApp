@@ -22,16 +22,15 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".view.ui.MainActivity"
+            android:exported="false"/>
         <activity android:name=".view.ui.MapsActivity"
             android:exported="false"
             android:label="Map">
         </activity>
-        <activity android:name=".view.ui.MainActivity"
-            android:exported="false"/>
     </application>
 
 </manifest>

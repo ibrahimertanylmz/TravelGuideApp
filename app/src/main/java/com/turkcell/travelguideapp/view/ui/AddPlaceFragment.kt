@@ -14,8 +14,8 @@ import com.turkcell.travelguideapp.view.adapter.PhotoAdapter
 class AddPlaceFragment : Fragment() {
     private lateinit var binding: FragmentAddPlaceBinding
 
-    private lateinit var photoList:ArrayList<Visitation>
-    lateinit var fotoğrafEkleView:ImageView
+    private lateinit var photoList: ArrayList<Visitation>
+    lateinit var fotoğrafEkleView: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,21 +28,20 @@ class AddPlaceFragment : Fragment() {
     ): View {
 
 
-
         binding = FragmentAddPlaceBinding.inflate(inflater)
 
         (requireActivity() as MainActivity).changeBackButtonVisibility(true)
         (requireActivity() as MainActivity).changeTabLayoutVisibility(false)
 
-        if(photoList.size>=10){
-            fotoğrafEkleView.visibility=View.GONE
-        }else{
-            fotoğrafEkleView.visibility=View.VISIBLE
+        if (photoList.size >= 10) {
+            fotoğrafEkleView.visibility = View.GONE
+        } else {
+            fotoğrafEkleView.visibility = View.VISIBLE
             fotoğrafEkleView.setOnClickListener {
 
                 //open gallery
 
-                photoList.add(Visitation("sad","asd"))
+                photoList.add(Visitation("sad", "asd"))
 
             }
         }
@@ -52,22 +51,30 @@ class AddPlaceFragment : Fragment() {
         return binding.root
     }
 
-    fun initLm(){
-        val lm= LinearLayoutManager(requireContext())
+    fun initLm() {
+        val lm = LinearLayoutManager(requireContext())
 
-        lm.orientation= LinearLayoutManager.HORIZONTAL
-        binding.rwPhotos.layoutManager=lm
-        binding.rwPhotos.adapter=
-            PhotoAdapter(requireContext(),photoList,::itemClick,::itemButtonClick,::itemAddPhotoClick)
+        lm.orientation = LinearLayoutManager.HORIZONTAL
+        binding.rwPhotos.layoutManager = lm
+        binding.rwPhotos.adapter =
+            PhotoAdapter(
+                requireContext(),
+                photoList,
+                ::itemClick,
+                ::itemButtonClick,
+                ::itemAddPhotoClick
+            )
     }
 
-    fun itemClick(position:Int){
+    fun itemClick(position: Int) {
         //optional
     }
-    fun itemButtonClick(position:Int){
+
+    fun itemButtonClick(position: Int) {
         //dbDelete(position)
     }
-    fun itemAddPhotoClick(position:Int){
+
+    fun itemAddPhotoClick(position: Int) {
         //open gallery and select photo
     }
 }

@@ -12,8 +12,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.turkcell.travelguideapp.databinding.CustomTabBinding
 
 class MainActivity : AppCompatActivity() {
-    lateinit var binding : ActivityMainBinding
-  
+    lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -57,12 +57,12 @@ class MainActivity : AppCompatActivity() {
             binding.includeBottom.btnWide.visibility = View.VISIBLE
         }
 
-        
+
     }
 
-    fun initializeTabs(){
+    private fun initializeTabs() {
 
-        TabLayoutMediator(binding.includeBottom.tabLayout, binding.viewpager){ tab, position->
+        TabLayoutMediator(binding.includeBottom.tabLayout, binding.viewpager) { _, _ ->
         }.attach()
 
         val tabHome = CustomTabBinding.inflate(layoutInflater)
@@ -73,29 +73,30 @@ class MainActivity : AppCompatActivity() {
         tabProfile.ivIcon.setImageResource(R.drawable.profile_selector)
         tabProfile.tvTab.text = getString(R.string.str_visited_places)
 
-        binding.includeBottom.tabLayout.getTabAt(0)!!.setCustomView(tabHome.root)
-        binding.includeBottom.tabLayout.getTabAt(1)!!.setCustomView(tabProfile.root)
+        binding.includeBottom.tabLayout.getTabAt(0)!!.customView = tabHome.root
+        binding.includeBottom.tabLayout.getTabAt(1)!!.customView = tabProfile.root
 
     }
 
-     fun initializeViewPager() {
+    private fun initializeViewPager() {
         val adapter = ViewPagerAdapter(this)
         adapter.addFragment(PlacesToVisitFragment())
         adapter.addFragment(PlacesVisitedFragment())
         binding.viewpager.adapter = adapter
     }
 
-    internal class ViewPagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity)
-    {
+    internal class ViewPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
         private val fragmentList = ArrayList<Fragment>()
 
         override fun getItemCount(): Int {
             return fragmentList.size
         }
+
         override fun createFragment(position: Int): Fragment {
-            return fragmentList.get(position)
+            return fragmentList[position]
         }
-        fun addFragment(fragment: Fragment){
+
+        fun addFragment(fragment: Fragment) {
             fragmentList.add(fragment)
         }
     }
