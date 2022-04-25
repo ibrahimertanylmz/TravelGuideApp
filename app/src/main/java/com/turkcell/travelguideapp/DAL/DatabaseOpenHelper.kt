@@ -11,8 +11,8 @@ class DatabaseOpenHelper(
     version: Int
 ) : SQLiteOpenHelper(context, name, factory, version) {
     override fun onCreate(db: SQLiteDatabase) {
-        val queryForeingKey = "PRAGMA foreign_keys = ON"
-        db.execSQL(queryForeingKey)
+        val queryForeignKey = "PRAGMA foreign_keys = ON"
+        db.execSQL(queryForeignKey)
         val queryPlace =
             "CREATE TABLE Place(Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Name TEXT, Latitude TEXT, Longitude TEXT, Description TEXT, Definition TEXT, Priority TEXT)"
         db.execSQL(queryPlace)
