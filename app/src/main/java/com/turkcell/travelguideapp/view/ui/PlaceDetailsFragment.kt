@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.turkcell.travelguideapp.R
 import com.turkcell.travelguideapp.bll.PlaceLogic
 import com.turkcell.travelguideapp.databinding.FragmentPlaceDetailsBinding
 import com.turkcell.travelguideapp.model.Place
+import com.turkcell.travelguideapp.model.Priority
 import com.turkcell.travelguideapp.model.Visitation
 import com.turkcell.travelguideapp.view.adapter.VisitationAdapter
 
@@ -46,9 +48,20 @@ class PlaceDetailsFragment : Fragment() {
     private fun initializeViews() {
         currentPlace = PlaceLogic.getPlaceById(placeId)
 
+        setPriorityImage()
 
+        binding.tvDefinition.text = currentPlace.definition
+        binding.tvShortDescriptionMax3.text = currentPlace.description
 
         setupRvVisitHistory()
+    }
+
+    private fun setPriorityImage() {
+        when (currentPlace.priority) {
+            Priority.ONE -> binding.imageViewPriority.setImageResource(R.drawable.rv_oval_item_green)
+            Priority.TWO -> binding.imageViewPriority.setImageResource(R.drawable.rv_oval_item_blue)
+            Priority.THREE -> binding.imageViewPriority.setImageResource(R.drawable.rv_oval_item_gray)
+        }
     }
 
     private fun initializeEvents() {
