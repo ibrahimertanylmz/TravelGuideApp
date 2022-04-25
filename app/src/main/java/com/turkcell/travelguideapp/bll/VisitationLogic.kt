@@ -1,4 +1,4 @@
-package com.turkcell.travelguideapp.BLL
+package com.turkcell.travelguideapp.bll
 
 import com.turkcell.travelguideapp.model.Visitation
 

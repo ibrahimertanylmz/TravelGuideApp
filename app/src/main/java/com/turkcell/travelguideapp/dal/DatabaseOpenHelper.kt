@@ -1,4 +1,4 @@
-package com.turkcell.travelguideapp.DAL
+package com.turkcell.travelguideapp.dal
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase

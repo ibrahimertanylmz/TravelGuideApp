@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.turkcell.travelguideapp.BLL.VisitationLogic.listVisitation
+import com.turkcell.travelguideapp.bll.VisitationLogic.listVisitation
 import com.turkcell.travelguideapp.R
 import com.turkcell.travelguideapp.databinding.FragmentPlaceDetailsBinding
 
