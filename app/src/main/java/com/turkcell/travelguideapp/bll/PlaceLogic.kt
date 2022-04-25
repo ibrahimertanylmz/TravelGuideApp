@@ -15,4 +15,8 @@ object PlaceLogic {
     fun getVisitationsOfPlace(placeId: Int, context: Context): ArrayList<Visitation>{
         return TravelGuideOperation(context).getVisitationsByPlaceId(placeId)
     }
+
+    fun getPlaceById(placeId: Int): Place {
+        return listPlaces[placeId]
+    }
 }

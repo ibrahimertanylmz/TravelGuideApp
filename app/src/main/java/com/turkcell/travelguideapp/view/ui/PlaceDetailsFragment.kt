@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.turkcell.travelguideapp.bll.PlaceLogic
 import com.turkcell.travelguideapp.databinding.FragmentPlaceDetailsBinding
+import com.turkcell.travelguideapp.model.Place
 import com.turkcell.travelguideapp.model.Visitation
 import com.turkcell.travelguideapp.view.adapter.VisitationAdapter
 
@@ -17,6 +18,7 @@ class PlaceDetailsFragment : Fragment() {
     private lateinit var binding: FragmentPlaceDetailsBinding
     var placeId: Int = -1
     lateinit var visitationList: ArrayList<Visitation>
+    lateinit var currentPlace: Place
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,10 +37,18 @@ class PlaceDetailsFragment : Fragment() {
         placeId = requireArguments().getInt("placeId")
 
 
-        setupRvVisitHistory()
+        initializeViews()
         initializeEvents()
 
         return binding.root
+    }
+
+    private fun initializeViews() {
+        currentPlace = PlaceLogic.getPlaceById(placeId)
+
+
+
+        setupRvVisitHistory()
     }
 
     private fun initializeEvents() {
