@@ -24,14 +24,14 @@ class PlacesVisitedFragment : Fragment() {
 
         binding = FragmentPlacesVisitedBinding.inflate(inflater)
 
-        (requireActivity() as MainActivity).changeBackButtonVisibility(false)
-        (requireActivity() as MainActivity).changeTabLayoutVisibility(true)
-
         return binding.root
     }
 
-    fun itemClick(position: Int){
-        val action = PlacesVisitedFragmentDirections.actionPlacesVisitedFragmentToPlaceDetailsFragment(position)
+    fun itemClick(position: Int) {
+        val action =
+            PlacesVisitedFragmentDirections.actionPlacesVisitedFragmentToPlaceDetailsFragment(
+                position
+            )
         findNavController().navigate(action)
     }
 
