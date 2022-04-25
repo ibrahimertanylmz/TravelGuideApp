@@ -18,7 +18,7 @@
         android:id="@+id/tvTab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/ui_hud"
+        android:textColor="@drawable/text_selector"
         android:textSize="12sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
