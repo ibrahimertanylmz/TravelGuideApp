@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.turkcell.travelguideapp.databinding.FragmentAddVisitationBinding
 import com.turkcell.travelguideapp.model.Visitation
+import com.turkcell.travelguideapp.view.adapter.PhotoAdapter
 
 class AddVisitationFragment : Fragment() {
     private lateinit var binding: FragmentAddVisitationBinding

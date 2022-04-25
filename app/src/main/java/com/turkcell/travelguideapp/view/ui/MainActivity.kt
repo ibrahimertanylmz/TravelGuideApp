@@ -1,21 +1,14 @@
 package com.turkcell.travelguideapp.view.ui
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import com.turkcell.travelguideapp.R
 import com.turkcell.travelguideapp.databinding.ActivityMainBinding
-import com.turkcell.travelguideapp.model.Priority
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.turkcell.travelguideapp.R
-import com.turkcell.travelguideapp.databinding.ActivityMainBinding
 import com.turkcell.travelguideapp.databinding.CustomTabBinding
 
 class MainActivity : AppCompatActivity() {

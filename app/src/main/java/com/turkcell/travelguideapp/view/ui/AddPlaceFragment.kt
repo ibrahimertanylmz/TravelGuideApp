@@ -1,6 +1,5 @@
 package com.turkcell.travelguideapp.view.ui
 
-import android.opengl.Visibility
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +9,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.turkcell.travelguideapp.databinding.FragmentAddPlaceBinding
 import com.turkcell.travelguideapp.model.Visitation
+import com.turkcell.travelguideapp.view.adapter.PhotoAdapter
 
 class AddPlaceFragment : Fragment() {
     private lateinit var binding: FragmentAddPlaceBinding
@@ -57,7 +57,8 @@ class AddPlaceFragment : Fragment() {
 
         lm.orientation= LinearLayoutManager.HORIZONTAL
         binding.rwPhotos.layoutManager=lm
-        binding.rwPhotos.adapter=PhotoAdapter(requireContext(),photoList,::itemClick,::itemButtonClick,::itemAddPhotoClick)
+        binding.rwPhotos.adapter=
+            PhotoAdapter(requireContext(),photoList,::itemClick,::itemButtonClick,::itemAddPhotoClick)
     }
 
     fun itemClick(position:Int){

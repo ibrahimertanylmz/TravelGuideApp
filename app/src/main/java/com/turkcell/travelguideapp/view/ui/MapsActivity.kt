@@ -75,14 +75,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMapLong
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
-=======
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
 
         if(stateControl=="AddLocation"){
-            binding.button.setText("KAYDET")
+            binding.btnSaveAndOpen.setText("KAYDET")
 
             mMap.setOnMapLongClickListener(this)
 
@@ -114,7 +113,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMapLong
             ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),1)
         }
 
-            binding.button.setOnClickListener {
+            binding.btnSaveAndOpen.setOnClickListener {
 
                 // veri tabanına seçilen konumun latitude ve longitude'u kaydedilecek
                 //dbInsert(selectedLatitude,selectedLongitude)
@@ -128,12 +127,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMapLong
         else{
             dbLatitude=place.location.latitude
             dbLongitude=place.location.longitude
-            binding.button.setText("GİT")
+            binding.btnSaveAndOpen.setText("GİT")
             val yourPlace = LatLng(dbLatitude, dbLongitude)
             mMap.addMarker(MarkerOptions().position(yourPlace).title(place.name))
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(yourPlace,10f))
 
-            binding.button.setOnClickListener {
+            binding.btnSaveAndOpen.setOnClickListener {
                 val gmmIntentUri = Uri.parse("geo:${dbLatitude},${dbLongitude}")
                 val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
                 mapIntent.setPackage("com.google.android.apps.maps")

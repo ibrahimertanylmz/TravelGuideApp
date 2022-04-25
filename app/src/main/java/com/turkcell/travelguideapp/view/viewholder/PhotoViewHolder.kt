@@ -1,4 +1,4 @@
-package com.bozok.konumservisleri
+package com.turkcell.travelguideapp.view.viewholder
 
 import android.view.View
 import android.widget.ImageView
