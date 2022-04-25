@@ -17,26 +17,20 @@ class PlacesToVisitFragment : Fragment() {
 
     }
 
-    //val args: PlacesToVisitFragment by navArgs()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
         binding = FragmentPlacesToVisitBinding.inflate(inflater)
-
-        //(requireActivity() as MainActivity).changeBackButtonVisibility(false)
-        //(requireActivity() as MainActivity).changeTabLayoutVisibility(true)
-
-        //val action = PlacesToVisitFragmentDirections.actionPlacesToVisitFragmentToAddPlaceFragment(15)
-        //findNavController().navigate(action)
-
         return binding.root
     }
 
-    fun itemClick(position: Int){
-        val action = PlacesToVisitFragmentDirections.actionPlacesToVisitFragmentToPlaceDetailsFragment(position)
+    fun itemClick(position: Int) {
+        val action =
+            PlacesToVisitFragmentDirections.actionPlacesToVisitFragmentToPlaceDetailsFragment(
+                position
+            )
         findNavController().navigate(action)
     }
 

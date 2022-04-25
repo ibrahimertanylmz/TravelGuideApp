@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.turkcell.travelguideapp.bll.VisitationLogic.listVisitation
 import com.turkcell.travelguideapp.R
 import com.turkcell.travelguideapp.databinding.FragmentPlaceDetailsBinding
+import com.turkcell.travelguideapp.view.adapter.VisitationAdapter
 
 class PlaceDetailsFragment : Fragment() {
     private lateinit var binding: FragmentPlaceDetailsBinding

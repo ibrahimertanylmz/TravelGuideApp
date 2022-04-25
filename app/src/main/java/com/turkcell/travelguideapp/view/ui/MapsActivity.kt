@@ -24,7 +24,7 @@ import com.turkcell.travelguideapp.model.Place
 import com.turkcell.travelguideapp.model.Priority
 import kotlin.properties.Delegates
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMapLongClickListener {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -37,9 +37,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMapLong
     private lateinit var locationListener: LocationListener
 
 
-    private lateinit var stateControl:String
-    private var selectedLatitude:Double?=0.0
-    private var selectedLongitude:Double?=0.0
+    private lateinit var stateControl: String
+    private var selectedLatitude: Double? = 0.0
+    private var selectedLongitude: Double? = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,12 +51,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMapLong
         mapFragment.getMapAsync(this)
 
         initializeEvents()
-        
-        var latLng=LatLng(122.3,123.3)
-        place=Place("isim",latLng,"tanım kısa olanından","açıklama",Priority.ONE)
+
+        var latLng = LatLng(122.3, 123.3)
+        place = Place("isim", latLng, "tanım kısa olanından", "açıklama", Priority.ONE)
 
 
-        locationManager=getSystemService(LOCATION_SERVICE) as LocationManager
+        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
     }
 
     private fun initializeEvents() {
@@ -80,18 +80,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMapLong
         mMap = googleMap
 
 
-        if(stateControl=="AddLocation"){
-            binding.btnSaveAndOpen.setText("KAYDET")
+        if (stateControl == "AddLocation") {
+            binding.btnSaveAndOpen.text = getString(R.string.Save)
 
             mMap.setOnMapLongClickListener(this)
 
 
-                 locationListener = object : LocationListener{
+            locationListener = object : LocationListener {
                 override fun onLocationChanged(p0: Location) {
 
-                    var userLocation=LatLng(p0.latitude,p0.longitude)
+                    var userLocation = LatLng(p0.latitude, p0.longitude)
                     mMap.addMarker(MarkerOptions().position(userLocation))
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,15f))
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
 
                     //locationManager!!.removeUpdates(this) // bir kere konumu aldıktan sonra konum izlemeyi bırakır.
                 }
@@ -105,13 +105,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMapLong
                 }
 
             }
-        if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED){
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
 
-            konumIstegiBaslat()
+                konumIstegiBaslat()
 
-        }else{
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),1)
-        }
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                    1
+                )
+            }
 
             binding.btnSaveAndOpen.setOnClickListener {
 
@@ -123,14 +131,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMapLong
 
             }
 
-        }
-        else{
-            dbLatitude=place.location.latitude
-            dbLongitude=place.location.longitude
+        } else {
+            dbLatitude = place.location.latitude
+            dbLongitude = place.location.longitude
             binding.btnSaveAndOpen.setText("GİT")
             val yourPlace = LatLng(dbLatitude, dbLongitude)
             mMap.addMarker(MarkerOptions().position(yourPlace).title(place.name))
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(yourPlace,10f))
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(yourPlace, 10f))
 
             binding.btnSaveAndOpen.setOnClickListener {
                 val gmmIntentUri = Uri.parse("geo:${dbLatitude},${dbLongitude}")
@@ -149,16 +156,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMapLong
         mMap.clear()
         mMap.addMarker(MarkerOptions().position(p0))
 
-        selectedLatitude=p0.latitude
-        selectedLongitude=p0.longitude
+        selectedLatitude = p0.latitude
+        selectedLongitude = p0.longitude
 
     }
 
 
     @SuppressLint("MissingPermission")
-    private fun konumIstegiBaslat(){
+    private fun konumIstegiBaslat() {
 
-        locationManager!!.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,0.1f,locationListener!!)
+        locationManager!!.requestLocationUpdates(
+            LocationManager.GPS_PROVIDER,
+            1000,
+            0.1f,
+            locationListener!!
+        )
 
     }
 }

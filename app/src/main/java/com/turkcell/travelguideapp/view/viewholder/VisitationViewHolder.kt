@@ -1,4 +1,4 @@
-package com.turkcell.travelguideapp.view.ui
+package com.turkcell.travelguideapp.view.viewholder
 
 import android.content.Context
 import androidx.recyclerview.widget.RecyclerView

@@ -3,8 +3,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">Map</string>
-    <string name="konum_goster">Konum Göster</string>
-    <string name="ziyaret_ekle">Ziyaret Ekle</string>
+    <string name="Show_Location">Konum Göster</string>
+    <string name="Add_Visitation">Ziyaret Ekle</string>
     <string name="add_location">Konum Ekle</string>
     <string name="edt_place_name">Yer adı giriniz</string>
     <string name="edt_definition_hint">Tanım bilgisi giriniz</string>
