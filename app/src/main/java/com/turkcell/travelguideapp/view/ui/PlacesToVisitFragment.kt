@@ -23,7 +23,6 @@ class PlacesToVisitFragment : Fragment() {
     ): View {
 
         binding = FragmentPlacesToVisitBinding.inflate(inflater)
-
         return binding.root
     }
 

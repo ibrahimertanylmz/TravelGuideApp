@@ -150,7 +150,7 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="5dp"
         android:backgroundTint="#FFFFFF"
-        android:src="@drawable/circle_icon"
+        android:src="@drawable/rv_oval_item_gray"
         app:layout_constraintBottom_toBottomOf="@+id/spinnerPriority"
         app:layout_constraintEnd_toEndOf="@+id/spinnerPriority"
         app:layout_constraintTop_toTopOf="@+id/spinnerPriority" />
