@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -51,16 +50,32 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMapLong
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-
+        initializeEvents()
+        
         var latLng=LatLng(122.3,123.3)
         place=Place("isim",latLng,"tanım kısa olanından","açıklama",Priority.ONE)
 
 
         locationManager=getSystemService(LOCATION_SERVICE) as LocationManager
-
-
     }
 
+    private fun initializeEvents() {
+        binding.include.btnBack.setOnClickListener {
+            onBackPressed()
+        }
+    }
+
+
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     */
+=======
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
@@ -147,7 +162,4 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMapLong
         locationManager!!.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,0.1f,locationListener!!)
 
     }
-
-
-
 }

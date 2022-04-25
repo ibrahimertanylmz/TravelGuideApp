@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bozok.konumservisleri.PhotoAdapter
 import com.turkcell.travelguideapp.databinding.FragmentAddPlaceBinding
 import com.turkcell.travelguideapp.model.Visitation
 
@@ -26,11 +25,14 @@ class AddPlaceFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
 
 
         binding = FragmentAddPlaceBinding.inflate(inflater)
+
+        (requireActivity() as MainActivity).changeBackButtonVisibility(true)
+        (requireActivity() as MainActivity).changeTabLayoutVisibility(false)
 
         if(photoList.size>=10){
             fotoğrafEkleView.visibility=View.GONE
@@ -46,9 +48,6 @@ class AddPlaceFragment : Fragment() {
         }
 
         initLm()
-
-
-
 
         return binding.root
     }

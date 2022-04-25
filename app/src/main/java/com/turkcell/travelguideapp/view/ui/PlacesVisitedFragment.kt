@@ -20,9 +20,12 @@ class PlacesVisitedFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentPlacesVisitedBinding.inflate(inflater)
+
+        (requireActivity() as MainActivity).changeBackButtonVisibility(false)
+        (requireActivity() as MainActivity).changeTabLayoutVisibility(true)
 
         return binding.root
     }

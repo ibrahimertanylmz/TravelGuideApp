@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bozok.konumservisleri.PhotoAdapter
 import com.turkcell.travelguideapp.databinding.FragmentAddVisitationBinding
 import com.turkcell.travelguideapp.model.Visitation
 
@@ -23,10 +22,13 @@ class AddVisitationFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentAddVisitationBinding.inflate(inflater)
 
+        (requireActivity() as MainActivity).changeBackButtonVisibility(true)
+        (requireActivity() as MainActivity).changeTabLayoutVisibility(false)
+        
         initLm()
 
         return binding.root
