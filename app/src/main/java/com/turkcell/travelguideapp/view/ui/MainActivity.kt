@@ -19,34 +19,33 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewPagerOlustur()
-        tabOlustur()
+        initializeViewPager()
+        initializeTabs()
 
     }
 
-    fun tabOlustur(){
+    fun initializeTabs(){
 
         TabLayoutMediator(binding.includeBottom.tabLayout, binding.viewpager){ tab, position->
         }.attach()
 
         val tabHome = CustomTabBinding.inflate(layoutInflater)
         tabHome.ivIcon.setImageResource(R.drawable.home_selector)
-        tabHome.tvTab.text = "Gezilecekler"
+        tabHome.tvTab.text = getString(R.string.str_places_to_visit)
 
         val tabProfile = CustomTabBinding.inflate(layoutInflater)
         tabProfile.ivIcon.setImageResource(R.drawable.profile_selector)
-        tabProfile.tvTab.text = "Gezdiklerim"
+        tabProfile.tvTab.text = getString(R.string.str_visited_places)
 
         binding.includeBottom.tabLayout.getTabAt(0)!!.setCustomView(tabHome.root)
         binding.includeBottom.tabLayout.getTabAt(1)!!.setCustomView(tabProfile.root)
 
-
     }
 
-     fun viewPagerOlustur() {
+     fun initializeViewPager() {
         val adapter = ViewPagerAdapter(this)
-        adapter.fragmentEkle(PlacesToVisitFragment())
-        adapter.fragmentEkle(PlacesVisitedFragment())
+        adapter.addFragment(PlacesToVisitFragment())
+        adapter.addFragment(PlacesVisitedFragment())
         binding.viewpager.adapter = adapter
     }
 
@@ -60,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         override fun createFragment(position: Int): Fragment {
             return fragmentList.get(position)
         }
-        fun fragmentEkle(fragment: Fragment){
+        fun addFragment(fragment: Fragment){
             fragmentList.add(fragment)
         }
     }

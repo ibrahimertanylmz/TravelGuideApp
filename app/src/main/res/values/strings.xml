@@ -19,4 +19,6 @@
     <string name="save">kaydet</string>
     <string name="go">git</string>
     <string name="tab_image">tab image</string>
+    <string name="str_places_to_visit">Gezilecekler</string>
+    <string name="str_visited_places">Gezdiklerim</string>
 </resources>
