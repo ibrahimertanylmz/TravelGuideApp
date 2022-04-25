@@ -1,15 +1,17 @@
 package com.turkcell.travelguideapp.view.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.turkcell.travelguideapp.BLL.VisitationLogic.visitationList
 import com.turkcell.travelguideapp.R
 import com.turkcell.travelguideapp.databinding.FragmentPlaceDetailsBinding
-import com.turkcell.travelguideapp.model.visitationList
 
 class PlaceDetailsFragment : Fragment() {
     private lateinit var binding: FragmentPlaceDetailsBinding
@@ -34,8 +36,23 @@ class PlaceDetailsFragment : Fragment() {
         adap.notifyDataSetChanged()// işlemler yapıldıktan sonra kullanılır, adapter'in yenilenmesini sağlar böylece yeni elemanlar gözükür
 
         setupRvVisitHistory()
+        initializeEvents()
 
         return binding.root
+    }
+
+    private fun initializeEvents() {
+        binding.btnAddVisitation.setOnClickListener {
+            val action = PlaceDetailsFragmentDirections.actionPlaceDetailsFragmentToAddVisitationFragment()
+            requireView().findNavController().navigate(action)
+        }
+
+        binding.btnShowLocation.setOnClickListener {
+            val intent = Intent(requireActivity(), MapsActivity::class.java)
+            //buradaki id nereden gelecek?
+            intent.putExtra("placeId", -1)
+            startActivity(intent)
+        }
     }
 
     private fun setupRvVisitHistory() {

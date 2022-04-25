@@ -23,9 +23,12 @@ class PlacesToVisitFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentPlacesToVisitBinding.inflate(inflater)
+
+        (requireActivity() as MainActivity).changeBackButtonVisibility(false)
+        (requireActivity() as MainActivity).changeTabLayoutVisibility(true)
 
         //val action = PlacesToVisitFragmentDirections.actionPlacesToVisitFragmentToAddPlaceFragment(15)
         //findNavController().navigate(action)

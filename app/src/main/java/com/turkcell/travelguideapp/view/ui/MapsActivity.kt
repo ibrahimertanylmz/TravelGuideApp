@@ -26,7 +26,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        initializeEvents()
     }
+
+    private fun initializeEvents() {
+        binding.include.btnBack.setOnClickListener {
+            onBackPressed()
+        }
+    }
+
 
     /**
      * Manipulates the map once available.

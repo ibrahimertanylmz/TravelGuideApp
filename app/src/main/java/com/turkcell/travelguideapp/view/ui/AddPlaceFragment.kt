@@ -18,9 +18,12 @@ class AddPlaceFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentAddPlaceBinding.inflate(inflater)
+
+        (requireActivity() as MainActivity).changeBackButtonVisibility(true)
+        (requireActivity() as MainActivity).changeTabLayoutVisibility(false)
 
         return binding.root
     }
