@@ -1,5 +1,6 @@
 package com.turkcell.travelguideapp.view.ui
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -38,22 +39,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.includeBottom.tabLayout.getTabAt(0)!!.setCustomView(tabHome.root)
         binding.includeBottom.tabLayout.getTabAt(1)!!.setCustomView(tabProfile.root)
-
-        binding.includeBottom.tabLayout.addOnTabSelectedListener(object :
-            TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-
-            }
-
-        })
 
 
     }
