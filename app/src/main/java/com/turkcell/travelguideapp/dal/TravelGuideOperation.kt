@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import com.google.android.gms.maps.model.LatLng
 import com.turkcell.travelguideapp.model.Place
 import com.turkcell.travelguideapp.model.Priority
+import com.turkcell.travelguideapp.model.Visitation
 
 class TravelGuideOperation(context: Context) {
     private var travelGuideDatabase: SQLiteDatabase? = null
@@ -55,8 +56,36 @@ class TravelGuideOperation(context: Context) {
 
 
     private fun getPlaces() : Cursor {
-        val sorgu = "Select * from Place"
-        return travelGuideDatabase!!.rawQuery(sorgu, null)
+        val query = "Select * from Place"
+        return travelGuideDatabase!!.rawQuery(query, null)
+    }
+
+    @SuppressLint("Range")
+    fun getVisitationsByPlaceId(id: Int?): ArrayList<Visitation>{
+        val visitationList = ArrayList<Visitation>()
+        var visitation : Visitation
+        open()
+
+        var cursor : Cursor = getVisitations(id!!)
+        if(cursor.moveToFirst()){
+
+            do {
+                val date = cursor.getString(cursor.getColumnIndex("Date"))
+                val description = cursor.getString(cursor.getColumnIndex("Description"))
+                visitation = Visitation(date, description)
+                visitation.id = cursor.getInt(0)
+
+                visitationList.add(visitation)
+            }while (cursor.moveToNext())
+
+        }
+        close()
+        return visitationList
+    }
+
+    private fun getVisitations(id: Int) : Cursor {
+        val query = "Select * from Visitation where PlaceId = '$id'"
+        return travelGuideDatabase!!.rawQuery(query, null)
     }
 
 }
