@@ -38,7 +38,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
     private lateinit var locationManager: LocationManager
     private lateinit var locationListener: LocationListener
 
-    private lateinit var stateControl: String
     private var selectedLatitude: Double = 0.0
     private var selectedLongitude: Double = 0.0
     private var userLocation:LatLng?=null
@@ -54,7 +53,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
         mapFragment.getMapAsync(this)
 
         initializeEvents()
-        stateControl=intent.getStringExtra("fromAddPlace").toString()
         getId=intent.getIntExtra("placeId",-1)
 
         // DENEMEK İÇİN YAPILDI SİLİNECEK
@@ -118,6 +116,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
             binding.btnSaveAndOpen.setOnClickListener {
 
                 var intent=Intent(this,MainActivity::class.java)
+                //düznelenecek
                 intent.putExtra("fromMapsLocationLatitude",userLocation!!.latitude)
                 intent.putExtra("fromMapsLocationLongitude",userLocation!!.longitude)
                 setResult(RESULT_OK,intent)
