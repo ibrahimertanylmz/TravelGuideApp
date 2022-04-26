@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.tabs.TabLayoutMediator
 import com.turkcell.travelguideapp.bll.MapLogic
 import com.turkcell.travelguideapp.bll.PlaceLogic
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         dbOperation = TravelGuideOperation(this)
         PlaceLogic.debugTmpFillList(dbOperation, this)
+
     }
 
     private fun initializeViews() {
@@ -136,7 +138,7 @@ class MainActivity : AppCompatActivity() {
                 ltlngData = result.data
                 MapLogic.tmpMap.lat = ltlngData!!.getDoubleExtra("fromMapsLocationLatitude", 0.0)
                 MapLogic.tmpMap.long = ltlngData!!.getDoubleExtra("fromMapsLocationLongitude", 0.0)
-
+            } else if (result.resultCode == RESULT_CANCELED) {
                 //buraya geri dönülürse, AddPlaceFragment'a tekrar dön
             }
         }
