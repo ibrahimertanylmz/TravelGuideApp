@@ -27,7 +27,7 @@ class TravelGuideOperation(context: Context) {
         }
     }
 
-    @SuppressLint("Range")
+    /*@SuppressLint("Range")
     fun getAllPlaces(): ArrayList<Place>{
         val placeList = ArrayList<Place>()
         var place : Place
@@ -58,7 +58,7 @@ class TravelGuideOperation(context: Context) {
     private fun getPlaces() : Cursor {
         val query = "Select * from Place"
         return travelGuideDatabase!!.rawQuery(query, null)
-    }
+    }*/
 
     @SuppressLint("Range")
     fun getVisitationsByPlaceId(id: Int?): ArrayList<Visitation>{

@@ -8,9 +8,9 @@ import com.turkcell.travelguideapp.model.Visitation
 object PlaceLogic {
     val listPlaces = ArrayList<Place>()
 
-    fun getPlaceList(context: Context): ArrayList<Place>{
+    /*fun getPlaceList(context: Context): ArrayList<Place>{
         return TravelGuideOperation(context).getAllPlaces()
-    }
+    }*/
 
     fun getVisitationsOfPlace(placeId: Int, context: Context): ArrayList<Visitation>{
         return TravelGuideOperation(context).getVisitationsByPlaceId(placeId)
