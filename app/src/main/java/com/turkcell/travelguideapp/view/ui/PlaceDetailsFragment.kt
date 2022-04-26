@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.turkcell.travelguideapp.R
 import com.turkcell.travelguideapp.bll.PlaceLogic
@@ -24,11 +25,6 @@ class PlaceDetailsFragment : Fragment() {
     lateinit var currentPlace: Place
     lateinit var dbOperation: TravelGuideOperation
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,6 +38,15 @@ class PlaceDetailsFragment : Fragment() {
 
         initializeViews()
         initializeEvents()
+
+        (requireActivity() as MainActivity).binding.includeTop.tvTopBarTitle.text = currentPlace.name
+        (requireActivity() as MainActivity).changeBackButtonVisibility(true)
+        (requireActivity() as MainActivity).changeTabLayoutVisibility(true)
+        (requireActivity() as MainActivity).changeViewPagerVisibility(false)
+        (requireActivity() as MainActivity).binding.includeTop.btnBack.setOnClickListener {
+            val action = PlaceDetailsFragmentDirections.actionPlaceDetailsFragmentToPlacesToVisitFragment()
+            findNavController().navigate(action)
+        }
 
         return binding.root
     }
@@ -67,14 +72,8 @@ class PlaceDetailsFragment : Fragment() {
 
     private fun initializeEvents() {
         binding.btnAddVisitation.setOnClickListener {
-            /*
-            val action =
-                PlaceDetailsFragmentDirections.actionPlaceDetailsFragmentToAddVisitationFragment(
-                    placeId
-                )
-            requireView().findNavController().navigate(action)
-
-             */
+            val action = PlaceDetailsFragmentDirections.actionPlaceDetailsFragmentToAddVisitationFragment(placeId)
+            findNavController().navigate(action)
         }
 
         binding.btnShowLocation.setOnClickListener {

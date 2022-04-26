@@ -9,6 +9,7 @@ import com.turkcell.travelguideapp.model.Visitation
 
 object PlaceLogic {
     private var listAllPlaces = ArrayList<Place>()
+    var isAddPlaceFragment: Boolean = false
 
     private fun fillPlacesList(dbOperation: TravelGuideOperation) {
         listAllPlaces.clear()

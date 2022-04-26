@@ -28,6 +28,12 @@ class PlacesToVisitFragment : Fragment() {
 
         binding = FragmentPlacesToVisitBinding.inflate(inflater)
 
+        (requireActivity() as MainActivity).binding.includeTop.tvTopBarTitle.text =
+            getString(R.string.str_places_to_visit)
+        (requireActivity() as MainActivity).changeBackButtonVisibility(false)
+        (requireActivity() as MainActivity).changeTabLayoutVisibility(true)
+        (requireActivity() as MainActivity).changeViewPagerVisibility(true)
+
         binding.rvPlaceToVisit.layoutManager = LinearLayoutManager(requireActivity()).apply {
             this.orientation = LinearLayoutManager.VERTICAL
         }
@@ -40,17 +46,16 @@ class PlacesToVisitFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
-        (activity as MainActivity).binding.includeTop.tvTopBarTitle.text = getString(R.string.places_to_visit)
+        (activity as MainActivity).binding.includeTop.tvTopBarTitle.text =
+            getString(R.string.places_to_visit)
         list = PlaceLogic.returnPlacesToVisit(dbOperation)
-        binding.rvPlaceToVisit.adapter =
-            PlaceAdapter(requireContext(), list, ::itemClick)
+        binding.rvPlaceToVisit.adapter = PlaceAdapter(requireContext(), list, ::itemClick)
         binding.rvPlaceToVisit.adapter!!.notifyDataSetChanged()
     }
 
     private fun itemClick(position: Int) {
         (activity as MainActivity).binding.viewpager.visibility = View.INVISIBLE
         (activity as MainActivity).binding.fragmentContainer.visibility = View.VISIBLE
-
 
         val action =
             PlacesToVisitFragmentDirections.actionPlacesToVisitFragmentToPlaceDetailsFragment(

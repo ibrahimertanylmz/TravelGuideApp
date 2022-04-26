@@ -3,26 +3,29 @@ package com.turkcell.travelguideapp.view.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.turkcell.travelguideapp.R
 import com.turkcell.travelguideapp.databinding.ActivityMainBinding
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
+import androidx.navigation.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
+import com.turkcell.travelguideapp.bll.MapLogic
 import com.turkcell.travelguideapp.bll.PlaceLogic
 import com.turkcell.travelguideapp.dal.TravelGuideOperation
 import com.turkcell.travelguideapp.databinding.CustomTabBinding
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
-    var ltlngData: Intent? = null
-    var latitudeData: Double? = null
-    var longitudeData: Double? = null
-
-    //kaldırmayı UNUTMA
     lateinit var dbOperation: TravelGuideOperation
+
+    private var ltlngData: Intent? = null
+
+    var tabHome: CustomTabBinding? = null
+    var tabProfile: CustomTabBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +37,6 @@ class MainActivity : AppCompatActivity() {
         initializeViewPager()
         initializeTabs()
 
-        //kaldırmayı UNUTMA
         dbOperation = TravelGuideOperation(this)
         PlaceLogic.debugTmpFillList(dbOperation, this)
     }
@@ -46,9 +48,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun initializeEvents() {
         binding.includeBottom.btnAddPlace.setOnClickListener {
-            val fragmentTransaction = supportFragmentManager.beginTransaction()
-            val fragment = AddPlaceFragment()
-            fragmentTransaction.replace(R.id.fragment, fragment).commit()
+            val action = PlacesToVisitFragmentDirections.actionPlacesToVisitFragmentToAddPlaceFragment()
+            findNavController(R.id.fragmentContainer).navigate(action)
+        }
+        binding.includeBottom.btnWide.setOnClickListener {
+            null
         }
     }
 
@@ -70,8 +74,16 @@ class MainActivity : AppCompatActivity() {
             binding.includeBottom.llBottom.visibility = View.INVISIBLE
             binding.includeBottom.btnWide.visibility = View.VISIBLE
         }
+    }
 
-
+    fun changeViewPagerVisibility(setViewPagerVisible: Boolean) {
+        if (setViewPagerVisible) {
+            binding.viewpager.visibility = View.VISIBLE
+            binding.fragmentContainer.visibility = View.INVISIBLE
+        } else {
+            binding.viewpager.visibility = View.INVISIBLE
+            binding.fragmentContainer.visibility = View.VISIBLE
+        }
     }
 
     private fun initializeTabs() {
@@ -79,16 +91,18 @@ class MainActivity : AppCompatActivity() {
         TabLayoutMediator(binding.includeBottom.tabLayout, binding.viewpager) { _, _ ->
         }.attach()
 
-        val tabHome = CustomTabBinding.inflate(layoutInflater)
-        tabHome.ivIcon.setImageResource(R.drawable.home_selector)
-        tabHome.tvTab.text = getString(R.string.str_places_to_visit)
+        //val tabHome = CustomTabBinding.inflate(layoutInflater)
+        tabHome = CustomTabBinding.inflate(layoutInflater)
+        tabHome!!.ivIcon.setImageResource(R.drawable.home_selector)
+        tabHome!!.tvTab.text = getString(R.string.str_places_to_visit)
 
-        val tabProfile = CustomTabBinding.inflate(layoutInflater)
-        tabProfile.ivIcon.setImageResource(R.drawable.profile_selector)
-        tabProfile.tvTab.text = getString(R.string.str_visited_places)
+        //val tabProfile = CustomTabBinding.inflate(layoutInflater)
+        tabProfile = CustomTabBinding.inflate(layoutInflater)
+        tabProfile!!.ivIcon.setImageResource(R.drawable.profile_selector)
+        tabProfile!!.tvTab.text = getString(R.string.str_visited_places)
 
-        binding.includeBottom.tabLayout.getTabAt(0)!!.customView = tabHome.root
-        binding.includeBottom.tabLayout.getTabAt(1)!!.customView = tabProfile.root
+        binding.includeBottom.tabLayout.getTabAt(0)!!.customView = tabHome!!.root
+        binding.includeBottom.tabLayout.getTabAt(1)!!.customView = tabProfile!!.root
 
     }
 
@@ -116,25 +130,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    var resultLauncher =
+    private var resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
-
-                // maps activity'den gelen intentleri kaydediyoruz fragment'ta kullanmak için
                 ltlngData = result.data
-                latitudeData = ltlngData!!.getDoubleExtra("fromMapsLocationLatitude", 0.0)
-                longitudeData = ltlngData!!.getDoubleExtra("fromMapsLocationLongitude", 0.0)
+                MapLogic.tmpMap.lat = ltlngData!!.getDoubleExtra("fromMapsLocationLatitude", 0.0)
+                MapLogic.tmpMap.long = ltlngData!!.getDoubleExtra("fromMapsLocationLongitude", 0.0)
 
-
-            } else if (result.resultCode == RESULT_CANCELED) {
-
+                //buraya geri dönülürse, AddPlaceFragment'a tekrar dön
             }
-
         }
 
     fun openMapsActivityFromAddPlaceFragment() {
         val intent = Intent(this, MapsActivity::class.java)
-        //intent.putExtra("fromAddPlace", "fromAddPlace")
         resultLauncher.launch(intent)
     }
 
@@ -144,4 +152,7 @@ class MainActivity : AppCompatActivity() {
         resultLauncher.launch(intent)
     }
 
+    override fun onBackPressed() {
+        //super.onBackPressed()
+    }
 }

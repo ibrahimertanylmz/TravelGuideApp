@@ -24,27 +24,29 @@
         android:layout_height="24dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="19dp"
-        android:backgroundTint="@color/ui_hud"
-        android:textColor="#FFFFFF"
-        android:text="@string/add_location"
         android:background="@drawable/rounded_button"
+        android:backgroundTint="@color/ui_hud"
+        android:text="@string/add_location"
         android:textAllCaps="false"
+        android:textColor="#FFFFFF"
         android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rwPhotos" />
+        app:layout_constraintTop_toBottomOf="@+id/rwPhotos"
+        tools:ignore="SmallSp,TextContrastCheck,TouchTargetSizeCheck" />
 
     <Spinner
         android:id="@+id/spinnerPriority"
         android:layout_width="match_parent"
         android:layout_height="24dp"
         android:layout_marginStart="17dp"
-        android:paddingLeft="14dp"
         android:layout_marginTop="13dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/text_background"
+        android:paddingStart="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnAddLocation" />
+        app:layout_constraintTop_toBottomOf="@+id/btnAddLocation"
+        tools:ignore="RtlSymmetry,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <EditText
         android:id="@+id/edtPlaceName"
@@ -54,15 +56,17 @@
         android:background="@drawable/text_background"
         android:ems="10"
         android:hint="@string/edt_place_name"
+        android:importantForAutofill="no"
         android:inputType="textPersonName"
-        android:paddingLeft="14dp"
+        android:paddingStart="14dp"
         android:paddingTop="33dp"
         android:paddingBottom="9dp"
         android:textSize="10sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/spinnerPriority"
         app:layout_constraintStart_toStartOf="@+id/spinnerPriority"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerPriority" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerPriority"
+        tools:ignore="RtlSymmetry,SmallSp,TextContrastCheck" />
 
     <EditText
         android:id="@+id/edtDefinition"
@@ -72,8 +76,9 @@
         android:background="@drawable/text_background"
         android:ems="10"
         android:hint="@string/edt_definition_hint"
+        android:importantForAutofill="no"
         android:inputType="textPersonName"
-        android:paddingLeft="14dp"
+        android:paddingStart="14dp"
         android:paddingTop="33dp"
         android:paddingBottom="9dp"
         android:textSize="10sp"
@@ -81,7 +86,8 @@
         app:layout_constraintEnd_toEndOf="@+id/spinnerPriority"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/spinnerPriority"
-        app:layout_constraintTop_toBottomOf="@+id/edtPlaceName" />
+        app:layout_constraintTop_toBottomOf="@+id/edtPlaceName"
+        tools:ignore="RtlSymmetry,SmallSp,TextContrastCheck" />
 
     <EditText
         android:id="@+id/edtDescription"
@@ -92,6 +98,7 @@
         android:ems="10"
         android:gravity="clip_vertical"
         android:hint="@string/edt_description_hint"
+        android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:paddingLeft="14dp"
         android:paddingTop="33dp"
@@ -101,7 +108,8 @@
         app:layout_constraintEnd_toEndOf="@+id/spinnerPriority"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/spinnerPriority"
-        app:layout_constraintTop_toBottomOf="@+id/edtDefinition" />
+        app:layout_constraintTop_toBottomOf="@+id/edtDefinition"
+        tools:ignore="RtlHardcoded,RtlSymmetry,SmallSp,TextContrastCheck" />
 
     <TextView
         android:id="@+id/twPlaceName"
@@ -109,12 +117,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
         android:layout_marginTop="12dp"
-        android:text="Yer Adı"
+        android:text="@string/Location_Name"
         android:textColor="#4B4848"
         android:textSize="10sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/edtPlaceName"
-        app:layout_constraintTop_toTopOf="@+id/edtPlaceName" />
+        app:layout_constraintTop_toTopOf="@+id/edtPlaceName"
+        tools:ignore="SmallSp" />
 
     <TextView
         android:id="@+id/twDefinition"
@@ -127,7 +136,8 @@
         android:textSize="10sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/edtDefinition"
-        app:layout_constraintTop_toTopOf="@+id/edtDefinition" />
+        app:layout_constraintTop_toTopOf="@+id/edtDefinition"
+        tools:ignore="SmallSp" />
 
     <TextView
         android:id="@+id/twDescription"
@@ -140,7 +150,8 @@
         android:textSize="10sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/edtDescription"
-        app:layout_constraintTop_toTopOf="@+id/edtDescription" />
+        app:layout_constraintTop_toTopOf="@+id/edtDescription"
+        tools:ignore="SmallSp" />
 
     <ImageView
         android:id="@+id/imageCircle"
@@ -153,22 +164,7 @@
         android:src="@drawable/rv_oval_item_gray"
         app:layout_constraintBottom_toBottomOf="@+id/spinnerPriority"
         app:layout_constraintEnd_toEndOf="@+id/spinnerPriority"
-        app:layout_constraintTop_toTopOf="@+id/spinnerPriority" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnSave"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:layout_marginEnd="47dp"
-        android:layout_marginBottom="17dp"
-        android:background="@drawable/blue_button_background"
-        android:text="KAYDET"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/spinnerPriority"
+        tools:ignore="ContentDescription,ImageContrastCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
