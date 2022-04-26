@@ -47,7 +47,7 @@
         app:layout_constraintTop_toBottomOf="@+id/btnAddLocation" />
 
     <EditText
-        android:id="@+id/edtVisitDate"
+        android:id="@+id/edtPlaceName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="13dp"
@@ -81,7 +81,7 @@
         app:layout_constraintEnd_toEndOf="@+id/spinnerPriority"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/spinnerPriority"
-        app:layout_constraintTop_toBottomOf="@+id/edtVisitDate" />
+        app:layout_constraintTop_toBottomOf="@+id/edtPlaceName" />
 
     <EditText
         android:id="@+id/edtDescription"
@@ -104,7 +104,7 @@
         app:layout_constraintTop_toBottomOf="@+id/edtDefinition" />
 
     <TextView
-        android:id="@+id/twVisitDate"
+        android:id="@+id/twPlaceName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
@@ -113,8 +113,8 @@
         android:textColor="#4B4848"
         android:textSize="10sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/edtVisitDate"
-        app:layout_constraintTop_toTopOf="@+id/edtVisitDate" />
+        app:layout_constraintStart_toStartOf="@+id/edtPlaceName"
+        app:layout_constraintTop_toTopOf="@+id/edtPlaceName" />
 
     <TextView
         android:id="@+id/twDefinition"
@@ -154,5 +154,21 @@
         app:layout_constraintBottom_toBottomOf="@+id/spinnerPriority"
         app:layout_constraintEnd_toEndOf="@+id/spinnerPriority"
         app:layout_constraintTop_toTopOf="@+id/spinnerPriority" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSave"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginEnd="47dp"
+        android:layout_marginBottom="17dp"
+        android:background="@drawable/blue_button_background"
+        android:text="KAYDET"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

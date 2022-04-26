@@ -19,6 +19,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.turkcell.travelguideapp.R
+import com.turkcell.travelguideapp.bll.PlaceLogic
 import com.turkcell.travelguideapp.databinding.ActivityMapsBinding
 import com.turkcell.travelguideapp.model.Place
 import com.turkcell.travelguideapp.model.Priority
@@ -40,7 +41,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
     private lateinit var stateControl: String
     private var selectedLatitude: Double? = 0.0
     private var selectedLongitude: Double? = 0.0
+    private var userLocation:LatLng?=null
 
+    private var getId:Int?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMapsBinding.inflate(layoutInflater)
@@ -51,6 +54,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
         mapFragment.getMapAsync(this)
 
         initializeEvents()
+        stateControl=intent.getStringExtra("fromAddPlace").toString()
+        getId=intent.getIntExtra("placeId",0)
 
         var latLng = LatLng(122.3, 123.3)
         place = Place("isim", latLng, "tanım kısa olanından", "açıklama", Priority.ONE)
@@ -64,6 +69,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
             onBackPressed()
         }
     }
+
 
 
     /**
@@ -80,7 +86,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
         mMap = googleMap
 
 
-        if (stateControl == "AddLocation") {
+        TODO("id olarak güncellenecek")
+        if (stateControl == "fromAddPlace") {
             binding.btnSaveAndOpen.text = getString(R.string.Save)
 
             mMap.setOnMapLongClickListener(this)
@@ -89,9 +96,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
             locationListener = object : LocationListener {
                 override fun onLocationChanged(p0: Location) {
 
-                    var userLocation = LatLng(p0.latitude, p0.longitude)
-                    mMap.addMarker(MarkerOptions().position(userLocation))
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
+                    userLocation = LatLng(p0.latitude, p0.longitude)
+                    mMap.addMarker(MarkerOptions().position(userLocation!!))
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation!!, 15f))
 
                     //locationManager!!.removeUpdates(this) // bir kere konumu aldıktan sonra konum izlemeyi bırakır.
                 }
@@ -123,8 +130,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
 
             binding.btnSaveAndOpen.setOnClickListener {
 
-                // veri tabanına seçilen konumun latitude ve longitude'u kaydedilecek
-                //dbInsert(selectedLatitude,selectedLongitude)
+                var intent=Intent(this,MainActivity::class.java)
+                intent.putExtra("fromMapsLocationLatitude",userLocation!!.latitude)
+                intent.putExtra("fromMapsLocationLongitude",userLocation!!.longitude)
+
 
                 setResult(RESULT_OK)
                 finish()
@@ -132,8 +141,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
             }
 
         } else {
+            place=PlaceLogic.getPlaceId(this,getId!!)!!
+
+            //place modelinde latlng iki kısma ayrılacak
             dbLatitude = place.location.latitude
             dbLongitude = place.location.longitude
+
+
             binding.btnSaveAndOpen.setText("GİT")
             val yourPlace = LatLng(dbLatitude, dbLongitude)
             mMap.addMarker(MarkerOptions().position(yourPlace).title(place.name))

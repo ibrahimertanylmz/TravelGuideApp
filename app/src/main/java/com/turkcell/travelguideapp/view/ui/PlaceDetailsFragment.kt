@@ -32,9 +32,11 @@ class PlaceDetailsFragment : Fragment() {
 
         binding = FragmentPlaceDetailsBinding.inflate(inflater)
 
-        
+
+        TODO("unutma")
         //get place id from navigation
-        placeId = requireArguments().getInt("placeId")
+ //      placeId = requireArguments().getInt("placeId")
+       placeId = 1
 
 
         setupRvVisitHistory()
