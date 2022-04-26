@@ -34,7 +34,6 @@ class TravelGuideOperation(context: Context) {
     fun returnAllPlaces(): ArrayList<Place> {
         val tmpList = ArrayList<Place>()
         var tmpPlace: Place
-        var tmpPriority: Priority = Priority.ONE
 
         open()
         val query = "SELECT * FROM Place"
@@ -42,11 +41,6 @@ class TravelGuideOperation(context: Context) {
 
         if (c.moveToFirst()) {
             do {
-                when (c.getString(c.getColumnIndex("Priority"))) {
-                    "ONE" -> tmpPriority = Priority.ONE
-                    "TWO" -> tmpPriority = Priority.TWO
-                    "THREE" -> tmpPriority = Priority.THREE
-                }
 
                 tmpPlace = Place(
                     c.getString(c.getColumnIndex("Name")),
@@ -56,7 +50,7 @@ class TravelGuideOperation(context: Context) {
                     ),
                     c.getString(c.getColumnIndex("Definition")),
                     c.getString(c.getColumnIndex("Description")),
-                    tmpPriority
+                    Priority.valueOf(c.getString(c.getColumnIndex("Priority")))
                 ).apply {
                     this.id = c.getInt(0)
                 }
