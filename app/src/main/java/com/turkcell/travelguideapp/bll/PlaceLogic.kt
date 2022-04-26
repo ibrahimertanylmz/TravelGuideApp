@@ -6,12 +6,36 @@ import com.turkcell.travelguideapp.model.Place
 import com.turkcell.travelguideapp.model.Visitation
 
 object PlaceLogic {
-    val listPlaces = ArrayList<Place>()
+    private var listAllPlaces = ArrayList<Place>()
 
+    private fun fillPlacesList(dbOperation: TravelGuideOperation) {
+        listAllPlaces.clear()
+        listAllPlaces = dbOperation.returnAllPlaces()
+    }
+
+    private fun debugTmpFillList(dbOperation: TravelGuideOperation) {
+        val tmpList = dbOperation.returnAllPlaces()
+        if (tmpList.size == 0) {
+            //add place function goes here with couple custom places
+        }
+    }
+
+    fun returnPlacesToVisit(dbOperation: TravelGuideOperation): ArrayList<Place> {
+        fillPlacesList(dbOperation)
+        return listAllPlaces.filter { place -> place.lastVisitDate == null } as ArrayList<Place>
+    }
+
+    fun returnVisitedPlaces(dbOperation: TravelGuideOperation): ArrayList<Place> {
+        fillPlacesList(dbOperation)
+        return listAllPlaces.filter { place -> place.lastVisitDate != null } as ArrayList<Place>
+    }
+    
+    val listPlaces = ArrayList<Place>()
 
     fun addPlace(context: Context,place: Place){
         TravelGuideOperation(context).insertPlace(place)
     }
+    
     //fonksiyon adı refactor edilecek
     fun getPlaceId(context:Context,id:Int):Place?{
        return TravelGuideOperation(context).getPlaceFromId(id)
@@ -26,6 +50,5 @@ object PlaceLogic {
 
     fun getPlaceById(placeId: Int): Place {
         return listPlaces[placeId]
-
     }
 }
