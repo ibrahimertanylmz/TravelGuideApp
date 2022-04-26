@@ -20,16 +20,12 @@ class DatabaseOpenHelper(
             "CREATE TABLE Visitation(Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Date TEXT, Description TEXT, PlaceId INTEGER, FOREIGN KEY(PlaceId) REFERENCES Place(Id) ON DELETE CASCADE)"
         db.execSQL(queryVisitation)
         val queryImage =
-            "CREATE TABLE Image(Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Data TEXT,PlaceId INTEGER, VisitationId INTEGER, FOREIGN KEY(PlaceId) REFERENCES Place(Id), FOREIGN KEY(VisitationId) REFERENCES Visitation(Id) )"
+            "CREATE TABLE Image(Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Data TEXT, PlaceId INTEGER, VisitationId INTEGER, FOREIGN KEY(PlaceId) REFERENCES Place(Id), FOREIGN KEY(VisitationId) REFERENCES Visitation(Id) )"
         db.execSQL(queryImage)
 
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        if (oldVersion == 1) {
-
-        }
     }
-
 
 }

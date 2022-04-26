@@ -49,7 +49,7 @@ class PlacesVisitedFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        (activity as MainActivity).binding.includeTop.tvTitle.text =
+        (activity as MainActivity).binding.includeTop.tvTopBarTitle.text =
             getString(R.string.visited_places)
         list = PlaceLogic.returnVisitedPlaces(dbOperation)
         binding.rvPlaceVisited.adapter = PlaceAdapter(requireContext(), list, ::itemClick)

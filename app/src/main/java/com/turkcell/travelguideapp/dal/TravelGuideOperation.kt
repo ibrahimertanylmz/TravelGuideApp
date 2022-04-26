@@ -14,11 +14,8 @@ import com.turkcell.travelguideapp.model.Visitation
 
 class TravelGuideOperation(context: Context) {
     private var travelGuideDatabase: SQLiteDatabase? = null
-    private var dbOpenHelper: DatabaseOpenHelper
-
-    init {
-        dbOpenHelper = DatabaseOpenHelper(context, "TravelGuideDb", null, 1)
-    }
+    private var dbOpenHelper: DatabaseOpenHelper =
+        DatabaseOpenHelper(context, "TravelGuideDb", null, 1)
 
     private fun open() {
         travelGuideDatabase = dbOpenHelper.writableDatabase
@@ -31,7 +28,7 @@ class TravelGuideOperation(context: Context) {
     }
 
 
-    fun insertPlace(place: Place) {
+    fun addPlace(place: Place) {
 
         val cv = ContentValues()
         cv.put("Name", place.name)
@@ -48,7 +45,7 @@ class TravelGuideOperation(context: Context) {
     }
 
     @SuppressLint("Range")
-    fun getPlaceFromId(id: Int): Place? {
+    fun getPlaceFromId(id: Int): Place {
         lateinit var p: Place
         val sql = "SELECT * FROM Place WHERE id=?"
         open()
@@ -60,16 +57,16 @@ class TravelGuideOperation(context: Context) {
             p = Place(
                 c.getString(c.getColumnIndex("Name")),
                 LatLng(latitude.toDouble(), longitude.toDouble()),
-                c.getString(c.getColumnIndex("definition")),
-                c.getString(c.getColumnIndex("description")),
-                Priority.valueOf(c.getString(c.getColumnIndex("priorty"))),
+                c.getString(c.getColumnIndex("Definition")),
+                c.getString(c.getColumnIndex("Description")),
+                Priority.valueOf(c.getString(c.getColumnIndex("Priority"))),
                 c.getString(c.getColumnIndex("LastVisitDate"))
             ).apply {
-                this.id = c.getInt(c.getColumnIndex("id"))
+                this.id = c.getInt(c.getColumnIndex("Id"))
             }
         }
+        c.close()
         close()
-
         return p
     }
 
@@ -108,14 +105,14 @@ class TravelGuideOperation(context: Context) {
         return tmpList
     }
 
-    fun addVisitation(v: Visitation, placeId: Int): Long {
+    fun addVisitation(v: Visitation): Long {
+        var output: Long = -1
         val cv = ContentValues()
         cv.put("Date", v.date)
         cv.put("Description", v.description)
-        cv.put("PlaceId", placeId)
+        cv.put("PlaceId", v.idFromPlace)
 
         open()
-        var output: Long = -1
         try {
             output = travelGuideDatabase!!.insert("Visitation", null, cv)
         } catch (error: SQLiteException) {
@@ -131,19 +128,21 @@ class TravelGuideOperation(context: Context) {
         var visitation: Visitation
         open()
 
-        var cursor: Cursor = getVisitations(id!!)
+        val cursor: Cursor = getVisitations(id!!)
         if (cursor.moveToFirst()) {
 
             do {
                 val date = cursor.getString(cursor.getColumnIndex("Date"))
                 val description = cursor.getString(cursor.getColumnIndex("Description"))
-                visitation = Visitation(date, description)
+                val placeId = cursor.getInt(3)
+                visitation = Visitation(date, description, placeId)
                 visitation.id = cursor.getInt(0)
 
                 visitationList.add(visitation)
             } while (cursor.moveToNext())
 
         }
+        cursor.close()
         close()
         return visitationList
     }

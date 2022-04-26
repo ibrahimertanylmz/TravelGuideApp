@@ -17,8 +17,8 @@ import com.turkcell.travelguideapp.view.adapter.PhotoAdapter
 class AddVisitationFragment : Fragment() {
     private lateinit var binding: FragmentAddVisitationBinding
     private lateinit var photoList: ArrayList<Any>
-    var placeId: Int = -1
-    lateinit var dbOperation: TravelGuideOperation
+    private var placeId: Int = -1
+    private lateinit var dbOperation: TravelGuideOperation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,9 +43,10 @@ class AddVisitationFragment : Fragment() {
             if (binding.edtVisitDate.text.toString() != "" && binding.edtVisitDesc.text.toString() != "") {
                 val tmpVisitation = Visitation(
                     binding.edtVisitDate.text.toString(),
-                    binding.edtVisitDesc.text.toString()
+                    binding.edtVisitDesc.text.toString(),
+                    placeId
                 )
-                VisitationLogic.addVisitation(dbOperation, tmpVisitation, placeId)
+                VisitationLogic.addVisitation(dbOperation, tmpVisitation)
             } else {
                 Toast.makeText(
                     requireContext(),
