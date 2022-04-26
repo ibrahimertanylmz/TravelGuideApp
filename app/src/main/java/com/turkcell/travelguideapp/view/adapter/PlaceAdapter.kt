@@ -20,7 +20,7 @@ class PlaceAdapter(
     }
 
     override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
-        holder.bindData(liste.get(position))
+        holder.bindData(liste[position])
     }
 
     override fun getItemCount(): Int {
