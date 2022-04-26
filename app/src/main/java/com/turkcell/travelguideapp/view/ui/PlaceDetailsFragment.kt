@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.turkcell.travelguideapp.R
 import com.turkcell.travelguideapp.bll.PlaceLogic
+import com.turkcell.travelguideapp.dal.TravelGuideOperation
 import com.turkcell.travelguideapp.databinding.FragmentPlaceDetailsBinding
 import com.turkcell.travelguideapp.model.Place
 import com.turkcell.travelguideapp.model.Priority
@@ -18,9 +19,10 @@ import com.turkcell.travelguideapp.view.adapter.VisitationAdapter
 
 class PlaceDetailsFragment : Fragment() {
     private lateinit var binding: FragmentPlaceDetailsBinding
-    var placeId: Int = -1
+    private var placeId: Int = -1
     lateinit var visitationList: ArrayList<Visitation>
     lateinit var currentPlace: Place
+    lateinit var dbOperation: TravelGuideOperation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +36,8 @@ class PlaceDetailsFragment : Fragment() {
 
         binding = FragmentPlaceDetailsBinding.inflate(inflater)
 
+        dbOperation = TravelGuideOperation(requireContext())
+
         placeId = requireArguments().getInt("place_id_for_place_details")
 
         initializeViews()
@@ -43,7 +47,7 @@ class PlaceDetailsFragment : Fragment() {
     }
 
     private fun initializeViews() {
-        currentPlace = PlaceLogic.getPlaceById(placeId)
+        currentPlace = PlaceLogic.getPlaceById(dbOperation, placeId)
 
         setPriorityImage()
 
@@ -63,11 +67,14 @@ class PlaceDetailsFragment : Fragment() {
 
     private fun initializeEvents() {
         binding.btnAddVisitation.setOnClickListener {
+            /*
             val action =
                 PlaceDetailsFragmentDirections.actionPlaceDetailsFragmentToAddVisitationFragment(
                     placeId
                 )
             requireView().findNavController().navigate(action)
+
+             */
         }
 
         binding.btnShowLocation.setOnClickListener {

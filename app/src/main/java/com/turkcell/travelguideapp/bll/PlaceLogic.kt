@@ -99,7 +99,11 @@ object PlaceLogic {
         return TravelGuideOperation(context).getVisitationsByPlaceId(placeId)
     }
 
-    fun getPlaceById(placeId: Int): Place {
-        return listAllPlaces[placeId]
+    fun getPlaceById(dbOperation: TravelGuideOperation, placeId: Int): Place {
+        fillPlacesList(dbOperation)
+        var filteredList = listAllPlaces.filter {
+            it.id == placeId
+        }
+        return filteredList[0]
     }
 }
