@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.turkcell.travelguideapp.bll.PlaceLogic
+import com.turkcell.travelguideapp.dal.TravelGuideOperation
 import com.turkcell.travelguideapp.databinding.FragmentPlacesToVisitBinding
 import com.turkcell.travelguideapp.model.Place
 import com.turkcell.travelguideapp.view.adapter.PlaceAdapter
@@ -16,6 +17,7 @@ class PlacesToVisitFragment : Fragment() {
 
     private lateinit var binding: FragmentPlacesToVisitBinding
     private lateinit var list: ArrayList<Place>
+    lateinit var dbOperation: TravelGuideOperation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,12 +35,14 @@ class PlacesToVisitFragment : Fragment() {
             this.orientation = LinearLayoutManager.VERTICAL
         }
 
+        dbOperation = TravelGuideOperation(requireContext())
+
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
-        list = PlaceLogic.returnPlacesToVisit()
+        list = PlaceLogic.returnPlacesToVisit(dbOperation)
         binding.rvPlaceToVisit.adapter =
             PlaceAdapter(requireContext(), list, ::itemClick)
     }
