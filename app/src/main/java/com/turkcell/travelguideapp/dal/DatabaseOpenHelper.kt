@@ -17,10 +17,10 @@ class DatabaseOpenHelper(
             "CREATE TABLE Place(Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Name TEXT, Latitude TEXT, Longitude TEXT, Description TEXT, Definition TEXT, Priority TEXT)"
         db.execSQL(queryPlace)
         val queryVisitation =
-            "CREATE TABLE Visitation(Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Date TEXT, Description TEXT, FOREIGN KEY(PlaceId) REFERENCES Place(Id) ON DELETE CASCADE)"
+            "CREATE TABLE Visitation(Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Date TEXT, Description TEXT,PlaceId INTEGER, FOREIGN KEY(PlaceId) REFERENCES Place(Id) ON DELETE CASCADE)"
         db.execSQL(queryVisitation)
         val queryImage =
-            "CREATE TABLE Image(Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Data BLOB, FOREIGN KEY(PlaceId) REFERENCES Place(Id), FOREIGN KEY(VisitationId) REFERENCES Visitation(Id) )"
+            "CREATE TABLE Image(Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Data BLOB,PlaceId INTEGER, VisitationId INTEGER, FOREIGN KEY(PlaceId) REFERENCES Place(Id), FOREIGN KEY(VisitationId) REFERENCES Visitation(Id) )"
         db.execSQL(queryImage)
 
     }
