@@ -8,7 +8,14 @@ object PlaceLogic {
 
     private fun fillPlacesList(dbOperation: TravelGuideOperation) {
         listAllPlaces.clear()
-        listAllPlaces = dbOperation.returnPlaces()
+        listAllPlaces = dbOperation.returnAllPlaces()
+    }
+
+    private fun debugTmpFillList(dbOperation: TravelGuideOperation) {
+        val tmpList = dbOperation.returnAllPlaces()
+        if (tmpList.size == 0) {
+            //add place function goes here with couple custom places
+        }
     }
 
     fun returnPlacesToVisit(dbOperation: TravelGuideOperation): ArrayList<Place> {
