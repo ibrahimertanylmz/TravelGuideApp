@@ -22,4 +22,5 @@
     <string name="Save">Kaydet</string>
     <string name="str_places_to_visit">Gezilecekler</string>
     <string name="str_visited_places">Gezdiklerim</string>
+    <string name="please_fill_all_the_fields">Lütfen tüm alanları doldurunuz.</string>
 </resources>
