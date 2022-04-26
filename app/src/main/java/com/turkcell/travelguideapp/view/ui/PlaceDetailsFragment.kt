@@ -36,6 +36,7 @@ class PlaceDetailsFragment : Fragment() {
 
         binding = FragmentPlaceDetailsBinding.inflate(inflater)
 
+
         dbOperation = TravelGuideOperation(requireContext())
 
         placeId = requireArguments().getInt("place_id_for_place_details")

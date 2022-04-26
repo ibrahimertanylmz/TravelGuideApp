@@ -3,6 +3,7 @@ package com.turkcell.travelguideapp.view.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.turkcell.travelguideapp.R
@@ -10,6 +11,7 @@ import com.turkcell.travelguideapp.databinding.ActivityMainBinding
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.tabs.TabLayoutMediator
 import com.turkcell.travelguideapp.bll.PlaceLogic
 import com.turkcell.travelguideapp.dal.TravelGuideOperation
@@ -37,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         //kaldırmayı UNUTMA
         dbOperation = TravelGuideOperation(this)
         PlaceLogic.debugTmpFillList(dbOperation, this)
+
     }
 
     private fun initializeViews() {
@@ -124,7 +127,6 @@ class MainActivity : AppCompatActivity() {
                 ltlngData = result.data
                 latitudeData = ltlngData!!.getDoubleExtra("fromMapsLocationLatitude", 0.0)
                 longitudeData = ltlngData!!.getDoubleExtra("fromMapsLocationLongitude", 0.0)
-
 
             } else if (result.resultCode == RESULT_CANCELED) {
 

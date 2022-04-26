@@ -9,6 +9,8 @@ import android.location.LocationManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -36,11 +38,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
     private lateinit var locationManager: LocationManager
     private lateinit var locationListener: LocationListener
 
-
-    private lateinit var stateControl: String
-    private var selectedLatitude: Double? = 0.0
-    private var selectedLongitude: Double? = 0.0
-    private var userLocation: LatLng? = null
+    private var selectedLatitude: Double = 0.0
+    private var selectedLongitude: Double = 0.0
+    private var userLocation:LatLng?=null
 
     private var getId: Int? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,14 +53,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
         mapFragment.getMapAsync(this)
 
         initializeEvents()
-        stateControl = intent.getStringExtra("fromAddPlace").toString()
-        getId = intent.getIntExtra("placeId", 0)
 
+        getId=intent.getIntExtra("placeId",-1)
+
+        // DENEMEK İÇİN YAPILDI SİLİNECEK
         var latLng = LatLng(122.3, 123.3)
         place = Place("isim", latLng, "tanım kısa olanından", "açıklama", Priority.ONE)
 
-
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+
     }
 
     private fun initializeEvents() {
@@ -70,22 +71,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
     }
 
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-
-        TODO("id olarak güncellenecek")
-        if (stateControl == "fromAddPlace") {
+        // ÇALIŞIYOR SIKINTI YOK
+        if (getId==-1) {
             binding.btnSaveAndOpen.text = getString(R.string.Save)
 
             mMap.setOnMapLongClickListener(this)
@@ -97,8 +87,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
                     userLocation = LatLng(p0.latitude, p0.longitude)
                     mMap.addMarker(MarkerOptions().position(userLocation!!))
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation!!, 15f))
-
-                    //locationManager!!.removeUpdates(this) // bir kere konumu aldıktan sonra konum izlemeyi bırakır.
+                    locationManager!!.removeUpdates(this) // bir kere konumu aldıktan sonra konum izlemeyi bırakır.
                 }
 
                 override fun onProviderDisabled(provider: String) {
@@ -128,23 +117,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
 
             binding.btnSaveAndOpen.setOnClickListener {
 
-                var intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("fromMapsLocationLatitude", userLocation!!.latitude)
-                intent.putExtra("fromMapsLocationLongitude", userLocation!!.longitude)
+                var intent=Intent(this,MainActivity::class.java)
+                //düznelenecek
+                intent.putExtra("fromMapsLocationLatitude",userLocation!!.latitude)
+                intent.putExtra("fromMapsLocationLongitude",userLocation!!.longitude)
+                setResult(RESULT_OK,intent)
 
-
-                setResult(RESULT_OK)
                 finish()
-
             }
 
-        } else {
-            place = PlaceLogic.getPlaceFromId(this, getId!!)!!
 
-            //place modelinde latlng iki kısma ayrılacak
+        } else { //KONUM GÖSTER BUTONUNA BASINCA ÇALIŞACAK KISIM
+            //getPlaceFromId sorunsuz çalışırsa burdan sonrası sorunsuz çalışıyor.
+            place=PlaceLogic.getPlaceFromId(applicationContext,getId!!)!!
+
             dbLatitude = place.location.latitude
             dbLongitude = place.location.longitude
-
 
             binding.btnSaveAndOpen.setText("GİT")
             val yourPlace = LatLng(dbLatitude, dbLongitude)
@@ -152,7 +140,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(yourPlace, 10f))
 
             binding.btnSaveAndOpen.setOnClickListener {
-                val gmmIntentUri = Uri.parse("geo:${dbLatitude},${dbLongitude}")
+                // yol tarifi araba ile gösteriliyor. linkin sonu b - >bisiklet, l -> iki tekerlekli, w -> yürüme
+                val gmmIntentUri = Uri.parse("google.navigation:q=${dbLatitude},${dbLongitude}")
                 val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
                 mapIntent.setPackage("com.google.android.apps.maps")
                 // Hali hazırda açılacak bir map uygulaması yok ise uygulama crash olur. Önlemek için kullanıyoruz.
@@ -173,7 +162,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
 
     }
 
-
     @SuppressLint("MissingPermission")
     private fun konumIstegiBaslat() {
 
@@ -185,4 +173,5 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
         )
 
     }
+
 }
