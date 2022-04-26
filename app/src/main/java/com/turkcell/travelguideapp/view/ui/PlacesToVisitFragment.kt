@@ -57,7 +57,11 @@ class PlacesToVisitFragment : Fragment() {
     }
 
     private fun itemClick(position: Int) {
-        val action =PlacesToVisitFragmentDirections.actionPlacesToVisitFragmentToAddPlaceFragment()
+        val action =
+            PlacesToVisitFragmentDirections.actionPlacesToVisitFragmentToPlaceDetailsFragment(
+                list[position].id
+            )
+
         findNavController().navigate(action)
 
         Toast.makeText(context, action.arguments.toString(), Toast.LENGTH_SHORT).show()

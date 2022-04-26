@@ -42,7 +42,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
     private var selectedLongitude: Double = 0.0
     private var userLocation:LatLng?=null
 
-    private var getId:Int?=null
+    private var getId: Int? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMapsBinding.inflate(layoutInflater)
@@ -53,6 +53,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
         mapFragment.getMapAsync(this)
 
         initializeEvents()
+
         getId=intent.getIntExtra("placeId",-1)
 
         // DENEMEK İÇİN YAPILDI SİLİNECEK
@@ -68,6 +69,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
             onBackPressed()
         }
     }
+
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
@@ -120,9 +122,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
                 intent.putExtra("fromMapsLocationLatitude",userLocation!!.latitude)
                 intent.putExtra("fromMapsLocationLongitude",userLocation!!.longitude)
                 setResult(RESULT_OK,intent)
-                finish()
 
+                finish()
             }
+
 
         } else { //KONUM GÖSTER BUTONUNA BASINCA ÇALIŞACAK KISIM
             //getPlaceFromId sorunsuz çalışırsa burdan sonrası sorunsuz çalışıyor.
