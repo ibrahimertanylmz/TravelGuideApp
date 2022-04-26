@@ -34,9 +34,7 @@ class PlaceDetailsFragment : Fragment() {
 
         binding = FragmentPlaceDetailsBinding.inflate(inflater)
 
-
-        placeId = requireArguments().getInt("placeId")
-
+        placeId = requireArguments().getInt("place_id_for_place_details")
 
         initializeViews()
         initializeEvents()

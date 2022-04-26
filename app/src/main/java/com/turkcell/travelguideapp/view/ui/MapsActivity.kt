@@ -9,7 +9,6 @@ import android.location.LocationManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -41,9 +40,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
     private lateinit var stateControl: String
     private var selectedLatitude: Double? = 0.0
     private var selectedLongitude: Double? = 0.0
-    private var userLocation:LatLng?=null
+    private var userLocation: LatLng? = null
 
-    private var getId:Int?=null
+    private var getId: Int? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMapsBinding.inflate(layoutInflater)
@@ -54,8 +53,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
         mapFragment.getMapAsync(this)
 
         initializeEvents()
-        stateControl=intent.getStringExtra("fromAddPlace").toString()
-        getId=intent.getIntExtra("placeId",0)
+        stateControl = intent.getStringExtra("fromAddPlace").toString()
+        getId = intent.getIntExtra("placeId", 0)
 
         var latLng = LatLng(122.3, 123.3)
         place = Place("isim", latLng, "tanım kısa olanından", "açıklama", Priority.ONE)
@@ -69,7 +68,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
             onBackPressed()
         }
     }
-
 
 
     /**
@@ -130,9 +128,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
 
             binding.btnSaveAndOpen.setOnClickListener {
 
-                var intent=Intent(this,MainActivity::class.java)
-                intent.putExtra("fromMapsLocationLatitude",userLocation!!.latitude)
-                intent.putExtra("fromMapsLocationLongitude",userLocation!!.longitude)
+                var intent = Intent(this, MainActivity::class.java)
+                intent.putExtra("fromMapsLocationLatitude", userLocation!!.latitude)
+                intent.putExtra("fromMapsLocationLongitude", userLocation!!.longitude)
 
 
                 setResult(RESULT_OK)
@@ -141,7 +139,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
             }
 
         } else {
-            place=PlaceLogic.getPlaceId(this,getId!!)!!
+            place = PlaceLogic.getPlaceFromId(this, getId!!)!!
 
             //place modelinde latlng iki kısma ayrılacak
             dbLatitude = place.location.latitude

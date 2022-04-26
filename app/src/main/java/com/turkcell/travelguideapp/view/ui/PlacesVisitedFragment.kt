@@ -5,6 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavController
+import androidx.navigation.NavDirections
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.turkcell.travelguideapp.R
@@ -44,13 +49,14 @@ class PlacesVisitedFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        (activity as MainActivity).binding.includeTop.tvTitle.text = getString(R.string.visited_places)
+        (activity as MainActivity).binding.includeTop.tvTitle.text =
+            getString(R.string.visited_places)
         list = PlaceLogic.returnVisitedPlaces(dbOperation)
         binding.rvPlaceVisited.adapter = PlaceAdapter(requireContext(), list, ::itemClick)
         binding.rvPlaceVisited.adapter!!.notifyDataSetChanged()
     }
 
-    fun itemClick(position: Int) {
+    private fun itemClick(position: Int) {
         val action =
             PlacesVisitedFragmentDirections.actionPlacesVisitedFragmentToPlaceDetailsFragment(
                 position

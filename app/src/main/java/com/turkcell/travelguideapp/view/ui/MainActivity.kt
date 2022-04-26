@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     var latitudeData: Double? = null
     var longitudeData: Double? = null
 
-    //for debugging
+    //kaldırmayı UNUTMA
     lateinit var dbOperation: TravelGuideOperation
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         initializeViewPager()
         initializeTabs()
 
+        //kaldırmayı UNUTMA
         dbOperation = TravelGuideOperation(this)
         PlaceLogic.debugTmpFillList(dbOperation, this)
     }

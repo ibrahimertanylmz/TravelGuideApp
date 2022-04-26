@@ -53,7 +53,7 @@ class PlacesToVisitFragment : Fragment() {
     private fun itemClick(position: Int) {
         val action =
             PlacesToVisitFragmentDirections.actionPlacesToVisitFragmentToPlaceDetailsFragment(
-                position
+                list[position].id
             )
         findNavController().navigate(action)
     }

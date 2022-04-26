@@ -36,7 +36,9 @@ class PlaceViewHolder(itemView: View, var itemClick: (position: Int) -> Unit) :
         if (place.imageList.size > 0) {
             placeImage.setImageBitmap(place.imageList[0])
         }
-        tvPlaceName.text = place.name
+        //düzeltmeyi UNUTMA
+        tvPlaceName.text = place.id.toString()
+        //tvPlaceName.text = place.name
         tvPlaceDefinition.text = place.definition
         tvPlaceDescription.text = place.description
 
