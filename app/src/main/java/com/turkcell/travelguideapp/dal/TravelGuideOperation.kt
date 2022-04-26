@@ -96,7 +96,7 @@ class TravelGuideOperation(context: Context) {
                     Priority.valueOf(c.getString(c.getColumnIndex("Priority"))),
                     c.getString((c.getColumnIndex("LastVisitDate")))
                 ).apply {
-                    this.id = c.getInt(0)
+                    this.id = c.getInt(c.getColumnIndex("Id"))
                 }
 
                 tmpList.add(tmpPlace)
