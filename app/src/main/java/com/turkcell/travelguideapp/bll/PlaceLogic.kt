@@ -8,6 +8,14 @@ import com.turkcell.travelguideapp.model.Visitation
 object PlaceLogic {
     val listPlaces = ArrayList<Place>()
 
+
+    fun addPlace(context: Context,place: Place){
+        TravelGuideOperation(context).insertPlace(place)
+    }
+    //fonksiyon adı refactor edilecek
+    fun getPlaceId(context:Context,id:Int):Place?{
+       return TravelGuideOperation(context).getPlaceFromId(id)
+
     /*fun getPlaceList(context: Context): ArrayList<Place>{
         return TravelGuideOperation(context).getAllPlaces()
     }*/
@@ -18,5 +26,6 @@ object PlaceLogic {
 
     fun getPlaceById(placeId: Int): Place {
         return listPlaces[placeId]
+
     }
 }
