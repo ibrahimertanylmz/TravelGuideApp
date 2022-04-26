@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.ImageView
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.model.LatLng
 import com.turkcell.travelguideapp.R
@@ -16,25 +16,19 @@ import com.turkcell.travelguideapp.bll.PlaceLogic
 import com.turkcell.travelguideapp.databinding.FragmentAddPlaceBinding
 import com.turkcell.travelguideapp.model.Place
 import com.turkcell.travelguideapp.model.Priority
-import com.turkcell.travelguideapp.model.Visitation
 import com.turkcell.travelguideapp.view.adapter.PhotoAdapter
 
 class AddPlaceFragment : Fragment() {
     private lateinit var binding: FragmentAddPlaceBinding
 
-    private lateinit var photoList: ArrayList<Visitation>
+    private lateinit var photoList: ArrayList<Any>
+
     //lateinit var fotoğrafEkleView: ImageView
-    private var place:Place?=null
-    private var priority:Priority=Priority.THREE
-    private lateinit var getLocation:LatLng
+    private var priority: Priority = Priority.THREE
+    private var getLocation: LatLng? = null
 
-    private var getLatitude:Double?=null
-    private var getLongitude:Double?=null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private var getLatitude: Double? = null
+    private var getLongitude: Double? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,17 +61,17 @@ class AddPlaceFragment : Fragment() {
         initLm()
 
         binding.btnSave.setOnClickListener {
-            btnSave_OnClick()
+            btnSaveOnClick()
         }
 
         binding.btnAddLocation.setOnClickListener {
-            btnAddLocation_OnClick()
+            btnAddLocationOnClick()
         }
 
         return binding.root
     }
 
-    fun initLm() {
+    private fun initLm() {
         val lm = LinearLayoutManager(requireContext())
 
         lm.orientation = LinearLayoutManager.HORIZONTAL
@@ -91,84 +85,108 @@ class AddPlaceFragment : Fragment() {
                 ::itemAddPhotoClick
             )
     }
-    fun btnAddLocation_OnClick(){
+
+    private fun btnAddLocationOnClick() {
         (activity as MainActivity).openMapsActivityFromAddPlaceFragment()
 
     }
-    // Maps activity'den gelen latitude ile longitude'yi alıyoruz
-    fun getIntent(){
-        var intent=Intent()
 
-        getLatitude=intent.getDoubleExtra("fromMapsLocationLatitude",0.0)
-        getLongitude=intent.getDoubleExtra("fromMapsLocationLongitude",0.0)
+    // Maps activity'den gelen latitude ile longitude'yi alıyoruz
+    private fun getIntent() {
+        val intent = Intent()
+
+        getLatitude = intent.getDoubleExtra("fromMapsLocationLatitude", 0.0)
+        getLongitude = intent.getDoubleExtra("fromMapsLocationLongitude", 0.0)
     }
 
-    fun btnSave_OnClick(){
+    private fun btnSaveOnClick() {
 
-        getLocation= LatLng(getLatitude!!,getLongitude!!)
+        if (getLatitude != null && getLongitude != null) {
+            getLocation = LatLng(getLatitude!!, getLongitude!!)
 
-        if(getLocation != null){
+            lateinit var p: Place
 
-        place!!.name=binding.edtPlaceName.text.toString()
-        place!!.location= getLocation as LatLng // dikkat et patlayabilir!
-        place!!.definition=binding.edtDefinition.text.toString()
-        place!!.description=binding.edtDescription.text.toString()
-        place!!.priority=priority!!
+            if (getLocation != null) {
+                //LatLng patlayabilir
+                p = Place(
+                    binding.edtPlaceName.text.toString(),
+                    getLocation!!,
+                    binding.edtDefinition.text.toString(),
+                    binding.edtDescription.text.toString(),
+                    priority
+                )
 
-        PlaceLogic.addPlace(requireContext(),place!!)
-        }else{
-            binding.btnAddLocation.error="Konum Gerekli"
+                PlaceLogic.addPlace(requireContext(), p)
+            } else {
+                val adb= AlertDialog.Builder(requireContext())
+                adb.setTitle(getString(R.string.LOCATION))
+                adb.setMessage(getString(R.string.add_place_fragment_choose_location_confirmation))
+                adb.setPositiveButton(getString(R.string.Confirm)) { _, _ ->
+                    //maps activity aç
+                    (activity as MainActivity).openMapsActivityFromAddPlaceFragment()
+                }
+                adb.setNegativeButton(getString(R.string.No),null)
+                adb.show()
+
+            }
         }
     }
 
 
-    fun getLatitudeAndLongitude(){
+    private fun getLatitudeAndLongitude() {
         // aktiviteye gelen intent bilgilerini kullanıyoruz
-        getLatitude=(activity as MainActivity).latitudeData
-        getLongitude=(activity as MainActivity).longitudeData
+        getLatitude = (activity as MainActivity).latitudeData
+        getLongitude = (activity as MainActivity).longitudeData
 
 
     }
-    fun spinnerListOperations(){
-        val liste= arrayListOf<String>("Öncelik Seç","Öncelik 1","Öncelik 2","Öncelik 3")
 
-        val adap= ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item,liste)
-        binding.spinnerPriority.adapter=adap
+    private fun spinnerListOperations() {
+        val liste = arrayListOf("Öncelik Seç", "Öncelik 1", "Öncelik 2", "Öncelik 3")
 
-        binding.spinnerPriority.onItemSelectedListener=object: AdapterView.OnItemSelectedListener,
-            AdapterView.OnItemClickListener {
+        val adap =
+            ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, liste)
+        binding.spinnerPriority.adapter = adap
 
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        binding.spinnerPriority.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener,
+                AdapterView.OnItemClickListener {
 
-                when (p2) {
-                    1 -> {binding.imageCircle.setImageResource(R.drawable.rv_oval_item_green)
-                            priority=Priority.ONE //  !!!Bu şekilde olur mu emin değilim!!!
-                    }
-                    2 -> {binding.imageCircle.setImageResource(R.drawable.rv_oval_item_blue)
-                            priority=Priority.TWO
-                    }
-                    3 -> {binding.imageCircle.setImageResource(R.drawable.rv_oval_item_gray)
-                            priority=Priority.THREE
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+
+                    when (p2) {
+                        1 -> {
+                            binding.imageCircle.setImageResource(R.drawable.rv_oval_item_green)
+                            priority = Priority.ONE //  !!!Bu şekilde olur mu emin değilim!!!
+                        }
+                        2 -> {
+                            binding.imageCircle.setImageResource(R.drawable.rv_oval_item_blue)
+                            priority = Priority.TWO
+                        }
+                        3 -> {
+                            binding.imageCircle.setImageResource(R.drawable.rv_oval_item_gray)
+                            priority = Priority.THREE
+                        }
                     }
                 }
-            }
-            override fun onNothingSelected(p0: AdapterView<*>?) {}
 
-            override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {}
-        }
-       // adap.notifyDataSetChanged()
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
+
+                override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {}
+            }
+        // adap.notifyDataSetChanged()
     }
 
 
-    fun itemClick(position:Int){
+    private fun itemClick(position: Int) {
         //optional
     }
 
-    fun itemButtonClick(position: Int) {
+    private fun itemButtonClick(position: Int) {
         //dbDelete(position)
     }
 
-    fun itemAddPhotoClick(position: Int) {
+    private fun itemAddPhotoClick(position: Int) {
         //open gallery and select photo
     }
 }

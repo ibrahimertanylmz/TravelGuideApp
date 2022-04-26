@@ -6,11 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.turkcell.travelguideapp.view.viewholder.PhotoViewHolder
 import com.turkcell.travelguideapp.R
-import com.turkcell.travelguideapp.model.Visitation
 
 class PhotoAdapter(
     val context: Context,
-    var imageList: ArrayList<Visitation>,
+    var imageList: ArrayList<Any>,
     var itemClick: (position: Int) -> Unit,
     var itemButtonClick: (position: Int) -> Unit,
     var itemAddPhotoClick: (position: Int) -> Unit
@@ -21,7 +20,7 @@ class PhotoAdapter(
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-        holder.bind(imageList.get(position))
+        holder.bind(imageList[position])
     }
 
     override fun getItemCount(): Int {

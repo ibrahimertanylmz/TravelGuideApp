@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.turkcell.travelguideapp.R
 import com.turkcell.travelguideapp.bll.PlaceLogic
 import com.turkcell.travelguideapp.dal.TravelGuideOperation
 import com.turkcell.travelguideapp.databinding.FragmentPlacesToVisitBinding
@@ -42,9 +43,11 @@ class PlacesToVisitFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        (activity as MainActivity).binding.includeTop.tvTitle.text = getString(R.string.places_to_visit)
         list = PlaceLogic.returnPlacesToVisit(dbOperation)
         binding.rvPlaceToVisit.adapter =
             PlaceAdapter(requireContext(), list, ::itemClick)
+        binding.rvPlaceToVisit.adapter!!.notifyDataSetChanged()
     }
 
     private fun itemClick(position: Int) {

@@ -10,15 +10,19 @@ import com.turkcell.travelguideapp.databinding.ActivityMainBinding
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.tabs.TabLayoutMediator
+import com.turkcell.travelguideapp.bll.PlaceLogic
+import com.turkcell.travelguideapp.dal.TravelGuideOperation
 import com.turkcell.travelguideapp.databinding.CustomTabBinding
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
-    var ltlngData:Intent?=null
-    var latitudeData:Double?=null
-    var longitudeData:Double?=null
+    var ltlngData: Intent? = null
+    var latitudeData: Double? = null
+    var longitudeData: Double? = null
+
+    //for debugging
+    lateinit var dbOperation: TravelGuideOperation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +33,9 @@ class MainActivity : AppCompatActivity() {
         initializeEvents()
         initializeViewPager()
         initializeTabs()
+
+        dbOperation = TravelGuideOperation(this)
+        PlaceLogic.debugTmpFillList(dbOperation, this)
     }
 
     private fun initializeViews() {
@@ -87,9 +94,7 @@ class MainActivity : AppCompatActivity() {
     private fun initializeViewPager() {
         val adapter = ViewPagerAdapter(this)
 
-        TODO("unutma")
-       // adapter.addFragment(PlacesToVisitFragment())
-        adapter.addFragment(PlaceDetailsFragment())
+        adapter.addFragment(PlacesToVisitFragment())
         adapter.addFragment(PlacesVisitedFragment())
         binding.viewpager.adapter = adapter
     }
@@ -110,30 +115,31 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    var resultLauncher=registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-            result ->
-        if(result.resultCode == RESULT_OK){
+    var resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
 
-            // maps activity'den gelen intentleri kaydediyoruz fragment'ta kullanmak için
-            ltlngData=result.data
-            latitudeData=ltlngData!!.getDoubleExtra("fromMapsLocationLatitude",0.0)
-            longitudeData=ltlngData!!.getDoubleExtra("fromMapsLocationLongitude",0.0)
+                // maps activity'den gelen intentleri kaydediyoruz fragment'ta kullanmak için
+                ltlngData = result.data
+                latitudeData = ltlngData!!.getDoubleExtra("fromMapsLocationLatitude", 0.0)
+                longitudeData = ltlngData!!.getDoubleExtra("fromMapsLocationLongitude", 0.0)
 
 
-        }else if(result.resultCode== RESULT_CANCELED){
+            } else if (result.resultCode == RESULT_CANCELED) {
+
+            }
 
         }
 
-    }
-
-    fun openMapsActivityFromAddPlaceFragment(){
-        val intent=Intent(this,MapsActivity::class.java)
-        intent.putExtra("fromAddPlace","fromAddPlace")
+    fun openMapsActivityFromAddPlaceFragment() {
+        val intent = Intent(this, MapsActivity::class.java)
+        //intent.putExtra("fromAddPlace", "fromAddPlace")
         resultLauncher.launch(intent)
     }
-    fun openMapsActivityFromDetailsFragment(id:Int){
-        val intent=Intent(this,MapsActivity::class.java)
-        intent.putExtra("fromDetails",id)
+
+    fun openMapsActivityFromDetailsFragment(id: Int) {
+        val intent = Intent(this, MapsActivity::class.java)
+        intent.putExtra("fromDetails", id)
         resultLauncher.launch(intent)
     }
 

@@ -35,7 +35,7 @@ class PhotoViewHolder(
 
     }
 
-    fun bind(visitation: Visitation) {
+    fun bind(any: Any) {
         // imagePhoto=visitation.imageList.get()
 
     }

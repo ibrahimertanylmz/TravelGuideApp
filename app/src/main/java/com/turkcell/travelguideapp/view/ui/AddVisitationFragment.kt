@@ -16,7 +16,7 @@ import com.turkcell.travelguideapp.view.adapter.PhotoAdapter
 
 class AddVisitationFragment : Fragment() {
     private lateinit var binding: FragmentAddVisitationBinding
-    private lateinit var photoList: ArrayList<Visitation>
+    private lateinit var photoList: ArrayList<Any>
     var placeId: Int = -1
     lateinit var dbOperation: TravelGuideOperation
 

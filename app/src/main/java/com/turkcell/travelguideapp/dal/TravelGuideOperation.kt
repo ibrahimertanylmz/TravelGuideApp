@@ -5,6 +5,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteException
 import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.turkcell.travelguideapp.model.Place
@@ -29,6 +30,49 @@ class TravelGuideOperation(context: Context) {
         }
     }
 
+
+    fun insertPlace(place: Place) {
+
+        val cv = ContentValues()
+        cv.put("Name", place.name)
+        cv.put("Latitude", place.location.latitude)
+        cv.put("Longitude", place.location.longitude)
+        cv.put("Description", place.description)
+        cv.put("Definition", place.definition)
+        cv.put("Priority", place.priority.toString())
+        cv.put("LastVisitDate", place.lastVisitDate)
+
+        open()
+        travelGuideDatabase!!.insert("Place", null, cv)
+        close()
+    }
+
+    @SuppressLint("Range")
+    fun getPlaceFromId(id: Int): Place? {
+        lateinit var p: Place
+        val sql = "SELECT * FROM Place WHERE id=?"
+        open()
+        val c = travelGuideDatabase!!.rawQuery(sql, arrayOf(id.toString()))
+        if (c.moveToFirst()) {
+            val latitude = c.getString(c.getColumnIndex("Latitude"))
+            val longitude = c.getString(c.getColumnIndex("Longitude"))
+
+            p = Place(
+                c.getString(c.getColumnIndex("Name")),
+                LatLng(latitude.toDouble(), longitude.toDouble()),
+                c.getString(c.getColumnIndex("definition")),
+                c.getString(c.getColumnIndex("description")),
+                Priority.valueOf(c.getString(c.getColumnIndex("priorty"))),
+                c.getString(c.getColumnIndex("LastVisitDate"))
+            ).apply {
+                this.id = c.getInt(c.getColumnIndex("id"))
+            }
+        }
+        close()
+
+        return p
+    }
+
     @SuppressLint("Range")
     fun returnAllPlaces(): ArrayList<Place> {
         val tmpList = ArrayList<Place>()
@@ -49,7 +93,8 @@ class TravelGuideOperation(context: Context) {
                     ),
                     c.getString(c.getColumnIndex("Definition")),
                     c.getString(c.getColumnIndex("Description")),
-                    Priority.valueOf(c.getString(c.getColumnIndex("Priority")))
+                    Priority.valueOf(c.getString(c.getColumnIndex("Priority"))),
+                    c.getString((c.getColumnIndex("LastVisitDate")))
                 ).apply {
                     this.id = c.getInt(0)
                 }
@@ -73,95 +118,21 @@ class TravelGuideOperation(context: Context) {
         var output: Long = -1
         try {
             output = travelGuideDatabase!!.insert("Visitation", null, cv)
-        } catch (error: SQLiteException){
+        } catch (error: SQLiteException) {
             Log.e("Exception", "SQLException" + error.localizedMessage)
         }
         close()
         return output
     }
 
-    fun insertPlace(place: Place) {
-
-        val cv = ContentValues()
-        cv.put("Name", place.name)
-        cv.put("Latitude", place.location.latitude)
-        cv.put("Longitude", place.location.longitude)
-        cv.put("Description", place.description)
-        cv.put("Definition", place.definition)
-        cv.put("Priority", place.priority.name) // name olarak mı eklenecek bunu mutlaka sor
-
-        open()
-        travelGuideDatabase!!.insert("Place", null, cv)
-        close()
-    }
-
     @SuppressLint("Range")
-    fun getPlaceFromId(id: Int): Place? {
-        var place: Place? = null
-        open()
-        val sql = "SELECT * FROM Place WHERE id=?"
-        val c = travelGuideDatabase!!.rawQuery(sql, arrayOf(id.toString()))
-
-        if (c.moveToFirst()) {
-            place!!.id = c.getInt(c.getColumnIndex("id"))
-
-            val latitude = c.getString(c.getColumnIndex("Latitude"))
-            val longitude = c.getString(c.getColumnIndex("Longitude"))
-
-            place!!.location = LatLng(latitude.toDouble(), longitude.toDouble())
-            place!!.definition = c.getString(c.getColumnIndex("definition"))
-            place!!.description = c.getString(c.getColumnIndex("description"))
-            place!!.priority = Priority.valueOf(c.getString(c.getColumnIndex("priorty")))
-
-
-        }
-        close()
-
-        return place
-    }
-
-
-    /*@SuppressLint("Range")
-    fun getAllPlaces(): ArrayList<Place>{
-        val placeList = ArrayList<Place>()
-        var place : Place
-        open()
-        var cursor : Cursor = getPlaces()
-        if(cursor.moveToFirst()){
-            do {
-                val name = cursor.getString(cursor.getColumnIndex("Name"))
-                val latitude = cursor.getString(cursor.getColumnIndex("Latitude"))
-                val longitude = cursor.getString(cursor.getColumnIndex("Longitude"))
-                val description = cursor.getString(cursor.getColumnIndex("Description"))
-                val definition = cursor.getString(cursor.getColumnIndex("Definition"))
-                val priority = Priority.valueOf(cursor.getString(cursor.getColumnIndex("Priority")))
-
-                place = Place(name, LatLng(latitude.toDouble(),longitude.toDouble()),definition,description,priority)
-                place.id = cursor.getInt(0)
-                placeList.add(place)
-
-            }while (cursor.moveToNext())
-
-        }
-
-        close()
-        return placeList
-    }
-
-
-    private fun getPlaces() : Cursor {
-        val query = "Select * from Place"
-        return travelGuideDatabase!!.rawQuery(query, null)
-    }*/
-
-    @SuppressLint("Range")
-    fun getVisitationsByPlaceId(id: Int?): ArrayList<Visitation>{
+    fun getVisitationsByPlaceId(id: Int?): ArrayList<Visitation> {
         val visitationList = ArrayList<Visitation>()
-        var visitation : Visitation
+        var visitation: Visitation
         open()
 
-        var cursor : Cursor = getVisitations(id!!)
-        if(cursor.moveToFirst()){
+        var cursor: Cursor = getVisitations(id!!)
+        if (cursor.moveToFirst()) {
 
             do {
                 val date = cursor.getString(cursor.getColumnIndex("Date"))
@@ -170,14 +141,14 @@ class TravelGuideOperation(context: Context) {
                 visitation.id = cursor.getInt(0)
 
                 visitationList.add(visitation)
-            }while (cursor.moveToNext())
+            } while (cursor.moveToNext())
 
         }
         close()
         return visitationList
     }
 
-    private fun getVisitations(id: Int) : Cursor {
+    private fun getVisitations(id: Int): Cursor {
         val query = "Select * from Visitation where PlaceId = '$id'"
         return travelGuideDatabase!!.rawQuery(query, null)
     }

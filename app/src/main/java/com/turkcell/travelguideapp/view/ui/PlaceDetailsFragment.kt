@@ -35,10 +35,7 @@ class PlaceDetailsFragment : Fragment() {
         binding = FragmentPlaceDetailsBinding.inflate(inflater)
 
 
-        TODO("unutma")
-        //get place id from navigation
- //      placeId = requireArguments().getInt("placeId")
-       placeId = 1
+        placeId = requireArguments().getInt("placeId")
 
 
         initializeViews()
@@ -68,7 +65,10 @@ class PlaceDetailsFragment : Fragment() {
 
     private fun initializeEvents() {
         binding.btnAddVisitation.setOnClickListener {
-            val action = PlaceDetailsFragmentDirections.actionPlaceDetailsFragmentToAddVisitationFragment(placeId)
+            val action =
+                PlaceDetailsFragmentDirections.actionPlaceDetailsFragmentToAddVisitationFragment(
+                    placeId
+                )
             requireView().findNavController().navigate(action)
         }
 
@@ -80,8 +80,9 @@ class PlaceDetailsFragment : Fragment() {
     }
 
     private fun setupRvVisitHistory() {
-        visitationList = PlaceLogic.getVisitationsOfPlace(placeId,requireActivity())
-        binding.rvVisitHistory.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+        visitationList = PlaceLogic.getVisitationsOfPlace(placeId, requireActivity())
+        binding.rvVisitHistory.layoutManager =
+            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         binding.rvVisitHistory.adapter = VisitationAdapter(requireActivity(), visitationList)
     }
 

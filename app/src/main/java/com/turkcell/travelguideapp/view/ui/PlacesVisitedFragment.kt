@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.turkcell.travelguideapp.R
 import com.turkcell.travelguideapp.bll.PlaceLogic
 import com.turkcell.travelguideapp.dal.TravelGuideOperation
 import com.turkcell.travelguideapp.databinding.FragmentPlacesVisitedBinding
@@ -43,8 +44,10 @@ class PlacesVisitedFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        (activity as MainActivity).binding.includeTop.tvTitle.text = getString(R.string.visited_places)
         list = PlaceLogic.returnVisitedPlaces(dbOperation)
         binding.rvPlaceVisited.adapter = PlaceAdapter(requireContext(), list, ::itemClick)
+        binding.rvPlaceVisited.adapter!!.notifyDataSetChanged()
     }
 
     fun itemClick(position: Int) {

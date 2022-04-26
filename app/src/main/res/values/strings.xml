@@ -23,4 +23,10 @@
     <string name="str_visited_places">Gezdiklerim</string>
     <string name="please_fill_all_the_fields">Lütfen tüm alanları doldurunuz.</string>
     <string name="text_priority">Öncelik</string>
+    <string name="LOCATION">KONUM</string>
+    <string name="add_place_fragment_choose_location_confirmation">Konum bilgisi girilmedi. Şimdi konum seçmek için onaylayınız.</string>
+    <string name="Confirm">Onayla</string>
+    <string name="No">Hayır</string>
+    <string name="visited_places">Gezdiklerim</string>
+    <string name="places_to_visit">Gezilecekler</string>
 </resources>
