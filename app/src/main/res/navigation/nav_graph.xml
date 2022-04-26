@@ -9,7 +9,11 @@
         android:id="@+id/addPlaceFragment"
         android:name="com.turkcell.travelguideapp.view.ui.AddPlaceFragment"
         android:label="fragment_add_place"
-        tools:layout="@layout/fragment_add_place"/>
+        tools:layout="@layout/fragment_add_place">
+        <action
+            android:id="@+id/action_addPlaceFragment_to_placesToVisitFragment"
+            app:destination="@id/placesToVisitFragment" />
+    </fragment>
     <fragment
         android:id="@+id/placesToVisitFragment"
         android:name="com.turkcell.travelguideapp.view.ui.PlacesToVisitFragment"
@@ -17,7 +21,14 @@
         tools:layout="@layout/fragment_places_to_visit">
         <action
             android:id="@+id/action_placesToVisitFragment_to_placeDetailsFragment"
-            app:destination="@id/placeDetailsFragment" />
+            app:destination="@id/placeDetailsFragment"
+            app:popUpTo="@id/placesToVisitFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_placesToVisitFragment_to_addPlaceFragment"
+            app:destination="@id/addPlaceFragment"
+            app:popUpTo="@id/placesToVisitFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/placesVisitedFragment"
@@ -26,6 +37,9 @@
         <action
             android:id="@+id/action_placesVisitedFragment_to_placeDetailsFragment"
             app:destination="@id/placeDetailsFragment" />
+        <action
+            android:id="@+id/action_placesVisitedFragment_to_addPlaceFragment"
+            app:destination="@id/addPlaceFragment" />
     </fragment>
     <fragment
         android:id="@+id/placeDetailsFragment"
@@ -38,7 +52,12 @@
             app:argType="integer" />
         <action
             android:id="@+id/action_placeDetailsFragment_to_addVisitationFragment"
-            app:destination="@id/addVisitationFragment" />
+            app:destination="@id/addVisitationFragment"
+            app:popUpTo="@id/placeDetailsFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_placeDetailsFragment_to_placesToVisitFragment"
+            app:destination="@id/placesToVisitFragment" />
     </fragment>
     <fragment
         android:id="@+id/addVisitationFragment"
@@ -49,5 +68,8 @@
             android:name="place_id_for_add_visitation"
             android:defaultValue="-1"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_addVisitationFragment_to_placeDetailsFragment"
+            app:destination="@id/placeDetailsFragment" />
     </fragment>
 </navigation>

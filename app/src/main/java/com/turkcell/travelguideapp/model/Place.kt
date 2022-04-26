@@ -9,7 +9,7 @@ import kotlin.properties.Delegates
 class Place(
     val name: String,
     val location: LatLng,
-    val definition: String,
+    val definition: String = "",
     val description: String,
     val priority: Priority,
     var lastVisitDate: String = ""

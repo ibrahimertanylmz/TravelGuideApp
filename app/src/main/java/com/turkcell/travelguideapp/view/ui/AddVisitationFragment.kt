@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.turkcell.travelguideapp.R
 import com.turkcell.travelguideapp.bll.VisitationLogic
@@ -16,9 +17,9 @@ import com.turkcell.travelguideapp.view.adapter.PhotoAdapter
 
 class AddVisitationFragment : Fragment() {
     private lateinit var binding: FragmentAddVisitationBinding
-    private lateinit var photoList: ArrayList<Any>
-    var placeId: Int = -1
-    lateinit var dbOperation: TravelGuideOperation
+    private var photoList = ArrayList<Any>()
+    private var placeId: Int = -1
+    private lateinit var dbOperation: TravelGuideOperation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,20 +33,27 @@ class AddVisitationFragment : Fragment() {
 
         binding = FragmentAddVisitationBinding.inflate(inflater)
 
-        (requireActivity() as MainActivity).changeBackButtonVisibility(true)
-        (requireActivity() as MainActivity).changeTabLayoutVisibility(false)
-
         placeId = requireArguments().getInt("place_id_for_add_visitation")
 
         dbOperation = TravelGuideOperation(requireContext())
+
+        (requireActivity() as MainActivity).binding.includeTop.tvTopBarTitle.text = "BOŞ, DÜZENLE"
+        (requireActivity() as MainActivity).changeBackButtonVisibility(true)
+        (requireActivity() as MainActivity).changeTabLayoutVisibility(false)
+        (requireActivity() as MainActivity).changeViewPagerVisibility(false)
+        (requireActivity() as MainActivity).binding.includeTop.btnBack.setOnClickListener {
+            val action = AddVisitationFragmentDirections.actionAddVisitationFragmentToPlaceDetailsFragment(placeId)
+            findNavController().navigate(action)
+        }
 
         (requireActivity() as MainActivity).binding.includeBottom.btnWide.setOnClickListener {
             if (binding.edtVisitDate.text.toString() != "" && binding.edtVisitDesc.text.toString() != "") {
                 val tmpVisitation = Visitation(
                     binding.edtVisitDate.text.toString(),
-                    binding.edtVisitDesc.text.toString()
+                    binding.edtVisitDesc.text.toString(),
+                    placeId
                 )
-                VisitationLogic.addVisitation(dbOperation, tmpVisitation, placeId)
+                VisitationLogic.addVisitation(dbOperation, tmpVisitation)
             } else {
                 Toast.makeText(
                     requireContext(),

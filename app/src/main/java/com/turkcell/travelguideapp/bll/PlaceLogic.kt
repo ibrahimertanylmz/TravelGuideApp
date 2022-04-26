@@ -9,6 +9,7 @@ import com.turkcell.travelguideapp.model.Visitation
 
 object PlaceLogic {
     private var listAllPlaces = ArrayList<Place>()
+    var isAddPlaceFragment: Boolean = false
 
     private fun fillPlacesList(dbOperation: TravelGuideOperation) {
         listAllPlaces.clear()
@@ -22,7 +23,7 @@ object PlaceLogic {
             //add place function goes here with couple custom places
             val tmpLatLong = LatLng(15.0, 15.0)
 
-            dbOperation.insertPlace(
+            dbOperation.addPlace(
                 Place(
                     "place1",
                     tmpLatLong,
@@ -31,7 +32,7 @@ object PlaceLogic {
                     Priority.THREE
                 )
             )
-            dbOperation.insertPlace(
+            dbOperation.addPlace(
                 Place(
                     "place2",
                     tmpLatLong,
@@ -40,7 +41,7 @@ object PlaceLogic {
                     Priority.THREE
                 )
             )
-            dbOperation.insertPlace(
+            dbOperation.addPlace(
                 Place(
                     "place3",
                     tmpLatLong,
@@ -50,7 +51,7 @@ object PlaceLogic {
                     ""
                 )
             )
-            dbOperation.insertPlace(
+            dbOperation.addPlace(
                 Place(
                     "place4",
                     tmpLatLong,
@@ -60,7 +61,7 @@ object PlaceLogic {
                     "21.21.21"
                 )
             )
-            dbOperation.insertPlace(
+            dbOperation.addPlace(
                 Place(
                     "place5",
                     tmpLatLong,
@@ -88,7 +89,7 @@ object PlaceLogic {
     }
 
     fun addPlace(context: Context, place: Place) {
-        TravelGuideOperation(context).insertPlace(place)
+        TravelGuideOperation(context).addPlace(place)
     }
 
     fun getPlaceFromId(context: Context, id: Int): Place? {
