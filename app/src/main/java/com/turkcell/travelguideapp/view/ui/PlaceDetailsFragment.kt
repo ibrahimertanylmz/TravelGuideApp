@@ -20,7 +20,6 @@ import com.turkcell.travelguideapp.view.adapter.VisitationAdapter
 class PlaceDetailsFragment : Fragment() {
     private lateinit var binding: FragmentPlaceDetailsBinding
 
-    private var placeId: Int = -1
     private lateinit var currentPlace: Place
 
     override fun onCreateView(
@@ -39,12 +38,13 @@ class PlaceDetailsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        setDefaults()
         initializeViews()
     }
 
     private fun setDefaults() {
-        placeId = requireArguments().getInt("place_id_for_place_details")
-        currentPlace = PlaceLogic.getPlaceById(dbOperation, placeId)
+        PlaceLogic.tmpPlaceId = requireArguments().getInt("place_id_for_place_details")
+        currentPlace = PlaceLogic.getPlaceById(dbOperation, PlaceLogic.tmpPlaceId)
     }
 
     private fun initializeViews() {
@@ -70,14 +70,12 @@ class PlaceDetailsFragment : Fragment() {
         }
 
         binding.btnAddVisitation.setOnClickListener {
-            val action = PlaceDetailsFragmentDirections.actionPlaceDetailsFragmentToAddVisitationFragment(placeId)
+            val action = PlaceDetailsFragmentDirections.actionPlaceDetailsFragmentToAddVisitationFragment(PlaceLogic.tmpPlaceId)
             findNavController().navigate(action)
         }
 
         binding.btnShowLocation.setOnClickListener {
-            val intent = Intent(requireActivity(), MapsActivity::class.java)
-            intent.putExtra("placeId", placeId)
-            startActivity(intent)
+            //(requireActivity() as MainActivity).openMapsActivityFromPlaceDetailsFragment(PlaceLogic.tmpPlaceId)
         }
 
         (requireActivity() as MainActivity).binding.includeBottom.btnAddPlace.setOnClickListener {
@@ -98,7 +96,7 @@ class PlaceDetailsFragment : Fragment() {
         //binding.rvVisitHistory.isNestedScrollingEnabled = false
         //binding.rvVisitHistory.setHasFixedSize(false)
         VisitationLogic.listVisitation.clear()
-        VisitationLogic.listVisitation = PlaceLogic.getVisitationsOfPlace(placeId, requireActivity())
+        VisitationLogic.listVisitation = PlaceLogic.getVisitationsOfPlace(PlaceLogic.tmpPlaceId, requireActivity())
 
         val list = ArrayList<Visitation>()
         list.add(Visitation("2002.22.22", "description1", 1))
