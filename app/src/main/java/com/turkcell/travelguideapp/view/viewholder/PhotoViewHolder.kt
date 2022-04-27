@@ -12,18 +12,15 @@ class PhotoViewHolder(
     var itemClick: (position: Int) -> Unit,
     var itemButtonClick: (position: Int) -> Unit,
     var itemAddPhotoClick: (position: Int) -> Unit,
+    var imageList: ArrayList<Bitmap>
 ) : RecyclerView.ViewHolder(itemView) {
 
-    var imageAddPhoto: ImageView
     var imagePhoto: ImageView
     var iconDelete: ImageView
-    var addPhotoLayout: ConstraintLayout
 
     init {
-        imageAddPhoto = itemView.findViewById(R.id.imageAddPhoto)
         imagePhoto = itemView.findViewById(R.id.imagePhoto)
         iconDelete = itemView.findViewById(R.id.iconDelete)
-        addPhotoLayout = itemView.findViewById(R.id.clAddPhoto)
 
         itemView.setOnClickListener {
             itemClick(adapterPosition)
@@ -33,10 +30,10 @@ class PhotoViewHolder(
             itemButtonClick(adapterPosition)
         }
 
-        imageAddPhoto.setOnClickListener {
+        /*imageAddPhoto.setOnClickListener {
             itemAddPhotoClick(adapterPosition)
             addPhotoLayout.visibility = View.GONE
-        }
+        }*/
 
     }
 
