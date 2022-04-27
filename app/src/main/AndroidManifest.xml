@@ -30,6 +30,15 @@
         </activity>
         <activity android:name=".view.ui.MainActivity"
             android:exported="false"/>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.turkcell.travelguideapp"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"></meta-data>
+        </provider>
         <activity android:name=".view.ui.MapsActivity"
             android:exported="false"
             android:label="Map">
