@@ -36,6 +36,7 @@ class PlacesVisitedFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun initializeViews() {
         (requireActivity() as MainActivity).changeMainActivityHuds(
             setBackButtonVisible = false,
@@ -43,7 +44,7 @@ class PlacesVisitedFragment : Fragment() {
             setViewPagerVisible = true,
             titleString = getString(R.string.str_visited_places)
         )
-        list = PlaceLogic.returnPlacesToVisit(dbOperation)
+        list = PlaceLogic.returnVisitedPlaces(dbOperation)
         binding.rvPlaceVisited.adapter = PlaceAdapter(requireContext(), list, ::itemClick)
         binding.rvPlaceVisited.adapter!!.notifyDataSetChanged()
     }

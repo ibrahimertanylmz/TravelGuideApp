@@ -83,7 +83,6 @@ class AddPlaceFragment : Fragment() {
 
     private fun btnSaveOnClick() {
         lateinit var p: Place
-        //Definition and photos are optional
         if (binding.edtPlaceName.text.toString().isNotEmpty()) {
             if (binding.edtDescription.text.toString().isNotEmpty()) {
                 if (MapLogic.tmpMap.lat != 0.0 && MapLogic.tmpMap.long != 0.0) {
