@@ -24,11 +24,6 @@ class AddPlaceFragment : Fragment() {
     private lateinit var binding: FragmentAddPlaceBinding
 
     private var priority: Priority = Priority.THREE
-    private var photoList = ArrayList<Any>()
-    //lateinit var fotoğrafEkleView: ImageView
-    private var getLocation: LatLng? = null
-    private var getLatitude: Double? = null
-    private var getLongitude: Double? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
