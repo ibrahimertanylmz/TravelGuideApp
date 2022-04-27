@@ -21,7 +21,7 @@
 
         <ImageView
             android:id="@+id/ivPlaceImage"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="88dp"
             android:layout_marginStart="6dp"
             android:layout_marginTop="6dp"
