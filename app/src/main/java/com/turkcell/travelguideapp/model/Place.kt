@@ -15,6 +15,6 @@ class Place(
     var lastVisitDate: String = ""
 ){
     var id by Delegates.notNull<Int>()
-    var imageList = ArrayList<Bitmap>()
+    var imageList = ArrayList<Any>()
     var visitationList = ArrayList<Visitation>()
 }

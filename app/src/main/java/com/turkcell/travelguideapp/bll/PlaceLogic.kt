@@ -9,7 +9,6 @@ import com.turkcell.travelguideapp.model.Visitation
 
 object PlaceLogic {
     private var listAllPlaces = ArrayList<Place>()
-    var isAddPlaceFragment: Boolean = false
 
     private fun fillPlacesList(dbOperation: TravelGuideOperation) {
         listAllPlaces.clear()
@@ -102,7 +101,7 @@ object PlaceLogic {
 
     fun getPlaceById(dbOperation: TravelGuideOperation, placeId: Int): Place {
         fillPlacesList(dbOperation)
-        var filteredList = listAllPlaces.filter {
+        val filteredList = listAllPlaces.filter {
             it.id == placeId
         }
         return filteredList[0]
