@@ -1,7 +1,13 @@
 package com.turkcell.travelguideapp.view.ui
 
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,24 +15,31 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.model.LatLng
 import com.turkcell.travelguideapp.R
+import com.turkcell.travelguideapp.bll.ImageLogic
 import com.turkcell.travelguideapp.bll.MapLogic
 import com.turkcell.travelguideapp.bll.PlaceLogic
 import com.turkcell.travelguideapp.databinding.FragmentAddPlaceBinding
 import com.turkcell.travelguideapp.model.Place
 import com.turkcell.travelguideapp.model.Priority
 import com.turkcell.travelguideapp.view.adapter.PhotoAdapter
+import java.io.IOException
 
 class AddPlaceFragment : Fragment() {
     private lateinit var binding: FragmentAddPlaceBinding
     //private var placeId = -1
 
-    private var photoList = ArrayList<Any>()
+    private var photoList = ArrayList<Bitmap>()
     //lateinit var fotoğrafEkleView: ImageView
 
     private var priority: Priority = Priority.THREE
@@ -34,6 +47,8 @@ class AddPlaceFragment : Fragment() {
 
     private var getLatitude: Double? = null
     private var getLongitude: Double? = null
+    val requestCodeGallery = 1001
+    lateinit var resimUri: Uri
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,7 +70,7 @@ class AddPlaceFragment : Fragment() {
 
         spinnerListOperations()
 
-        //initLm()
+        initLm()
 
         /*
         if(photoList.size>=10){
@@ -159,13 +174,72 @@ class AddPlaceFragment : Fragment() {
             }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun checkGalleryPermissions(){
+        val requestList = ImageLogic.galeriIzinKontrol(requireContext())
+        if(requestList.size == 0){
+            openGallery()
+        }else{
+            requestPermissions(requestList.toTypedArray(), requestCodeGallery)
+        }
+    }
 
-    //TO-DO:
-    //photo recyclerview functions
-    /*
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        var tumuOnaylandi = true
+        for( gr in grantResults){
+            if (gr != PackageManager.PERMISSION_GRANTED){
+                tumuOnaylandi = false
+                break
+            }
+        }
+        if(!tumuOnaylandi){
+            var tekrarGosterme = false
+            for(permission in permissions){
+                if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), permission)){  }
+                else if(ContextCompat.checkSelfPermission(requireContext(), permission)== PackageManager.PERMISSION_GRANTED){ }
+                else{
+                    tekrarGosterme = true
+                    break
+                }
+            }
+
+            if (tekrarGosterme){ ImageLogic.showAlert(requireContext())}
+        }else{
+            when(requestCode){
+                requestCodeGallery ->
+                    openGallery()
+            }
+        }
+    }
+
+    var galleryRl = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        if(it.resultCode == AppCompatActivity.RESULT_OK){
+            resimUri = it!!.data!!.data!!
+
+            var bitmap: Bitmap? = null
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, resimUri)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+            photoList.add(bitmap!!)
+            val bitmapAdd = BitmapFactory.decodeResource(resources, R.drawable.add_photo)
+            photoList.add(bitmapAdd)
+            binding.rwPhotos.adapter?.notifyDataSetChanged()
+        }
+    }
+
+    private fun openGallery(){
+        val intentGallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        galleryRl.launch(intentGallery)
+    }
+
     private fun initLm() {
         val lm = LinearLayoutManager(requireContext())
-
+        val bitmapAdd = BitmapFactory.decodeResource(resources, R.drawable.add_photo)
+        photoList.add(bitmapAdd)
         lm.orientation = LinearLayoutManager.HORIZONTAL
         binding.rwPhotos.layoutManager = lm
         binding.rwPhotos.adapter =
@@ -173,21 +247,27 @@ class AddPlaceFragment : Fragment() {
                 requireContext(),
                 photoList,
                 ::itemClick,
-                ::itemButtonClick,
+                ::itemDeleteClick,
                 ::itemAddPhotoClick
             )
     }
 
-    private fun itemClick(position: Int) {
-        //optional
+    fun itemClick(position: Int) {
+        if (position == photoList.size-1){
+            if(photoList.size>0){
+                photoList.remove(photoList[photoList.size-1])
+            }
+            checkGalleryPermissions()
+        }
     }
 
-    private fun itemButtonClick(position: Int) {
-        //dbDelete(position)
-    }
+    fun itemDeleteClick(position: Int) {
+        photoList.removeAt(position)
+        binding.rwPhotos.adapter!!.notifyDataSetChanged()
 
+    }
     private fun itemAddPhotoClick(position: Int) {
         //open gallery and select photo
     }
-     */
+
 }
