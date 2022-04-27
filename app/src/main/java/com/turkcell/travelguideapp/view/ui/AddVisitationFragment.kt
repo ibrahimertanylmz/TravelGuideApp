@@ -1,6 +1,7 @@
 package com.turkcell.travelguideapp.view.ui
 
 import android.Manifest
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -17,6 +18,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -30,21 +32,24 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.turkcell.travelguideapp.R
 import com.turkcell.travelguideapp.bll.ImageLogic
-import com.turkcell.travelguideapp.bll.PlaceLogic
 import com.turkcell.travelguideapp.bll.VisitationLogic
 import com.turkcell.travelguideapp.dal.TravelGuideOperation
 import com.turkcell.travelguideapp.databinding.FragmentAddVisitationBinding
+import com.turkcell.travelguideapp.databinding.PopUpBinding
 import com.turkcell.travelguideapp.model.Visitation
 import com.turkcell.travelguideapp.view.adapter.PhotoAdapter
 import java.io.File
 import java.io.IOException
+import java.util.*
 
 class AddVisitationFragment : Fragment() {
     private lateinit var binding: FragmentAddVisitationBinding
     private var photoList = ArrayList<Bitmap>()
     private var placeId: Int = -1
+    lateinit var resimYolu : String
     private lateinit var dbOperation: TravelGuideOperation
     val requestCodeGallery = 1001
+    val requestCodeCamera = 1002
     lateinit var resimUri: Uri
 
 
@@ -54,6 +59,7 @@ class AddVisitationFragment : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -99,68 +105,6 @@ class AddVisitationFragment : Fragment() {
         return binding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    fun checkGalleryPermissions(){
-        val requestList = ImageLogic.galeriIzinKontrol(requireContext())
-        if(requestList.size == 0){
-            openGallery()
-        }else{
-            requestPermissions(requestList.toTypedArray(), requestCodeGallery)
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        var tumuOnaylandi = true
-        for( gr in grantResults){
-            if (gr != PackageManager.PERMISSION_GRANTED){
-                tumuOnaylandi = false
-                break
-            }
-        }
-        if(!tumuOnaylandi){
-            var tekrarGosterme = false
-            for(permission in permissions){
-                if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), permission)){  }
-                else if(ContextCompat.checkSelfPermission(requireContext(), permission)== PackageManager.PERMISSION_GRANTED){ }
-                else{
-                    tekrarGosterme = true
-                    break
-                }
-            }
-
-            if (tekrarGosterme){ ImageLogic.showAlert(requireContext())}
-        }else{
-            when(requestCode){
-                requestCodeGallery ->
-                    openGallery()
-            }
-        }
-    }
-
-    var galleryRl = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-        if(it.resultCode == AppCompatActivity.RESULT_OK){
-            resimUri = it!!.data!!.data!!
-
-            var bitmap: Bitmap? = null
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, resimUri)
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-
-            photoList.add(bitmap!!)
-            val bitmapAdd = BitmapFactory.decodeResource(resources, R.drawable.add_photo)
-            photoList.add(bitmapAdd)
-            binding.rwPhotosVisitation.adapter?.notifyDataSetChanged()
-        }
-    }
-
-    private fun openGallery(){
-        val intentGallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-        galleryRl.launch(intentGallery)
-    }
-
     fun initLm() {
         val lm = LinearLayoutManager(requireContext())
         val bitmap = BitmapFactory.decodeResource(resources, R.drawable.add_photo)
@@ -176,22 +120,152 @@ class AddVisitationFragment : Fragment() {
         )
     }
 
-    fun itemClick(position: Int) {
+    var cameraRl = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        if(it.resultCode == AppCompatActivity.RESULT_OK){
+            var bitmap: Bitmap? = null
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, resimUri)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            //if (photoList.size== 1) {photoList.removeAt(0) }
+            photoList.add(bitmap!!)
+            val bitmapAdd = BitmapFactory.decodeResource(resources, R.drawable.add_photo)
+            photoList.add(bitmapAdd)
+            binding.rwPhotosVisitation.adapter?.notifyDataSetChanged()
+        }
+    }
+
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        var allAccepted = true
+        for( gr in grantResults){
+            if (gr != PackageManager.PERMISSION_GRANTED){
+                allAccepted = false
+                break
+            }
+        }
+        if(!allAccepted){
+            var neverShowAgain = false
+            for(permission in permissions){
+                if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), permission)){ }
+                else if(ContextCompat.checkSelfPermission(requireContext(), permission)== PackageManager.PERMISSION_GRANTED){ }
+                else{
+                    neverShowAgain = true
+                    break
+                }
+            }
+            if (neverShowAgain){
+                ImageLogic.showAlert(requireContext())
+            }
+        }else{
+            when(requestCode){
+                requestCodeCamera ->
+                    openCamera(0)
+                requestCodeGallery ->
+                    openGallery(0)
+            }
+        }
+    }
+
+    var galleryRl = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        if(it.resultCode == AppCompatActivity.RESULT_OK){
+            resimUri = it!!.data!!.data!!
+
+            var bitmap: Bitmap? = null
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, resimUri)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            //if (photoList.size== 1) {photoList.removeAt(0) }
+            photoList.add(bitmap!!)
+            val bitmapAdd = BitmapFactory.decodeResource(resources, R.drawable.add_photo)
+            photoList.add(bitmapAdd)
+            binding.rwPhotosVisitation.adapter?.notifyDataSetChanged()
+        }
+    }
+
+    private fun openGallery(position: Int){
+        setAddPhotoImage(position)
+        val intentGallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        galleryRl.launch(intentGallery)
+    }
+
+    private fun showPopUp(position: Int){
+        var bindingTwo = PopUpBinding.inflate(layoutInflater)
+        val v = bindingTwo.root
+        v.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        val popUyari = PopupWindow(v, v.measuredWidth, v.measuredHeight, true)
+        popUyari.showAtLocation(v, Gravity.CENTER, 0, 0)
+
+        bindingTwo.btnCamera.setOnClickListener {
+            popUyari.dismiss()
+            checkCameraPermissions(position)
+        }
+        bindingTwo.btnGallery.setOnClickListener {
+            popUyari.dismiss()
+            checkGalleryPermissions(position)
+        }
+    }
+
+    private fun checkCameraPermissions(position: Int){
+        val requestList = ImageLogic.checkCameraPermissions(requireContext())
+        if(requestList.size == 0){
+            openCamera(position)
+        }else{
+            requestPermissions(requestList.toTypedArray(), requestCodeCamera)
+        }
+    }
+
+    private fun checkGalleryPermissions(position: Int){
+        val requestList = ImageLogic.checkGalleryPermissions(requireContext())
+        if(requestList.size == 0){
+            openGallery(position)
+        }else{
+            requestPermissions(requestList.toTypedArray(), requestCodeGallery)
+        }
+    }
+
+    private fun openCamera(position: Int) {
+        setAddPhotoImage(position)
+        val intent  = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val dosya = createImageFile()
+        resimUri = FileProvider.getUriForFile(requireContext(), requireActivity().packageName, dosya)
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, resimUri)
+        cameraRl.launch(intent)
+    }
+
+    @Throws(IOException::class)
+    fun createImageFile(): File {
+        val dir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile("resim", "jpg", dir).apply {
+            resimYolu = absolutePath
+        }
+    }
+
+
+    fun setAddPhotoImage(position: Int){
         if (position == photoList.size-1){
-        if(photoList.size>0){
-            photoList.remove(photoList[photoList.size-1])
+            if(photoList.size>0){
+                photoList.remove(photoList[photoList.size-1])
+            }
         }
-            checkGalleryPermissions()
-        }
+        binding.rwPhotosVisitation.adapter!!.notifyDataSetChanged()
+    }
+
+
+    fun itemClick(position: Int) {
+        showPopUp(position)
     }
 
     fun itemDeleteClick(position: Int) {
         photoList.removeAt(position)
         binding.rwPhotosVisitation.adapter!!.notifyDataSetChanged()
-
     }
 
     fun itemAddPhotoClick(position: Int) {
-        //galeriIzinKontrol()
+
     }
 }
