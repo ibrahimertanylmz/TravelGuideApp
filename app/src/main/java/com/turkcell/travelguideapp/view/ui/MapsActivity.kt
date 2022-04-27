@@ -9,8 +9,6 @@ import android.location.LocationManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -40,9 +38,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
 
     private var selectedLatitude: Double = 0.0
     private var selectedLongitude: Double = 0.0
-    private var userLocation:LatLng?=null
+    private var userLocation: LatLng? = null
 
-    private var getId: Int? = null
+    private var idFromIntent: Int? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMapsBinding.inflate(layoutInflater)
@@ -52,9 +51,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        setDefaults()
         initializeEvents()
-
-        getId=intent.getIntExtra("placeId",-1)
 
         // DENEMEK İÇİN YAPILDI SİLİNECEK
         var latLng = LatLng(122.3, 123.3)
@@ -64,9 +62,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
 
     }
 
+    private fun setDefaults() {
+        idFromIntent = intent.getIntExtra("placeId", -1)
+    }
+
     private fun initializeEvents() {
         binding.include.btnBack.setOnClickListener {
-            onBackPressed()
+            if (idFromIntent == -1) {
+                //it will mean that this activity is opened from AddPlace fragment.
+                //it'll have to return to first MainActivity, then AddPlace fragment
+            } else {
+                //idFromIntent value will be set from incoming Place object,
+                //meaning this activity is opened from PlaceDetailsFragment.
+                //First return to MainActivity, then proceed to PlaceDetailsFragment with
+                //current Place to show details once more
+            }
         }
     }
 
@@ -75,7 +85,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
         mMap = googleMap
 
         // ÇALIŞIYOR SIKINTI YOK
-        if (getId==-1) {
+        if (idFromIntent == -1) {
             binding.btnSaveAndOpen.text = getString(R.string.Save)
 
             mMap.setOnMapLongClickListener(this)
@@ -117,11 +127,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
 
             binding.btnSaveAndOpen.setOnClickListener {
 
-                var intent=Intent(this,MainActivity::class.java)
+                var intent = Intent(this, MainActivity::class.java)
                 //düznelenecek
-                intent.putExtra("fromMapsLocationLatitude",userLocation!!.latitude)
-                intent.putExtra("fromMapsLocationLongitude",userLocation!!.longitude)
-                setResult(RESULT_OK,intent)
+                intent.putExtra("fromMapsLocationLatitude", userLocation!!.latitude)
+                intent.putExtra("fromMapsLocationLongitude", userLocation!!.longitude)
+                setResult(RESULT_OK, intent)
 
                 finish()
             }
@@ -129,7 +139,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
 
         } else { //KONUM GÖSTER BUTONUNA BASINCA ÇALIŞACAK KISIM
             //getPlaceFromId sorunsuz çalışırsa burdan sonrası sorunsuz çalışıyor.
-            place=PlaceLogic.getPlaceFromId(applicationContext,getId!!)!!
+            place = PlaceLogic.getPlaceFromId(applicationContext, idFromIntent!!)!!
 
             dbLatitude = place.location.latitude
             dbLongitude = place.location.longitude

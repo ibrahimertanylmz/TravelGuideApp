@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         initializeViewPager()
         initializeTabs()
 
-        PlaceLogic.debugTmpFillList(dbOperation, this)
+        PlaceLogic.debugTmpFillList(dbOperation)
 
     }
 
@@ -150,12 +150,6 @@ class MainActivity : AppCompatActivity() {
 
     fun openMapsActivityFromAddPlaceFragment() {
         val intent = Intent(this, MapsActivity::class.java)
-        resultLauncher.launch(intent)
-    }
-
-    fun openMapsActivityFromDetailsFragment(id: Int) {
-        val intent = Intent(this, MapsActivity::class.java)
-        intent.putExtra("fromDetails", id)
         resultLauncher.launch(intent)
     }
 
