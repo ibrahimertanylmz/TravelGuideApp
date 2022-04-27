@@ -10,64 +10,63 @@ import com.turkcell.travelguideapp.model.Visitation
 object PlaceLogic {
     private var listAllPlaces = ArrayList<Place>()
 
+
     private fun fillPlacesList(dbOperation: TravelGuideOperation) {
         listAllPlaces.clear()
         listAllPlaces = dbOperation.returnAllPlaces()
     }
 
-    //RELEASE'DEN ÖNCE BUNU VE KULLANILDIĞI YERDEN SİL
-    fun debugTmpFillList(dbOperation: TravelGuideOperation, context: Context) {
+    fun debugTmpFillList(dbOperation: TravelGuideOperation) {
         val tmpList = dbOperation.returnAllPlaces()
         if (tmpList.size == 0) {
-            //add place function goes here with couple custom places
             val tmpLatLong = LatLng(15.0, 15.0)
 
             dbOperation.addPlace(
                 Place(
-                    "place1",
+                    "Place1",
                     tmpLatLong,
-                    "defintion text",
-                    "description text",
-                    Priority.THREE
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                    "Phasellus sed nisl sit amet dolor sagittis eleifend vel efficitur ex. Nullam ut justo ex. Morbi ullamcorper libero ac malesuada semper.",
+                    Priority.ONE
                 )
             )
             dbOperation.addPlace(
                 Place(
-                    "place2",
+                    "Place2",
                     tmpLatLong,
-                    "defintion text",
-                    "description text",
-                    Priority.THREE
+                    "Cras justo justo, posuere sed eros suscipit, rhoncus suscipit risus.",
+                    "Sed mollis, augue vitae iaculis feugiat, neque metus egestas nibh, sit amet tempor nulla metus sed diam.",
+                    Priority.TWO
                 )
             )
             dbOperation.addPlace(
                 Place(
                     "place3",
                     tmpLatLong,
-                    "defintion text",
-                    "description text",
+                    "Vivamus sed ullamcorper dui.",
+                    "Donec in turpis vel sem luctus facilisis non vitae justo. Vestibulum quis velit ac enim elementum eleifend in vitae ex.",
                     Priority.THREE,
                     ""
                 )
             )
             dbOperation.addPlace(
                 Place(
-                    "place4",
+                    "Place4",
                     tmpLatLong,
-                    "defintion text",
-                    "description text",
-                    Priority.THREE,
-                    "21.21.21"
+                    "Cras at nulla sem. Mauris in lobortis dolor.",
+                    "Vestibulum sit amet elit ultrices, mollis velit eget, rhoncus sapien.",
+                    Priority.TWO,
+                    "21.02.2022"
                 )
             )
             dbOperation.addPlace(
                 Place(
-                    "place5",
+                    "Place5",
                     tmpLatLong,
-                    "defintion text",
-                    "description text",
+                    "Nullam ante arcu, venenatis non porttitor vel, pellentesque rhoncus urna.",
+                    "Nam varius diam a nisi imperdiet fermentum sit amet sit amet odio. Vestibulum gravida aliquam ipsum et vulputate.",
                     Priority.THREE,
-                    "22.22.22"
+                    "22.02.2022"
                 )
             )
         }
@@ -91,7 +90,7 @@ object PlaceLogic {
         TravelGuideOperation(context).addPlace(place)
     }
 
-    fun getPlaceFromId(context: Context, id: Int): Place? {
+    fun getPlaceFromId(context: Context, id: Int): Place {
         return TravelGuideOperation(context).getPlaceFromId(id)
     }
 
