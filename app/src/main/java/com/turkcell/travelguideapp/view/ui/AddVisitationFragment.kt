@@ -9,22 +9,18 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.turkcell.travelguideapp.R
+import com.turkcell.travelguideapp.bll.PlaceLogic
 import com.turkcell.travelguideapp.bll.VisitationLogic
-import com.turkcell.travelguideapp.dal.TravelGuideOperation
 import com.turkcell.travelguideapp.databinding.FragmentAddVisitationBinding
+import com.turkcell.travelguideapp.model.Place
 import com.turkcell.travelguideapp.model.Visitation
 import com.turkcell.travelguideapp.view.adapter.PhotoAdapter
 
 class AddVisitationFragment : Fragment() {
     private lateinit var binding: FragmentAddVisitationBinding
-    private var photoList = ArrayList<Any>()
+
     private var placeId: Int = -1
-    private lateinit var dbOperation: TravelGuideOperation
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private lateinit var currentPlace: Place
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,16 +29,36 @@ class AddVisitationFragment : Fragment() {
 
         binding = FragmentAddVisitationBinding.inflate(inflater)
 
+        setDefaults()
+        initializeViews()
+        initializeEvents()
+
+        return binding.root
+    }
+
+    private fun setDefaults() {
         placeId = requireArguments().getInt("place_id_for_add_visitation")
+        currentPlace = PlaceLogic.getPlaceById(dbOperation, placeId)
+    }
 
-        dbOperation = TravelGuideOperation(requireContext())
+    private fun initializeViews() {
+        (requireActivity() as MainActivity).changeMainActivityHuds(
+            setBackButtonVisible = true,
+            setTabLayoutVisibleAndBtnWideInvisible = false,
+            setViewPagerVisible = false,
+            titleString = currentPlace.name
+        )
 
-        (requireActivity() as MainActivity).binding.includeTop.tvTopBarTitle.text = "BOŞ, DÜZENLE"
-        (requireActivity() as MainActivity).changeBackButtonVisibility(true)
-        (requireActivity() as MainActivity).changeTabLayoutVisibility(false)
-        (requireActivity() as MainActivity).changeViewPagerVisibility(false)
+        //ne işe yaradığına bak??
+        //initLm()
+    }
+
+    private fun initializeEvents() {
         (requireActivity() as MainActivity).binding.includeTop.btnBack.setOnClickListener {
-            val action = AddVisitationFragmentDirections.actionAddVisitationFragmentToPlaceDetailsFragment(placeId)
+            val action =
+                AddVisitationFragmentDirections.actionAddVisitationFragmentToPlaceDetailsFragment(
+                    placeId
+                )
             findNavController().navigate(action)
         }
 
@@ -62,26 +78,23 @@ class AddVisitationFragment : Fragment() {
                 ).show()
             }
         }
-
-        initLm()
-
-        return binding.root
     }
 
-    fun initLm() {
+    private fun initLm() {
         val lm = LinearLayoutManager(requireContext())
 
         lm.orientation = LinearLayoutManager.HORIZONTAL
         binding.rwPhotosVisitation.layoutManager = lm
         binding.rwPhotosVisitation.adapter = PhotoAdapter(
             requireContext(),
-            photoList,
+            currentPlace.imageList,
             ::itemClick,
             ::itemButtonClick,
             ::itemAddPhotoClick
         )
     }
 
+    //recyclerview için gelen fonksiyonlar boş
     fun itemClick(position: Int) {
         //optional
     }

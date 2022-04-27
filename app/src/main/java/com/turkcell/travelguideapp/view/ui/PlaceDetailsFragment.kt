@@ -6,24 +6,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.turkcell.travelguideapp.R
 import com.turkcell.travelguideapp.bll.PlaceLogic
-import com.turkcell.travelguideapp.dal.TravelGuideOperation
+import com.turkcell.travelguideapp.bll.VisitationLogic
 import com.turkcell.travelguideapp.databinding.FragmentPlaceDetailsBinding
 import com.turkcell.travelguideapp.model.Place
 import com.turkcell.travelguideapp.model.Priority
-import com.turkcell.travelguideapp.model.Visitation
 import com.turkcell.travelguideapp.view.adapter.VisitationAdapter
 
 class PlaceDetailsFragment : Fragment() {
     private lateinit var binding: FragmentPlaceDetailsBinding
+
     private var placeId: Int = -1
-    lateinit var visitationList: ArrayList<Visitation>
-    lateinit var currentPlace: Place
-    lateinit var dbOperation: TravelGuideOperation
+    private lateinit var currentPlace: Place
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,28 +29,30 @@ class PlaceDetailsFragment : Fragment() {
 
         binding = FragmentPlaceDetailsBinding.inflate(inflater)
 
-
-        dbOperation = TravelGuideOperation(requireContext())
-
-        placeId = requireArguments().getInt("place_id_for_place_details")
-
+        setDefaults()
         initializeViews()
         initializeEvents()
-
-        (requireActivity() as MainActivity).binding.includeTop.tvTopBarTitle.text = currentPlace.name
-        (requireActivity() as MainActivity).changeBackButtonVisibility(true)
-        (requireActivity() as MainActivity).changeTabLayoutVisibility(true)
-        (requireActivity() as MainActivity).changeViewPagerVisibility(false)
-        (requireActivity() as MainActivity).binding.includeTop.btnBack.setOnClickListener {
-            val action = PlaceDetailsFragmentDirections.actionPlaceDetailsFragmentToPlacesToVisitFragment()
-            findNavController().navigate(action)
-        }
 
         return binding.root
     }
 
-    private fun initializeViews() {
+    override fun onResume() {
+        super.onResume()
+        initializeViews()
+    }
+
+    private fun setDefaults() {
+        placeId = requireArguments().getInt("place_id_for_place_details")
         currentPlace = PlaceLogic.getPlaceById(dbOperation, placeId)
+    }
+
+    private fun initializeViews() {
+        (requireActivity() as MainActivity).changeMainActivityHuds(
+            setBackButtonVisible = true,
+            setTabLayoutVisibleAndBtnWideInvisible = true,
+            setViewPagerVisible = false,
+            titleString = currentPlace.name
+        )
 
         setPriorityImage()
 
@@ -63,15 +62,12 @@ class PlaceDetailsFragment : Fragment() {
         setupRvVisitHistory()
     }
 
-    private fun setPriorityImage() {
-        when (currentPlace.priority) {
-            Priority.ONE -> binding.imageViewPriority.setImageResource(R.drawable.rv_oval_item_green)
-            Priority.TWO -> binding.imageViewPriority.setImageResource(R.drawable.rv_oval_item_blue)
-            Priority.THREE -> binding.imageViewPriority.setImageResource(R.drawable.rv_oval_item_gray)
-        }
-    }
-
     private fun initializeEvents() {
+        (requireActivity() as MainActivity).binding.includeTop.btnBack.setOnClickListener {
+            val action = PlaceDetailsFragmentDirections.actionPlaceDetailsFragmentToPlacesToVisitFragment()
+            findNavController().navigate(action)
+        }
+
         binding.btnAddVisitation.setOnClickListener {
             val action = PlaceDetailsFragmentDirections.actionPlaceDetailsFragmentToAddVisitationFragment(placeId)
             findNavController().navigate(action)
@@ -84,11 +80,20 @@ class PlaceDetailsFragment : Fragment() {
         }
     }
 
+    private fun setPriorityImage() {
+        when (currentPlace.priority) {
+            Priority.ONE -> binding.imageViewPriority.setImageResource(R.drawable.rv_oval_item_green)
+            Priority.TWO -> binding.imageViewPriority.setImageResource(R.drawable.rv_oval_item_blue)
+            Priority.THREE -> binding.imageViewPriority.setImageResource(R.drawable.rv_oval_item_gray)
+        }
+    }
+
     private fun setupRvVisitHistory() {
-        visitationList = PlaceLogic.getVisitationsOfPlace(placeId, requireActivity())
+        VisitationLogic.listVisitation.clear()
+        VisitationLogic.listVisitation = PlaceLogic.getVisitationsOfPlace(placeId, requireActivity())
         binding.rvVisitHistory.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
-        binding.rvVisitHistory.adapter = VisitationAdapter(requireActivity(), visitationList)
+        binding.rvVisitHistory.adapter = VisitationAdapter(requireActivity(), VisitationLogic.listVisitation)
     }
 
 }

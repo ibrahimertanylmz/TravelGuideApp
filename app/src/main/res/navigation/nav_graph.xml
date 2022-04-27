@@ -33,14 +33,7 @@
     <fragment
         android:id="@+id/placesVisitedFragment"
         android:name="com.turkcell.travelguideapp.view.ui.PlacesVisitedFragment"
-        android:label="PlacesVisitedFragment">
-        <action
-            android:id="@+id/action_placesVisitedFragment_to_placeDetailsFragment"
-            app:destination="@id/placeDetailsFragment" />
-        <action
-            android:id="@+id/action_placesVisitedFragment_to_addPlaceFragment"
-            app:destination="@id/addPlaceFragment" />
-    </fragment>
+        android:label="PlacesVisitedFragment"/>
     <fragment
         android:id="@+id/placeDetailsFragment"
         android:name="com.turkcell.travelguideapp.view.ui.PlaceDetailsFragment"
@@ -58,6 +51,9 @@
         <action
             android:id="@+id/action_placeDetailsFragment_to_placesToVisitFragment"
             app:destination="@id/placesToVisitFragment" />
+        <action
+            android:id="@+id/action_placeDetailsFragment_to_addPlaceFragment"
+            app:destination="@id/addPlaceFragment" />
     </fragment>
     <fragment
         android:id="@+id/addVisitationFragment"
