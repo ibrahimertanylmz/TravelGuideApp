@@ -1,6 +1,7 @@
 package com.turkcell.travelguideapp.view.ui
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.turkcell.travelguideapp.R
 import com.turkcell.travelguideapp.bll.PlaceLogic
 import com.turkcell.travelguideapp.dal.TravelGuideOperation
@@ -16,7 +18,9 @@ import com.turkcell.travelguideapp.databinding.FragmentPlaceDetailsBinding
 import com.turkcell.travelguideapp.model.Place
 import com.turkcell.travelguideapp.model.Priority
 import com.turkcell.travelguideapp.model.Visitation
+import com.turkcell.travelguideapp.view.adapter.DetailSlideAdapter
 import com.turkcell.travelguideapp.view.adapter.VisitationAdapter
+import me.relex.circleindicator.CircleIndicator3
 
 class PlaceDetailsFragment : Fragment() {
     private lateinit var binding: FragmentPlaceDetailsBinding
@@ -24,6 +28,8 @@ class PlaceDetailsFragment : Fragment() {
     lateinit var visitationList: ArrayList<Visitation>
     lateinit var currentPlace: Place
     lateinit var dbOperation: TravelGuideOperation
+
+    private var imageList= ArrayList<Bitmap>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +43,8 @@ class PlaceDetailsFragment : Fragment() {
 
         placeId = requireArguments().getInt("place_id_for_place_details")
 
+
+
         initializeViews()
         initializeEvents()
 
@@ -49,7 +57,25 @@ class PlaceDetailsFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        postToList()
+        binding.viewPager2.adapter= DetailSlideAdapter(imageList)
+        binding.viewPager2.orientation= ViewPager2.ORIENTATION_HORIZONTAL
+
+        val indicator: CircleIndicator3 =binding.indicator
+        indicator.setViewPager(binding.viewPager2)
+
+
+
         return binding.root
+    }
+    private fun addToList(image:Bitmap){
+        imageList.add(image)
+    }
+
+    private fun postToList(){
+        for (i in 1..imageList.size) { //imageList.size gelecek bu kısıma
+            //addToList()
+        }
     }
 
     private fun initializeViews() {
