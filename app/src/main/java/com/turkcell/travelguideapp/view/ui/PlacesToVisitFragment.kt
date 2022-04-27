@@ -12,6 +12,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.turkcell.travelguideapp.R
+import com.turkcell.travelguideapp.bll.ImageLogic
 import com.turkcell.travelguideapp.bll.PlaceLogic
 import com.turkcell.travelguideapp.dal.TravelGuideOperation
 import com.turkcell.travelguideapp.databinding.FragmentPlacesToVisitBinding
@@ -23,7 +24,6 @@ class PlacesToVisitFragment : Fragment() {
     private lateinit var binding: FragmentPlacesToVisitBinding
     private lateinit var list: ArrayList<Place>
     private lateinit var dbOperation: TravelGuideOperation
-
 
 
     override fun onCreateView(
@@ -54,6 +54,9 @@ class PlacesToVisitFragment : Fragment() {
         (activity as MainActivity).binding.includeTop.tvTopBarTitle.text =
             getString(R.string.places_to_visit)
         list = PlaceLogic.returnPlacesToVisit(dbOperation)
+        list.forEach {
+            it.imageList = ImageLogic.getImagesByPlaceId(requireContext(),it.id)
+        }
         binding.rvPlaceToVisit.adapter = PlaceAdapter(requireContext(), list, ::itemClick)
         binding.rvPlaceToVisit.adapter!!.notifyDataSetChanged()
     }
