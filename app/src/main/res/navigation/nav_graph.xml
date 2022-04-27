@@ -22,8 +22,7 @@
         <action
             android:id="@+id/action_placesToVisitFragment_to_placeDetailsFragment"
             app:destination="@id/placeDetailsFragment"
-            app:popUpTo="@id/placesToVisitFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_placesToVisitFragment_to_addPlaceFragment"
             app:destination="@id/addPlaceFragment"
@@ -46,7 +45,6 @@
         <action
             android:id="@+id/action_placeDetailsFragment_to_addVisitationFragment"
             app:destination="@id/addVisitationFragment"
-            app:popUpTo="@id/placeDetailsFragment"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_placeDetailsFragment_to_placesToVisitFragment"
