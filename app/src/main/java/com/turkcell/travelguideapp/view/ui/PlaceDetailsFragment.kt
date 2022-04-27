@@ -21,10 +21,6 @@ class PlaceDetailsFragment : Fragment() {
     private lateinit var binding: FragmentPlaceDetailsBinding
 
     private var placeId: Int = -1
-
-    lateinit var visitationList: ArrayList<Visitation>
-    lateinit var currentPlace: Place
-    lateinit var dbOperation: TravelGuideOperation
     private lateinit var currentPlace: Place
 
     override fun onCreateView(
@@ -82,6 +78,11 @@ class PlaceDetailsFragment : Fragment() {
             val intent = Intent(requireActivity(), MapsActivity::class.java)
             intent.putExtra("placeId", placeId)
             startActivity(intent)
+        }
+
+        (requireActivity() as MainActivity).binding.includeBottom.btnAddPlace.setOnClickListener {
+            val action = PlaceDetailsFragmentDirections.actionPlaceDetailsFragmentToAddPlaceFragment()
+            findNavController().navigate(action)
         }
     }
 
