@@ -32,10 +32,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.turkcell.travelguideapp.R
 import com.turkcell.travelguideapp.bll.ImageLogic
+import com.turkcell.travelguideapp.bll.PlaceLogic
 import com.turkcell.travelguideapp.bll.VisitationLogic
-import com.turkcell.travelguideapp.dal.TravelGuideOperation
 import com.turkcell.travelguideapp.databinding.FragmentAddVisitationBinding
 import com.turkcell.travelguideapp.databinding.PopUpBinding
+import com.turkcell.travelguideapp.model.Place
 import com.turkcell.travelguideapp.model.Visitation
 import com.turkcell.travelguideapp.view.adapter.PhotoAdapter
 import java.io.File
@@ -44,21 +45,18 @@ import java.util.*
 
 class AddVisitationFragment : Fragment() {
     private lateinit var binding: FragmentAddVisitationBinding
-    private var photoList = ArrayList<Bitmap>()
     private var placeId: Int = -1
+    private lateinit var currentPlace: Place
+  
+    private var photoList = ArrayList<Bitmap>()
     lateinit var resimYolu : String
-    private lateinit var dbOperation: TravelGuideOperation
     val requestCodeGallery = 1001
     val requestCodeCamera = 1002
     lateinit var resimUri: Uri
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-    }
-
+    
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,16 +65,36 @@ class AddVisitationFragment : Fragment() {
 
         binding = FragmentAddVisitationBinding.inflate(inflater)
 
+        setDefaults()
+        initializeViews()
+        initializeEvents()
+
+        return binding.root
+    }
+
+    private fun setDefaults() {
         placeId = requireArguments().getInt("place_id_for_add_visitation")
+        currentPlace = PlaceLogic.getPlaceById(dbOperation, placeId)
+    }
 
-        dbOperation = TravelGuideOperation(requireContext())
+    private fun initializeViews() {
+        (requireActivity() as MainActivity).changeMainActivityHuds(
+            setBackButtonVisible = true,
+            setTabLayoutVisibleAndBtnWideInvisible = false,
+            setViewPagerVisible = false,
+            titleString = currentPlace.name
+        )
 
-        (requireActivity() as MainActivity).binding.includeTop.tvTopBarTitle.text = "BOŞ, DÜZENLE"
-        (requireActivity() as MainActivity).changeBackButtonVisibility(true)
-        (requireActivity() as MainActivity).changeTabLayoutVisibility(false)
-        (requireActivity() as MainActivity).changeViewPagerVisibility(false)
+        //ne işe yaradığına bak??
+        //initLm()
+    }
+
+    private fun initializeEvents() {
         (requireActivity() as MainActivity).binding.includeTop.btnBack.setOnClickListener {
-            val action = AddVisitationFragmentDirections.actionAddVisitationFragmentToPlaceDetailsFragment(placeId)
+            val action =
+                AddVisitationFragmentDirections.actionAddVisitationFragmentToPlaceDetailsFragment(
+                    placeId
+                )
             findNavController().navigate(action)
         }
 
@@ -99,13 +117,9 @@ class AddVisitationFragment : Fragment() {
                 ).show()
             }
         }
-
-        initLm()
-
-        return binding.root
     }
 
-    fun initLm() {
+    private fun initLm() {
         val lm = LinearLayoutManager(requireContext())
         val bitmap = BitmapFactory.decodeResource(resources, R.drawable.add_photo)
         photoList.add(bitmap)
@@ -113,7 +127,7 @@ class AddVisitationFragment : Fragment() {
         binding.rwPhotosVisitation.layoutManager = lm
         binding.rwPhotosVisitation.adapter = PhotoAdapter(
             requireContext(),
-            photoList,
+            currentPlace.imageList,
             ::itemClick,
             ::itemDeleteClick,
             ::itemAddPhotoClick
@@ -245,7 +259,6 @@ class AddVisitationFragment : Fragment() {
         }
     }
 
-
     fun setAddPhotoImage(position: Int){
         if (position == photoList.size-1){
             if(photoList.size>0){
@@ -254,7 +267,6 @@ class AddVisitationFragment : Fragment() {
         }
         binding.rwPhotosVisitation.adapter!!.notifyDataSetChanged()
     }
-
 
     fun itemClick(position: Int) {
         showPopUp(position)

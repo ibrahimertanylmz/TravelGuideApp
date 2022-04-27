@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.turkcell.travelguideapp.R
 import com.turkcell.travelguideapp.bll.ImageLogic
 import com.turkcell.travelguideapp.bll.PlaceLogic
-import com.turkcell.travelguideapp.dal.TravelGuideOperation
 import com.turkcell.travelguideapp.databinding.FragmentPlacesVisitedBinding
 import com.turkcell.travelguideapp.model.Place
 import com.turkcell.travelguideapp.view.adapter.PlaceAdapter
@@ -20,7 +19,6 @@ class PlacesVisitedFragment : Fragment() {
 
     private lateinit var binding: FragmentPlacesVisitedBinding
     private lateinit var list: ArrayList<Place>
-    private lateinit var dbOperation: TravelGuideOperation
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,26 +27,24 @@ class PlacesVisitedFragment : Fragment() {
 
         binding = FragmentPlacesVisitedBinding.inflate(inflater)
 
-        (requireActivity() as MainActivity).binding.includeTop.tvTopBarTitle.text =
-            getString(R.string.str_visited_places)
-        (requireActivity() as MainActivity).changeBackButtonVisibility(false)
-        (requireActivity() as MainActivity).changeTabLayoutVisibility(true)
-        (requireActivity() as MainActivity).changeViewPagerVisibility(true)
-
         binding.rvPlaceVisited.layoutManager = LinearLayoutManager(requireActivity()).apply {
             this.orientation = LinearLayoutManager.VERTICAL
         }
 
-        dbOperation = TravelGuideOperation(requireContext())
+        initializeViews()
+        initializeEvents()
 
         return binding.root
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun onResume() {
-        super.onResume()
-        (activity as MainActivity).binding.includeTop.tvTopBarTitle.text =
-            getString(R.string.visited_places)
+    private fun initializeViews() {
+        (requireActivity() as MainActivity).changeMainActivityHuds(
+            setBackButtonVisible = false,
+            setTabLayoutVisibleAndBtnWideInvisible = true,
+            setViewPagerVisible = true,
+            titleString = getString(R.string.str_visited_places)
+        )
         list = PlaceLogic.returnVisitedPlaces(dbOperation)
         list.forEach {
             it.imageList = ImageLogic.getImagesByPlaceId(requireContext(),it.id)
@@ -57,10 +53,22 @@ class PlacesVisitedFragment : Fragment() {
         binding.rvPlaceVisited.adapter!!.notifyDataSetChanged()
     }
 
-    private fun itemClick(position: Int) {
-        (activity as MainActivity).binding.viewpager.visibility = View.INVISIBLE
-        (activity as MainActivity).binding.fragmentContainer.visibility = View.VISIBLE
+    private fun initializeEvents() {
+        (requireActivity() as MainActivity).binding.includeBottom.btnAddPlace.setOnClickListener {
+            val action =
+                PlacesToVisitFragmentDirections.actionPlacesToVisitFragmentToAddPlaceFragment()
+            findNavController().navigate(action)
+        }
+    }
 
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onResume() {
+        super.onResume()
+
+        initializeViews()
+    }
+
+    private fun itemClick(position: Int) {
         val action =
             PlacesToVisitFragmentDirections.actionPlacesToVisitFragmentToPlaceDetailsFragment(
                 list[position].id

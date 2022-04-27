@@ -27,7 +27,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.model.LatLng
 import com.turkcell.travelguideapp.R
 import com.turkcell.travelguideapp.bll.ImageLogic
@@ -41,18 +40,13 @@ import com.turkcell.travelguideapp.view.adapter.PhotoAdapter
 import java.io.File
 import java.io.IOException
 
+
 class AddPlaceFragment : Fragment() {
+
     private lateinit var binding: FragmentAddPlaceBinding
-    //private var placeId = -1
+    private var priority: Priority = Priority.THREE
 
     private var photoList = ArrayList<Bitmap>()
-    //lateinit var fotoğrafEkleView: ImageView
-
-    private var priority: Priority = Priority.THREE
-    private var getLocation: LatLng? = null
-
-    private var getLatitude: Double? = null
-    private var getLongitude: Double? = null
     val requestCodeGallery = 1001
     val requestCodeCamera = 1002
     lateinit var resimUri: Uri
@@ -65,20 +59,30 @@ class AddPlaceFragment : Fragment() {
 
         binding = FragmentAddPlaceBinding.inflate(inflater)
 
-        (requireActivity() as MainActivity).binding.includeTop.tvTopBarTitle.text =
-            getString(R.string.Add_Place)
-        (requireActivity() as MainActivity).changeBackButtonVisibility(true)
-        (requireActivity() as MainActivity).changeTabLayoutVisibility(false)
-        (requireActivity() as MainActivity).changeViewPagerVisibility(false)
-        (requireActivity() as MainActivity).binding.includeTop.btnBack.setOnClickListener {
-            val action = AddPlaceFragmentDirections.actionAddPlaceFragmentToPlacesToVisitFragment()
-            findNavController().navigate(action)
-        }
-
+        initializeViews()
+        initializeEvents()
 
         spinnerListOperations()
 
         initLm()
+
+        return binding.root
+    }
+
+    private fun initializeViews() {
+        (requireActivity() as MainActivity).changeMainActivityHuds(
+            setBackButtonVisible = true,
+            setTabLayoutVisibleAndBtnWideInvisible = false,
+            setViewPagerVisible = false,
+            titleString = getString(R.string.Add_Place)
+        )
+    }
+
+    private fun initializeEvents() {
+        (requireActivity() as MainActivity).binding.includeTop.btnBack.setOnClickListener {
+            val action = AddPlaceFragmentDirections.actionAddPlaceFragmentToPlacesToVisitFragment()
+            findNavController().navigate(action)
+        }
 
         binding.btnAddLocation.setOnClickListener {
             btnAddLocationOnClick()
@@ -87,13 +91,10 @@ class AddPlaceFragment : Fragment() {
         (activity as MainActivity).binding.includeBottom.btnWide.setOnClickListener {
             btnSaveOnClick()
         }
-
-        return binding.root
     }
 
     private fun btnSaveOnClick() {
         lateinit var p: Place
-        //Definition and photos are optional
         if (binding.edtPlaceName.text.toString().isNotEmpty()) {
             if (binding.edtDescription.text.toString().isNotEmpty()) {
                 if (MapLogic.tmpMap.lat != 0.0 && MapLogic.tmpMap.long != 0.0) {

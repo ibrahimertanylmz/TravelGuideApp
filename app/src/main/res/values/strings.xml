@@ -33,4 +33,10 @@
     <string name="Add_Place">Yer Ekle</string>
     <string name="This_field_cannot_be_empty">Bu alan boş kalamaz</string>
     <string name="place_added_successfuly">Konum başarıyla eklendi!</string>
+    <string name="Place_short_description">Yer kısa tanım</string>
+    <string name="Brief_description_max_3_lines">Kısa açıklama en fazla 3 satır</string>
+    <string name="Visitation_History">Ziyaret Geçmiş</string>
+    <string name="Place__brief_definition">Yer kısa tanım</string>
+    <string name="Brief_place_definition">Yer kısa tanım bilgisi</string>
+    <string name="PLACEHOLDER_date">12.10.200</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.turkcell.travelguideapp.view.viewholder
 
 import android.graphics.BitmapFactory
+import android.graphics.Bitmap
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -39,17 +40,19 @@ class PlaceViewHolder(itemView: View, var itemClick: (position: Int) -> Unit) :
         }else{
             placeImage.setImageResource(R.drawable.image_placeholder)
         }
-        //düzeltmeyi UNUTMA
-        tvPlaceName.text = place.id.toString()
-        //tvPlaceName.text = place.name
+
+        tvPlaceName.text = place.name
         tvPlaceDefinition.text = place.definition
         tvPlaceDescription.text = place.description
 
-        if (place.lastVisitDate != null) {
+        if (place.lastVisitDate != "") {
             tvLastVisitDate.visibility = View.VISIBLE
             tvLastVisitDate.text = place.lastVisitDate
             priorityImage.visibility = View.GONE
         } else {
+            tvLastVisitDate.visibility = View.INVISIBLE
+            tvLastVisitDate.text = ""
+            priorityImage.visibility = View.VISIBLE
             when (place.priority) {
                 Priority.ONE -> priorityImage.setImageResource(R.drawable.rv_oval_item_green)
                 Priority.TWO -> priorityImage.setImageResource(R.drawable.rv_oval_item_blue)
