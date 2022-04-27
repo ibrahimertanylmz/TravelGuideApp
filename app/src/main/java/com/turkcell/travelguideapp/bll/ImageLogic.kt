@@ -6,13 +6,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
-import android.provider.MediaStore
 import android.provider.Settings
-import androidx.activity.result.ActivityResultLauncher
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.turkcell.travelguideapp.dal.TravelGuideOperation
 
@@ -26,11 +21,32 @@ object ImageLogic {
         TravelGuideOperation(context).addImage(bitmap,placeId)
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    fun galeriIzinKontrol(context: Context): ArrayList<String>{
-        val requestList = ArrayList<String>()
+    fun showAlert(context: Context){
+        val adb = AlertDialog.Builder(context)
+        adb.setTitle("İzin Gerekli")
+            .setMessage("Ayarlara giderek tüm izinleri onaylayınız")
+            .setPositiveButton("Ayarlar", { dialog, which -> openSettings(context) })
+            .setNegativeButton("Vazgeç", null)
+            .show()
+    }
 
-        var izinDurum = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+    private fun openSettings(context: Context) {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        val uri = Uri.fromParts("package", context.packageName, null)
+        intent.data = uri
+        context.startActivity(intent)
+    }
+
+    fun checkCameraPermissions(context: Context): ArrayList<String>{
+        val requestList = java.util.ArrayList<String>()
+
+        var izinDurum = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+
+        if(!izinDurum){
+            requestList.add(Manifest.permission.CAMERA)
+        }
+
+        izinDurum = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
 
         if(!izinDurum){
             requestList.add(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -45,20 +61,22 @@ object ImageLogic {
         return requestList
     }
 
-    fun showAlert(context: Context){
-        val adb = AlertDialog.Builder(context)
-        adb.setTitle("İzin Gerekli")
-            .setMessage("Ayarlara giderek tüm izinleri onaylayınız")
-            .setPositiveButton("Ayarlar", { dialog, which -> ayarlarAc(context) })
-            .setNegativeButton("Vazgeç", null)
-            .show()
-    }
+    fun checkGalleryPermissions(context: Context): ArrayList<String>{
+        val requestList = java.util.ArrayList<String>()
 
-    private fun ayarlarAc(context: Context) {
-        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-        val uri = Uri.fromParts("package", context.packageName, null)
-        intent.data = uri
-        context.startActivity(intent)
+        var izinDurum = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+
+        if(!izinDurum){
+            requestList.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+
+        izinDurum = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+
+        if(!izinDurum){
+            requestList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+
+        return requestList
     }
 
 }
