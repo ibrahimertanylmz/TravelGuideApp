@@ -11,13 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.turkcell.travelguideapp.R
 import com.turkcell.travelguideapp.bll.PlaceLogic
 import com.turkcell.travelguideapp.databinding.FragmentPlacesVisitedBinding
-import com.turkcell.travelguideapp.model.Place
 import com.turkcell.travelguideapp.view.adapter.PlaceAdapter
 
 class PlacesVisitedFragment : Fragment() {
 
     private lateinit var binding: FragmentPlacesVisitedBinding
-    private lateinit var list: ArrayList<Place>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,14 +36,18 @@ class PlacesVisitedFragment : Fragment() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initializeViews() {
-        (requireActivity() as MainActivity).changeMainActivityHuds(
+        (requireActivity() as MainActivity).changeMainActivityUI(
             setBackButtonVisible = false,
-            setTabLayoutVisibleAndBtnWideInvisible = true,
+            titleString = getString(R.string.str_visited_places),
             setViewPagerVisible = true,
-            titleString = getString(R.string.str_visited_places)
+            setTabLayoutVisible = true,
+            setTabLayoutClickable = true,
+            setBtnAddPlaceVisible = true,
+            setBtnWideVisible = false
         )
-        list = PlaceLogic.returnVisitedPlaces(dbOperation)
-        binding.rvPlaceVisited.adapter = PlaceAdapter(requireContext(), list, ::itemClick)
+
+        binding.rvPlaceVisited.adapter =
+            PlaceAdapter(requireContext(), PlaceLogic.returnVisitedPlaces(dbOperation), ::itemClick)
         binding.rvPlaceVisited.adapter!!.notifyDataSetChanged()
     }
 
@@ -67,7 +69,7 @@ class PlacesVisitedFragment : Fragment() {
     private fun itemClick(position: Int) {
         val action =
             PlacesToVisitFragmentDirections.actionPlacesToVisitFragmentToPlaceDetailsFragment(
-                list[position].id
+                PlaceLogic.returnVisitedPlaces(dbOperation)[position].id
             )
         findNavController().navigate(action)
     }
