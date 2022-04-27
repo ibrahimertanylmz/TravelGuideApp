@@ -1,6 +1,7 @@
 package com.turkcell.travelguideapp.view.adapter
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,18 +10,18 @@ import com.turkcell.travelguideapp.R
 
 class PhotoAdapter(
     val context: Context,
-    var imageList: ArrayList<Any>,
+    var imageList: ArrayList<Bitmap>,
     var itemClick: (position: Int) -> Unit,
     var itemButtonClick: (position: Int) -> Unit,
     var itemAddPhotoClick: (position: Int) -> Unit
 ) : RecyclerView.Adapter<PhotoViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
         val v = LayoutInflater.from(context).inflate(R.layout.photo_item, parent, false)
-        return PhotoViewHolder(v, itemClick, itemButtonClick, itemAddPhotoClick)
+        return PhotoViewHolder(v, itemClick, itemButtonClick, itemAddPhotoClick, imageList)
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-        holder.bind(imageList[position])
+        holder.bind(imageList.get(position))
     }
 
     override fun getItemCount(): Int {
