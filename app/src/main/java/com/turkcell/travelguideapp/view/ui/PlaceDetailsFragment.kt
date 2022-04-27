@@ -20,6 +20,10 @@ class PlaceDetailsFragment : Fragment() {
     private lateinit var binding: FragmentPlaceDetailsBinding
 
     private var placeId: Int = -1
+
+    lateinit var visitationList: ArrayList<Visitation>
+    lateinit var currentPlace: Place
+    lateinit var dbOperation: TravelGuideOperation
     private lateinit var currentPlace: Place
 
     override fun onCreateView(
