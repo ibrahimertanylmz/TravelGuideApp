@@ -47,16 +47,13 @@ class AddVisitationFragment : Fragment() {
     private lateinit var binding: FragmentAddVisitationBinding
     private var placeId: Int = -1
     private lateinit var currentPlace: Place
-  
+
     private var photoList = ArrayList<Bitmap>()
     lateinit var resimYolu : String
     val requestCodeGallery = 1001
     val requestCodeCamera = 1002
     lateinit var resimUri: Uri
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -85,8 +82,8 @@ class AddVisitationFragment : Fragment() {
             titleString = currentPlace.name
         )
 
-        //ne işe yaradığına bak??
-        //initLm()
+
+        initLm()
     }
 
     private fun initializeEvents() {
@@ -120,9 +117,10 @@ class AddVisitationFragment : Fragment() {
     }
 
     private fun initLm() {
+        currentPlace.imageList.clear()
         val lm = LinearLayoutManager(requireContext())
         val bitmap = BitmapFactory.decodeResource(resources, R.drawable.add_photo)
-        photoList.add(bitmap)
+        currentPlace.imageList.add(bitmap)
         lm.orientation = LinearLayoutManager.HORIZONTAL
         binding.rwPhotosVisitation.layoutManager = lm
         binding.rwPhotosVisitation.adapter = PhotoAdapter(
