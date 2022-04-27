@@ -60,20 +60,23 @@ class AddPlaceFragment : Fragment() {
         initializeViews()
         initializeEvents()
 
-        spinnerListOperations()
-
         initLm()
-
+        
         return binding.root
     }
 
     private fun initializeViews() {
-        (requireActivity() as MainActivity).changeMainActivityHuds(
+        (requireActivity() as MainActivity).changeMainActivityUI(
             setBackButtonVisible = true,
-            setTabLayoutVisibleAndBtnWideInvisible = false,
+            titleString = getString(R.string.Add_Place),
             setViewPagerVisible = false,
-            titleString = getString(R.string.Add_Place)
+            setTabLayoutVisible = false,
+            setTabLayoutClickable = false,
+            setBtnAddPlaceVisible = false,
+            setBtnWideVisible = true
         )
+
+        spinnerListOperations()
     }
 
     private fun initializeEvents() {
@@ -83,15 +86,16 @@ class AddPlaceFragment : Fragment() {
         }
 
         binding.btnAddLocation.setOnClickListener {
-            btnAddLocationOnClick()
+            Toast.makeText(requireContext(), "Function not implemented!", Toast.LENGTH_SHORT).show()
+            //(activity as MainActivity).openMapsActivityFromAddPlaceFragment()
         }
 
         (activity as MainActivity).binding.includeBottom.btnWide.setOnClickListener {
-            btnSaveOnClick()
+            addCurrentPlaceToDb()
         }
     }
 
-    private fun btnSaveOnClick() {
+    private fun addCurrentPlaceToDb() {
         lateinit var p: Place
         if (binding.edtPlaceName.text.toString().isNotEmpty()) {
             if (binding.edtDescription.text.toString().isNotEmpty()) {
@@ -101,19 +105,32 @@ class AddPlaceFragment : Fragment() {
                         LatLng(MapLogic.tmpMap.lat, MapLogic.tmpMap.long),
                         binding.edtDefinition.text.toString(),
                         binding.edtDescription.text.toString(),
-                        priority
+                        priority,
+                        ""
                     )
                     PlaceLogic.addPlace(requireContext(), p)
-                    Toast.makeText(requireContext(), getString(R.string.place_added_successfuly), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.place_added_successfuly),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    val action = AddPlaceFragmentDirections.actionAddPlaceFragmentToPlacesToVisitFragment()
+                    findNavController().navigate(action)
                     requireActivity().finish()
                     val intent = Intent(requireActivity(), MainActivity::class.java)
                     startActivity(intent)
+
                 } else {
                     val adb = AlertDialog.Builder(requireContext())
                     adb.setTitle(getString(R.string.LOCATION))
                     adb.setMessage(getString(R.string.add_place_fragment_choose_location_confirmation))
                     adb.setPositiveButton(getString(R.string.Confirm)) { _, _ ->
-                        (activity as MainActivity).openMapsActivityFromAddPlaceFragment()
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.function_not_implemented),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        //(activity as MainActivity).openMapsActivityFromAddPlaceFragment()
                     }
                     adb.setNegativeButton(getString(R.string.No), null)
                     adb.show()
@@ -126,17 +143,14 @@ class AddPlaceFragment : Fragment() {
         }
     }
 
-    private fun btnAddLocationOnClick() {
-        (activity as MainActivity).openMapsActivityFromAddPlaceFragment()
-    }
-
 
     private fun spinnerListOperations() {
-        val liste = arrayListOf("Öncelik Seç", "Öncelik 1", "Öncelik 2", "Öncelik 3")
+        val list = arrayListOf(getString(R.string.Choose_Priority), getString(R.string.Priority_1), getString(
+                    R.string.Priority_2), getString(R.string.Priority_3))
 
-        val adap =
-            ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, liste)
-        binding.spinnerPriority.adapter = adap
+        val adapt =
+            ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, list)
+        binding.spinnerPriority.adapter = adapt
 
         binding.spinnerPriority.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener,
@@ -334,5 +348,4 @@ class AddPlaceFragment : Fragment() {
     private fun itemAddPhotoClick(position: Int) {
         //open gallery and select photo
     }
-
 }

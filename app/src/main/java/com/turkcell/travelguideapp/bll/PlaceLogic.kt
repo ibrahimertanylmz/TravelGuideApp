@@ -9,6 +9,8 @@ import com.turkcell.travelguideapp.model.Visitation
 
 object PlaceLogic {
     private var listAllPlaces = ArrayList<Place>()
+
+    lateinit var tmpPlace: Place
     var tmpPlaceId: Int = -1
 
 

@@ -12,13 +12,11 @@ import com.turkcell.travelguideapp.R
 import com.turkcell.travelguideapp.bll.ImageLogic
 import com.turkcell.travelguideapp.bll.PlaceLogic
 import com.turkcell.travelguideapp.databinding.FragmentPlacesToVisitBinding
-import com.turkcell.travelguideapp.model.Place
 import com.turkcell.travelguideapp.view.adapter.PlaceAdapter
 
 class PlacesToVisitFragment : Fragment() {
 
     private lateinit var binding: FragmentPlacesToVisitBinding
-    private lateinit var list: ArrayList<Place>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,25 +29,37 @@ class PlacesToVisitFragment : Fragment() {
             this.orientation = LinearLayoutManager.VERTICAL
         }
 
-        initializeViews()
+        //initializeViews()
         initializeEvents()
 
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        initializeViews()
+    }
+
     private fun initializeViews() {
-        (requireActivity() as MainActivity).changeMainActivityHuds(
+        (requireActivity() as MainActivity).changeMainActivityUI(
             setBackButtonVisible = false,
-            setTabLayoutVisibleAndBtnWideInvisible = true,
+            titleString = getString(R.string.str_places_to_visit),
             setViewPagerVisible = true,
-            titleString = getString(R.string.str_places_to_visit)
+            setTabLayoutVisible = true,
+            setTabLayoutClickable = true,
+            setBtnAddPlaceVisible = true,
+            setBtnWideVisible = false
         )
+
+        binding.rvPlaceToVisit.adapter = PlaceAdapter(requireContext(), PlaceLogic.returnPlacesToVisit(dbOperation), ::itemClick)
+      /*
         list = PlaceLogic.returnPlacesToVisit(dbOperation)
         list.forEach {
             it.imageList = ImageLogic.getImagesByPlaceId(requireContext(),it.id)
         }
         binding.rvPlaceToVisit.adapter = PlaceAdapter(requireContext(), list, ::itemClick)
-        binding.rvPlaceToVisit.adapter!!.notifyDataSetChanged()
+        */
     }
 
     private fun initializeEvents() {
@@ -60,17 +70,10 @@ class PlacesToVisitFragment : Fragment() {
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    override fun onResume() {
-        super.onResume()
-
-        initializeViews()
-    }
-
     private fun itemClick(position: Int) {
         val action =
             PlacesToVisitFragmentDirections.actionPlacesToVisitFragmentToPlaceDetailsFragment(
-                list[position].id
+                PlaceLogic.returnPlacesToVisit(dbOperation)[position].id
             )
         findNavController().navigate(action)
     }

@@ -39,4 +39,9 @@
     <string name="Place__brief_definition">Yer kısa tanım</string>
     <string name="Brief_place_definition">Yer kısa tanım bilgisi</string>
     <string name="PLACEHOLDER_date">12.10.200</string>
+    <string name="function_not_implemented">Function not implemented!</string>
+    <string name="Choose_Priority">Öncelik Seç</string>
+    <string name="Priority_1">Öncelik 1</string>
+    <string name="Priority_2">Öncelik 2</string>
+    <string name="Priority_3">Öncelik 3</string>
 </resources>

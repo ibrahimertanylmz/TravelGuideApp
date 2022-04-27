@@ -75,14 +75,16 @@ class AddVisitationFragment : Fragment() {
     }
 
     private fun initializeViews() {
-        (requireActivity() as MainActivity).changeMainActivityHuds(
+        /*
+        (requireActivity() as MainActivity).changeMainActivityUI(
             setBackButtonVisible = true,
             setTabLayoutVisibleAndBtnWideInvisible = false,
             setViewPagerVisible = false,
             titleString = currentPlace.name
         )
 
-
+         */
+      
         initLm()
     }
 

@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
-import com.turkcell.travelguideapp.bll.MapLogic
 import com.turkcell.travelguideapp.bll.PlaceLogic
 import com.turkcell.travelguideapp.dal.TravelGuideOperation
 import com.turkcell.travelguideapp.databinding.CustomTabBinding
@@ -21,7 +20,7 @@ lateinit var dbOperation: TravelGuideOperation
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
 
-    private var ltlngData: Intent? = null
+    //private var ltlngData: Intent? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,48 +39,43 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initializeViews() {
-        changeMainActivityHuds(
+        changeMainActivityUI(
             setBackButtonVisible = false,
-            setTabLayoutVisibleAndBtnWideInvisible = true,
+            "",
             setViewPagerVisible = true,
-            ""
+            setTabLayoutVisible = true,
+            setTabLayoutClickable = true,
+            setBtnAddPlaceVisible = true,
+            setBtnWideVisible = false
         )
     }
 
     private fun initializeEvents() {
         binding.includeTop.btnBack.setOnClickListener {
-            null
         }
         binding.includeBottom.btnAddPlace.setOnClickListener {
-            null
         }
         binding.includeBottom.btnWide.setOnClickListener {
-            null
         }
     }
 
-    fun changeMainActivityHuds(
+    fun changeMainActivityUI(
         setBackButtonVisible: Boolean,
-        setTabLayoutVisibleAndBtnWideInvisible: Boolean,
+        titleString: String = "",
         setViewPagerVisible: Boolean,
-        titleString: String
+        setTabLayoutVisible: Boolean,
+        setTabLayoutClickable: Boolean,
+        setBtnAddPlaceVisible: Boolean,
+        setBtnWideVisible: Boolean
     ) {
         if (setBackButtonVisible) {
             binding.includeTop.btnBack.visibility = View.VISIBLE
         } else {
             binding.includeTop.btnBack.visibility = View.INVISIBLE
         }
-
-        if (setTabLayoutVisibleAndBtnWideInvisible) {
-            binding.includeBottom.tabLayout.visibility = View.VISIBLE
-            binding.includeBottom.llBottom.visibility = View.VISIBLE
-            binding.includeBottom.btnWide.visibility = View.INVISIBLE
-        } else {
-            binding.includeBottom.tabLayout.visibility = View.INVISIBLE
-            binding.includeBottom.llBottom.visibility = View.INVISIBLE
-            binding.includeBottom.btnWide.visibility = View.VISIBLE
+        if (titleString != "") {
+            binding.includeTop.tvTopBarTitle.text = titleString
         }
-
         if (setViewPagerVisible) {
             binding.viewpager.visibility = View.VISIBLE
             binding.fragmentContainer.visibility = View.INVISIBLE
@@ -89,9 +83,25 @@ class MainActivity : AppCompatActivity() {
             binding.viewpager.visibility = View.INVISIBLE
             binding.fragmentContainer.visibility = View.VISIBLE
         }
-
-        if (titleString != "") {
-            binding.includeTop.tvTopBarTitle.text = titleString
+        if (setTabLayoutVisible) {
+            binding.includeBottom.tabLayout.visibility = View.VISIBLE
+        } else {
+            binding.includeBottom.tabLayout.visibility = View.INVISIBLE
+        }
+        if (setTabLayoutClickable) {
+            binding.includeBottom.tabLayout.touchables.forEach { it.isClickable = true }
+        } else {
+            binding.includeBottom.tabLayout.touchables.forEach { it.isClickable = false }
+        }
+        if (setBtnAddPlaceVisible) {
+            binding.includeBottom.llBottom.visibility = View.VISIBLE
+        } else {
+            binding.includeBottom.llBottom.visibility = View.INVISIBLE
+        }
+        if (setBtnWideVisible) {
+            binding.includeBottom.btnWide.visibility = View.VISIBLE
+        } else {
+            binding.includeBottom.btnWide.visibility = View.INVISIBLE
         }
     }
 
@@ -101,15 +111,15 @@ class MainActivity : AppCompatActivity() {
         }.attach()
 
         val tabHome = CustomTabBinding.inflate(layoutInflater)
-        tabHome!!.ivIcon.setImageResource(R.drawable.home_selector)
-        tabHome!!.tvTab.text = getString(R.string.str_places_to_visit)
+        tabHome.ivIcon.setImageResource(R.drawable.home_selector)
+        tabHome.tvTab.text = getString(R.string.str_places_to_visit)
 
         val tabProfile = CustomTabBinding.inflate(layoutInflater)
-        tabProfile!!.ivIcon.setImageResource(R.drawable.profile_selector)
-        tabProfile!!.tvTab.text = getString(R.string.str_visited_places)
+        tabProfile.ivIcon.setImageResource(R.drawable.profile_selector)
+        tabProfile.tvTab.text = getString(R.string.str_visited_places)
 
-        binding.includeBottom.tabLayout.getTabAt(0)!!.customView = tabHome!!.root
-        binding.includeBottom.tabLayout.getTabAt(1)!!.customView = tabProfile!!.root
+        binding.includeBottom.tabLayout.getTabAt(0)!!.customView = tabHome.root
+        binding.includeBottom.tabLayout.getTabAt(1)!!.customView = tabProfile.root
 
     }
 
@@ -139,21 +149,25 @@ class MainActivity : AppCompatActivity() {
 
     private var resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            /*
             if (result.resultCode == RESULT_OK) {
-                ltlngData = result.data
-                MapLogic.tmpMap.lat = ltlngData!!.getDoubleExtra("fromMapsLocationLatitude", 0.0)
-                MapLogic.tmpMap.long = ltlngData!!.getDoubleExtra("fromMapsLocationLongitude", 0.0)
+                //ltlngData = result.data
+                //MapLogic.tmpMap.lat = ltlngData!!.getDoubleExtra("fromMapsLocationLatitude", 0.0)
+                //MapLogic.tmpMap.long = ltlngData!!.getDoubleExtra("fromMapsLocationLongitude", 0.0)
             } else if (result.resultCode == RESULT_CANCELED) {
                 //buraya geri dönülürse, AddPlaceFragment'a tekrar dön
             }
+             */
         }
 
     fun openMapsActivityFromAddPlaceFragment() {
+        /*
         val intent = Intent(this, MapsActivity::class.java)
         resultLauncher.launch(intent)
+
+         */
     }
 
     override fun onBackPressed() {
-        //super.onBackPressed()
     }
 }
