@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.turkcell.travelguideapp.R
+import com.turkcell.travelguideapp.bll.ImageLogic
 import com.turkcell.travelguideapp.bll.PlaceLogic
 import com.turkcell.travelguideapp.databinding.FragmentPlacesVisitedBinding
 import com.turkcell.travelguideapp.view.adapter.PlaceAdapter
@@ -48,7 +49,13 @@ class PlacesVisitedFragment : Fragment() {
 
         binding.rvPlaceVisited.adapter =
             PlaceAdapter(requireContext(), PlaceLogic.returnVisitedPlaces(dbOperation), ::itemClick)
-        binding.rvPlaceVisited.adapter!!.notifyDataSetChanged()
+      /*
+        list = PlaceLogic.returnVisitedPlaces(dbOperation)
+        list.forEach {
+            it.imageList = ImageLogic.getImagesByPlaceId(requireContext(),it.id)
+        }
+        binding.rvPlaceVisited.adapter = PlaceAdapter(requireContext(), list, ::itemClick)
+        */
     }
 
     private fun initializeEvents() {

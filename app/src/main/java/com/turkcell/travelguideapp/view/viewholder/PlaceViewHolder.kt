@@ -1,5 +1,6 @@
 package com.turkcell.travelguideapp.view.viewholder
 
+import android.graphics.BitmapFactory
 import android.graphics.Bitmap
 import android.view.View
 import android.widget.ImageView
@@ -35,7 +36,9 @@ class PlaceViewHolder(itemView: View, var itemClick: (position: Int) -> Unit) :
 
     fun bindData(place: Place) {
         if (place.imageList.size > 0) {
-            placeImage.setImageBitmap(place.imageList[0] as Bitmap?)
+            placeImage.setImageBitmap(place.imageList[0])
+        }else{
+            placeImage.setImageResource(R.drawable.image_placeholder)
         }
 
         tvPlaceName.text = place.name

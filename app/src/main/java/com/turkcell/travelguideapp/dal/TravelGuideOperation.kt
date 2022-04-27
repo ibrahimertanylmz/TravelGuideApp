@@ -6,11 +6,14 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.turkcell.travelguideapp.model.Place
 import com.turkcell.travelguideapp.model.Priority
 import com.turkcell.travelguideapp.model.Visitation
+import java.io.ByteArrayOutputStream
 
 class TravelGuideOperation(context: Context) {
     private var travelGuideDatabase: SQLiteDatabase? = null
@@ -150,5 +153,38 @@ class TravelGuideOperation(context: Context) {
     private fun getVisitations(id: Int): Cursor {
         val query = "Select * from Visitation where PlaceId = '$id'"
         return travelGuideDatabase!!.rawQuery(query, null)
+    }
+
+    fun getImages(id: Int): Cursor {
+        val query = "Select * from Image where PlaceId = '$id'"
+        return travelGuideDatabase!!.rawQuery(query, null)
+    }
+
+    @SuppressLint("Range")
+    fun getImagesByPlaceId(id: Int) : ArrayList<Bitmap> {
+        val imageList = ArrayList<Bitmap>()
+        open()
+        var cursor : Cursor = getImages(id)
+        if(cursor.moveToFirst()){
+            do {
+                val imageByteArray = cursor.getBlob(cursor.getColumnIndex("Data"))
+                val bitmap = BitmapFactory.decodeByteArray(imageByteArray,0,imageByteArray.size)
+                imageList.add(bitmap)
+            }while (cursor.moveToNext())
+        }
+        close()
+        return imageList
+    }
+
+    fun addImage(bitmap: Bitmap, placeId: Int){
+        val outputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG,50,outputStream)
+        val byteArray = outputStream.toByteArray()
+        val cv = ContentValues()
+        cv.put("Data",byteArray)
+        cv.put("PlaceId",placeId)
+        open()
+        travelGuideDatabase!!.insert("Image", null, cv)
+        close()
     }
 }
