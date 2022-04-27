@@ -17,7 +17,7 @@ class PhotoAdapter(
 ) : RecyclerView.Adapter<PhotoViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
         val v = LayoutInflater.from(context).inflate(R.layout.photo_item, parent, false)
-        return PhotoViewHolder(v, itemClick, itemButtonClick, itemAddPhotoClick)
+        return PhotoViewHolder(v, itemClick, itemButtonClick, itemAddPhotoClick, imageList)
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {

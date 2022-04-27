@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.media.Image
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -43,11 +44,10 @@ class AddVisitationFragment : Fragment() {
     private var photoList = ArrayList<Bitmap>()
     private var placeId: Int = -1
     private lateinit var dbOperation: TravelGuideOperation
-
-    val requestCodeCamera = 0
-    val requestCodeGallery = 1
-    lateinit var resimYolu : String
+    val requestCodeGallery = 1001
     lateinit var resimUri: Uri
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,35 +96,14 @@ class AddVisitationFragment : Fragment() {
 
         initLm()
 
-        binding.imageAddPhoto.setOnClickListener {
-            binding.clAddPhoto.visibility = View.GONE
-            itemAddPhotoClick(0)
-        }
-
-
         return binding.root
     }
 
-
-
     @RequiresApi(Build.VERSION_CODES.M)
-    fun galeriIzinKontrol(){
-        val requestList = ArrayList<String>()
-
-        var izinDurum = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-
-        if(!izinDurum){
-            requestList.add(Manifest.permission.READ_EXTERNAL_STORAGE)
-        }
-
-        izinDurum = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-
-        if(!izinDurum){
-            requestList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        }
-
+    fun checkGalleryPermissions(){
+        val requestList = ImageLogic.galeriIzinKontrol(requireContext())
         if(requestList.size == 0){
-            galeriAc()
+            openGallery()
         }else{
             requestPermissions(requestList.toTypedArray(), requestCodeGallery)
         }
@@ -132,7 +111,6 @@ class AddVisitationFragment : Fragment() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
         var tumuOnaylandi = true
         for( gr in grantResults){
             if (gr != PackageManager.PERMISSION_GRANTED){
@@ -140,40 +118,23 @@ class AddVisitationFragment : Fragment() {
                 break
             }
         }
-
         if(!tumuOnaylandi){
             var tekrarGosterme = false
-
             for(permission in permissions){
-                if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), permission)){
-                    //reddedildi
-                }else if(ContextCompat.checkSelfPermission(requireContext(), permission)== PackageManager.PERMISSION_GRANTED){
-                    //onaylandı
-                }else{
-                    //tekrar gosterme seçildi
+                if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), permission)){  }
+                else if(ContextCompat.checkSelfPermission(requireContext(), permission)== PackageManager.PERMISSION_GRANTED){ }
+                else{
                     tekrarGosterme = true
                     break
                 }
             }
 
-            if (tekrarGosterme){
-                val adb = AlertDialog.Builder(requireContext())
-                adb.setTitle("İzin Gerekli")
-                    .setMessage("Ayarlara giderek tüm izinleri onaylayınız")
-                    .setPositiveButton("Ayarlar", { dialog, which -> ayarlarAc() })
-                    .setNegativeButton("Vazgeç", null)
-                    .show()
-            }
-
+            if (tekrarGosterme){ ImageLogic.showAlert(requireContext())}
         }else{
-
             when(requestCode){
-                requestCodeCamera ->
-                    kameraAc()
                 requestCodeGallery ->
-                    galeriAc()
+                    openGallery()
             }
-
         }
     }
 
@@ -188,86 +149,49 @@ class AddVisitationFragment : Fragment() {
                 e.printStackTrace()
             }
 
-
             photoList.add(bitmap!!)
+            val bitmapAdd = BitmapFactory.decodeResource(resources, R.drawable.add_photo)
+            photoList.add(bitmapAdd)
             binding.rwPhotosVisitation.adapter?.notifyDataSetChanged()
         }
     }
 
-    var cameraRl = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-        if(it.resultCode == AppCompatActivity.RESULT_OK){
-
-            var bitmap: Bitmap? = null
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, resimUri)
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-
-            //ImageLogic.addImage(requireContext(),bitmap!!,placeId)
-            photoList.add(bitmap!!)
-            binding.rwPhotosVisitation.adapter?.notifyDataSetChanged()
-        }
-    }
-
-    private fun ayarlarAc() {
-        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-        val uri = Uri.fromParts("package", requireActivity().packageName, null)
-        intent.data = uri
-        startActivity(intent)
-
-    }
-
-    private fun kameraAc() {
-        /*val intent  = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        cameraRl.launch(intent)*/
-        val intent  = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        val dosya = resimDosyasiOlustur()
-        resimUri = FileProvider.getUriForFile(requireContext(),requireActivity().packageName, dosya)
-        //*******
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, resimUri)
-        cameraRl.launch(intent)
-
-    }
-
-    private fun galeriAc(){
+    private fun openGallery(){
         val intentGallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
         galleryRl.launch(intentGallery)
     }
 
-
-
-    @Throws(IOException::class)
-    fun resimDosyasiOlustur(): File {
-        val dir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile("resim", "jpg", dir).apply {
-            resimYolu = absolutePath
-        }
-    }
-
     fun initLm() {
         val lm = LinearLayoutManager(requireContext())
-
+        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.add_photo)
+        photoList.add(bitmap)
         lm.orientation = LinearLayoutManager.HORIZONTAL
         binding.rwPhotosVisitation.layoutManager = lm
         binding.rwPhotosVisitation.adapter = PhotoAdapter(
             requireContext(),
             photoList,
             ::itemClick,
-            ::itemButtonClick,
+            ::itemDeleteClick,
             ::itemAddPhotoClick
         )
     }
 
     fun itemClick(position: Int) {
-        //optional
+        if (position == photoList.size-1){
+        if(photoList.size>0){
+            photoList.remove(photoList[photoList.size-1])
+        }
+            checkGalleryPermissions()
+        }
     }
 
-    fun itemButtonClick(position: Int) {
-        //dbDelete(position)
+    fun itemDeleteClick(position: Int) {
+        photoList.removeAt(position)
+        binding.rwPhotosVisitation.adapter!!.notifyDataSetChanged()
+
     }
 
     fun itemAddPhotoClick(position: Int) {
-        galeriIzinKontrol()
+        //galeriIzinKontrol()
     }
 }
