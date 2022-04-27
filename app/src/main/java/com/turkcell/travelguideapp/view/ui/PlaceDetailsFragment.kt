@@ -14,6 +14,7 @@ import com.turkcell.travelguideapp.bll.VisitationLogic
 import com.turkcell.travelguideapp.databinding.FragmentPlaceDetailsBinding
 import com.turkcell.travelguideapp.model.Place
 import com.turkcell.travelguideapp.model.Priority
+import com.turkcell.travelguideapp.model.Visitation
 import com.turkcell.travelguideapp.view.adapter.VisitationAdapter
 
 class PlaceDetailsFragment : Fragment() {
@@ -89,11 +90,20 @@ class PlaceDetailsFragment : Fragment() {
     }
 
     private fun setupRvVisitHistory() {
+        //binding.rvVisitHistory.isNestedScrollingEnabled = false
+        //binding.rvVisitHistory.setHasFixedSize(false)
         VisitationLogic.listVisitation.clear()
         VisitationLogic.listVisitation = PlaceLogic.getVisitationsOfPlace(placeId, requireActivity())
+
+        val list = ArrayList<Visitation>()
+        list.add(Visitation("2002.22.22", "description1", 1))
+        list.add(Visitation("2002.22.22", "description1", 2))
+        list.add(Visitation("2002.22.22", "description1", 3))
+        list.add(Visitation("2002.22.22", "description1", 4))
         binding.rvVisitHistory.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
-        binding.rvVisitHistory.adapter = VisitationAdapter(requireActivity(), VisitationLogic.listVisitation)
+        //binding.rvVisitHistory.adapter = VisitationAdapter(requireActivity(), VisitationLogic.listVisitation)
+        binding.rvVisitHistory.adapter = VisitationAdapter(requireActivity(), list)
     }
 
 }
