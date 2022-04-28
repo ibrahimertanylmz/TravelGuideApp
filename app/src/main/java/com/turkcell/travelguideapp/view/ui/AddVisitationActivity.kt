@@ -1,6 +1,7 @@
 package com.turkcell.travelguideapp.view.ui
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -32,7 +33,7 @@ import com.turkcell.travelguideapp.model.Visitation
 import com.turkcell.travelguideapp.view.adapter.PhotoAdapter
 import java.io.File
 import java.io.IOException
-import java.util.ArrayList
+import java.util.*
 
 class AddVisitationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddVisitationBinding
@@ -76,6 +77,10 @@ class AddVisitationActivity : AppCompatActivity() {
             onBackPressed()
         }
 
+        binding.edtVisitDate.setOnClickListener {
+            setDate()
+        }
+
         binding.includeBottom.btnWide.setOnClickListener {
             if (binding.edtVisitDate.text.toString() != "" && binding.edtVisitDesc.text.toString() != "") {
                 val tmpVisitation = Visitation(
@@ -105,6 +110,27 @@ class AddVisitationActivity : AppCompatActivity() {
                 ).show()
             }
         }
+
+    }
+
+    private fun setDate() {
+        val cal: Calendar = Calendar.getInstance()
+        val day = cal.get(Calendar.DAY_OF_MONTH)
+        val month = cal.get(Calendar.MONTH)
+        var year = cal.get(Calendar.YEAR)
+
+        val dpd =
+            DatePickerDialog(
+                this,
+                DatePickerDialog.OnDateSetListener { _, year, month, day ->
+                    binding.edtVisitDate.setText("${day}.${month + 1}.${year}")
+                },
+                year,
+                month,
+                day
+            )
+        dpd.datePicker.maxDate = System.currentTimeMillis()
+        dpd.show()
     }
 
     private fun initLm() {
@@ -221,27 +247,27 @@ class AddVisitationActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkCameraPermissions(position: Int){
+    private fun checkCameraPermissions(position: Int) {
         val requestList = ImageLogic.checkCameraPermissions(this)
-        if(requestList.size == 0){
+        if (requestList.size == 0) {
             openCamera(position)
-        }else{
+        } else {
             requestPermissions(requestList.toTypedArray(), requestCodeCamera)
         }
     }
 
-    private fun checkGalleryPermissions(position: Int){
+    private fun checkGalleryPermissions(position: Int) {
         val requestList = ImageLogic.checkGalleryPermissions(this)
-        if(requestList.size == 0){
+        if (requestList.size == 0) {
             openGallery(position)
-        }else{
+        } else {
             requestPermissions(requestList.toTypedArray(), requestCodeGallery)
         }
     }
 
     private fun openCamera(position: Int) {
         setAddPhotoImage(position)
-        val intent  = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val dosya = createImageFile()
         resimUri = FileProvider.getUriForFile(this, this.packageName, dosya)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, resimUri)
@@ -257,10 +283,10 @@ class AddVisitationActivity : AppCompatActivity() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setAddPhotoImage(position: Int){
-        if (position == photoList.size-1){
-            if(photoList.size>0){
-                photoList.remove(photoList[photoList.size-1])
+    fun setAddPhotoImage(position: Int) {
+        if (position == photoList.size - 1) {
+            if (photoList.size > 0) {
+                photoList.remove(photoList[photoList.size - 1])
             }
         }
         binding.rwPhotosVisitation.adapter!!.notifyDataSetChanged()

@@ -4,7 +4,9 @@ import android.graphics.Bitmap
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
+import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
@@ -13,6 +15,7 @@ import com.turkcell.travelguideapp.bll.ImageLogic
 import com.turkcell.travelguideapp.bll.PlaceLogic
 import com.turkcell.travelguideapp.bll.VisitationLogic
 import com.turkcell.travelguideapp.databinding.ActivityPlaceDetailsBinding
+import com.turkcell.travelguideapp.databinding.PopUpFullscreenImageBinding
 import me.relex.circleindicator.CircleIndicator3
 import com.turkcell.travelguideapp.model.Priority
 import com.turkcell.travelguideapp.model.Visitation
@@ -21,6 +24,7 @@ import com.turkcell.travelguideapp.view.adapter.VisitationAdapter
 
 class PlaceDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlaceDetailsBinding
+    private var tmpPosition: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +35,15 @@ class PlaceDetailsActivity : AppCompatActivity() {
         initializeViews()
         initializeEvents()
         initializeViewPager()
+
+        binding.viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                Toast.makeText(applicationContext, position.toString(), Toast.LENGTH_SHORT).show()
+
+                tmpPosition = position
+            }
+        })
 
     }
 
@@ -62,16 +75,16 @@ class PlaceDetailsActivity : AppCompatActivity() {
         setupRvVisitHistory()
     }
 
-    fun initializeViewPager(){
+    private fun initializeViewPager() {
         postToList()
 
         PlaceLogic.tmpPlace.imageList = ImageLogic.getImagesByPlaceId(this, PlaceLogic.tmpPlaceId)
 
-        binding.viewPager2.adapter=DetailSlideAdapter(PlaceLogic.tmpPlace.imageList)
+        binding.viewPager2.adapter = DetailSlideAdapter(PlaceLogic.tmpPlace.imageList, ::itemClick)
 
-        binding.viewPager2.orientation= ViewPager2.ORIENTATION_HORIZONTAL
+        binding.viewPager2.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
-        val indicator : CircleIndicator3 = binding.indicator
+        val indicator: CircleIndicator3 = binding.indicator
         indicator.setViewPager(binding.viewPager2)
     }
 
@@ -117,14 +130,33 @@ class PlaceDetailsActivity : AppCompatActivity() {
         binding.rvVisitHistory.adapter!!.notifyItemChanged(-1)
     }
 
-    private fun addToList(image:Bitmap){
+    fun itemClick(i: Int) {
+        showPopUp(i)
+    }
+
+    private fun addToList(image: Bitmap) {
         PlaceLogic.tmpPlace.imageList.add(image)
     }
 
-    private fun postToList(){
+    private fun postToList() {
         for (i in 1..PlaceLogic.tmpPlace.imageList.size) {
             addToList(PlaceLogic.tmpPlace.imageList[i])
             Toast.makeText(applicationContext, i.toString(), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showPopUp(a: Int) {
+        val binding: PopUpFullscreenImageBinding =
+            PopUpFullscreenImageBinding.inflate(layoutInflater)
+        val v = binding.root
+        val popAlert =
+            PopupWindow(v, windowManager.defaultDisplay.width, windowManager.defaultDisplay.height)
+        popAlert.showAtLocation(v, Gravity.CENTER, 0, 0)
+        var tmpImageList = ImageLogic.getImagesByPlaceId(this, PlaceLogic.tmpPlaceId)
+        val currentImageBitmap: Bitmap = tmpImageList[0]
+        binding.ivFullscreen.setImageBitmap(currentImageBitmap)
+        v.setOnClickListener {
+            popAlert.dismiss()
         }
     }
 }

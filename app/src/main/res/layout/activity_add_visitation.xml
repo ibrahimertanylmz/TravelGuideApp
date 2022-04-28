@@ -33,9 +33,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
         android:background="@drawable/text_background"
+        android:clickable="true"
+        android:focusable="true"
+        android:editable="false"
         android:ems="10"
         android:hint="@string/visit_date_text"
-        android:inputType="textPersonName"
+        android:importantForAutofill="no"
+        android:inputType="none"
         android:paddingStart="14dp"
         android:paddingTop="33dp"
         android:paddingBottom="9dp"
@@ -43,9 +47,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/rwPhotosVisitation"
         app:layout_constraintStart_toStartOf="@+id/rwPhotosVisitation"
-        app:layout_constraintTop_toBottomOf="@+id/rwPhotosVisitation"
-        android:importantForAutofill="no"
-        tools:ignore="RtlSymmetry,SmallSp,TextFields" />
+        app:layout_constraintTop_toBottomOf="@+id/rwPhotosVisitation" />
 
     <TextView
         android:id="@+id/twVisitDate"
