@@ -108,4 +108,10 @@ object PlaceLogic {
         }
         return filteredList[0]
     }
+
+    fun getImagesOfPlace(context: Context){
+        listAllPlaces.forEach {
+            it.imageList = ImageLogic.getImagesByPlaceId(context,it.id)
+        }
+    }
 }

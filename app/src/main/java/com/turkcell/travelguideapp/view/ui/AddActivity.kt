@@ -96,6 +96,7 @@ class AddActivity : AppCompatActivity() {
                         ""
                     )
                     PlaceLogic.addPlace(this, p)
+                    addImagesOfPlace()
                     Toast.makeText(
                         this, getString(R.string.place_added_successfuly), Toast.LENGTH_SHORT
                     ).show()
@@ -119,6 +120,14 @@ class AddActivity : AppCompatActivity() {
             }
         } else {
             binding.edtPlaceName.error = getString(R.string.This_field_cannot_be_empty)
+        }
+    }
+
+    private fun addImagesOfPlace(){
+        val placeId = PlaceLogic.returnPlacesToVisit(dbOperation).last().id
+        photoList.removeLast()
+        photoList.forEach {
+            ImageLogic.addImage(this,it,placeId)
         }
     }
 
@@ -247,9 +256,9 @@ class AddActivity : AppCompatActivity() {
         } else {
             when (requestCode) {
                 requestCodeCamera ->
-                    openCamera()
+                    openCamera(0)
                 requestCodeGallery ->
-                    openGallery()
+                    openGallery(0)
             }
         }
     }
@@ -273,10 +282,8 @@ class AddActivity : AppCompatActivity() {
         }
     }
 
-    private fun openGallery() {
-        if (photoList.size == 1) {
-            photoList.removeAt(0)
-        }
+    private fun openGallery(position: Int) {
+        setAddPhotoImage(position)
         val intentGallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
         galleryRl.launch(intentGallery)
     }
@@ -301,8 +308,7 @@ class AddActivity : AppCompatActivity() {
     private fun checkCameraPermissions(position: Int) {
         val requestList = ImageLogic.checkCameraPermissions(this)
         if (requestList.size == 0) {
-            setAddPhotoImage(position)
-            openCamera()
+            openCamera(position)
         } else {
             requestPermissions(requestList.toTypedArray(), requestCodeCamera)
         }
@@ -311,17 +317,14 @@ class AddActivity : AppCompatActivity() {
     private fun checkGalleryPermissions(position: Int) {
         val requestList = ImageLogic.checkGalleryPermissions(this)
         if (requestList.size == 0) {
-            setAddPhotoImage(position)
-            openGallery()
+            openGallery(position)
         } else {
             requestPermissions(requestList.toTypedArray(), requestCodeGallery)
         }
     }
 
-    private fun openCamera() {
-        if (photoList.size == 1) {
-            photoList.removeAt(0)
-        }
+    private fun openCamera(position: Int) {
+        setAddPhotoImage(position)
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val dosya = createImageFile()
         resimUri =
@@ -337,7 +340,6 @@ class AddActivity : AppCompatActivity() {
             resimYolu = absolutePath
         }
     }
-
 
     @SuppressLint("NotifyDataSetChanged")
     fun setAddPhotoImage(position: Int) {
