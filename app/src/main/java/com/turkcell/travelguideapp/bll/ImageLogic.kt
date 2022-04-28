@@ -13,6 +13,8 @@ import com.turkcell.travelguideapp.dal.TravelGuideOperation
 
 object ImageLogic {
 
+    var imageList = ArrayList<Bitmap>()
+
     fun getImagesByPlaceId(context: Context, placeId: Int): ArrayList<Bitmap>{
         return TravelGuideOperation(context).getImagesByPlaceId(placeId)
     }
