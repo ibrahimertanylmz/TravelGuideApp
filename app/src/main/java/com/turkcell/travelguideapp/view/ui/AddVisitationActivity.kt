@@ -135,6 +135,7 @@ class AddVisitationActivity : AppCompatActivity() {
             val bitmapAdd = BitmapFactory.decodeResource(resources, R.drawable.add_photo)
             photoList.add(bitmapAdd)
             binding.rwPhotosVisitation.adapter?.notifyDataSetChanged()
+            binding.rwPhotosVisitation.getLayoutManager()?.scrollToPosition(photoList.size-1);
         }
     }
 
@@ -193,6 +194,7 @@ class AddVisitationActivity : AppCompatActivity() {
             val bitmapAdd = BitmapFactory.decodeResource(resources, R.drawable.add_photo)
             photoList.add(bitmapAdd)
             binding.rwPhotosVisitation.adapter?.notifyDataSetChanged()
+            binding.rwPhotosVisitation.getLayoutManager()?.scrollToPosition(photoList.size-1);
         }
     }
 
