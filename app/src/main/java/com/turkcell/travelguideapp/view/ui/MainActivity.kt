@@ -34,8 +34,6 @@ class MainActivity : AppCompatActivity() {
         initializeViewPager()
         initializeTabs()
 
-        PlaceLogic.debugTmpFillList(dbOperation)
-
     }
 
     private fun initializeViews() {
