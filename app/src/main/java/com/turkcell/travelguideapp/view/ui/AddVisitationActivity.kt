@@ -84,6 +84,7 @@ class AddVisitationActivity : AppCompatActivity() {
                     placeId
                 )
                 VisitationLogic.addVisitation(dbOperation, tmpVisitation)
+                photoList.removeLast()
                 photoList.forEach {
                     ImageLogic.addImage(this, it, placeId)
                 }

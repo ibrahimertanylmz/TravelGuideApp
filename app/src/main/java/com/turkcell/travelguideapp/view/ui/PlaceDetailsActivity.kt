@@ -38,6 +38,7 @@ class PlaceDetailsActivity : AppCompatActivity() {
         super.onResume()
         PlaceLogic.tmpPlace = PlaceLogic.getPlaceById(dbOperation, PlaceLogic.tmpPlaceId)
         initializeViews()
+        initializeViewPager()
         //setDefaults()
         //initializeViews()
     }
