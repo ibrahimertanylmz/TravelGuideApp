@@ -94,6 +94,7 @@ class AddActivity : AppCompatActivity() {
                         ""
                     )
                     PlaceLogic.addPlace(this, p)
+                    addImagesOfPlace()
                     Toast.makeText(
                         this, getString(R.string.place_added_successfuly), Toast.LENGTH_SHORT
                     ).show()
@@ -117,6 +118,14 @@ class AddActivity : AppCompatActivity() {
             }
         } else {
             binding.edtPlaceName.error = getString(R.string.This_field_cannot_be_empty)
+        }
+    }
+
+    private fun addImagesOfPlace(){
+        val placeId = PlaceLogic.returnPlacesToVisit(dbOperation).last().id
+        photoList.removeLast()
+        photoList.forEach {
+            ImageLogic.addImage(this,it,placeId)
         }
     }
 
