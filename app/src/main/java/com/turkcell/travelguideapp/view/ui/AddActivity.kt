@@ -109,8 +109,7 @@ class AddActivity : AppCompatActivity() {
                     adb.setTitle(getString(R.string.LOCATION))
                     adb.setMessage(getString(R.string.add_place_fragment_choose_location_confirmation))
                     adb.setPositiveButton(getString(R.string.Confirm)) { _, _ ->
-                        Toast.makeText(this, "Feature not implemented", Toast.LENGTH_SHORT).show()
-                        //(activity as MainActivity).openMapsActivityFromAddPlaceFragment()
+                        openMapsActivityFromAddPlaceActivity()
                     }
                     adb.setNegativeButton(getString(R.string.No), null)
                     adb.show()

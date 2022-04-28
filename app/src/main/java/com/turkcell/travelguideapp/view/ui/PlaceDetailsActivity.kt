@@ -39,8 +39,6 @@ class PlaceDetailsActivity : AppCompatActivity() {
         binding.viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                Toast.makeText(applicationContext, position.toString(), Toast.LENGTH_SHORT).show()
-
                 tmpPosition = position
             }
         })
@@ -141,7 +139,6 @@ class PlaceDetailsActivity : AppCompatActivity() {
     private fun postToList() {
         for (i in 1..PlaceLogic.tmpPlace.imageList.size) {
             addToList(PlaceLogic.tmpPlace.imageList[i])
-            Toast.makeText(applicationContext, i.toString(), Toast.LENGTH_SHORT).show()
         }
     }
 

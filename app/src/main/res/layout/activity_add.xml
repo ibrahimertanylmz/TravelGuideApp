@@ -150,7 +150,7 @@
         android:gravity="clip_vertical"
         android:hint="@string/edt_description_hint"
         android:importantForAutofill="no"
-        android:inputType="textPersonName"
+        android:inputType="textMultiLine"
         android:paddingLeft="14dp"
         android:paddingTop="33dp"
         android:paddingBottom="9dp"
