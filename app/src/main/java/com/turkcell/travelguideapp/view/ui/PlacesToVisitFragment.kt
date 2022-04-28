@@ -29,8 +29,7 @@ class PlacesToVisitFragment : Fragment() {
             this.orientation = LinearLayoutManager.VERTICAL
         }
 
-        //initializeViews()
-        initializeEvents()
+        initializeViews()
 
         return binding.root
     }
@@ -47,35 +46,27 @@ class PlacesToVisitFragment : Fragment() {
             titleString = getString(R.string.str_places_to_visit),
             setViewPagerVisible = true,
             setTabLayoutVisible = true,
-            setTabLayoutClickable = true,
             setBtnAddPlaceVisible = true,
             setBtnWideVisible = false
         )
 
-        binding.rvPlaceToVisit.adapter = PlaceAdapter(requireContext(), PlaceLogic.returnPlacesToVisit(dbOperation), ::itemClick)
-      /*
-        list = PlaceLogic.returnPlacesToVisit(dbOperation)
-        list.forEach {
-            it.imageList = ImageLogic.getImagesByPlaceId(requireContext(),it.id)
-        }
-        binding.rvPlaceToVisit.adapter = PlaceAdapter(requireContext(), list, ::itemClick)
-        */
-    }
-
-    private fun initializeEvents() {
-        (requireActivity() as MainActivity).binding.includeBottom.btnAddPlace.setOnClickListener {
-            val action =
-                PlacesToVisitFragmentDirections.actionPlacesToVisitFragmentToAddPlaceFragment()
-            findNavController().navigate(action)
-        }
+        binding.rvPlaceToVisit.adapter =
+            PlaceAdapter(requireContext(), PlaceLogic.returnPlacesToVisit(dbOperation), ::itemClick)
+        /*
+          list = PlaceLogic.returnPlacesToVisit(dbOperation)
+          list.forEach {
+              it.imageList = ImageLogic.getImagesByPlaceId(requireContext(),it.id)
+          }
+          binding.rvPlaceToVisit.adapter = PlaceAdapter(requireContext(), list, ::itemClick)
+          */
     }
 
     private fun itemClick(position: Int) {
-        val action =
-            PlacesToVisitFragmentDirections.actionPlacesToVisitFragmentToPlaceDetailsFragment(
-                PlaceLogic.returnPlacesToVisit(dbOperation)[position].id
-            )
-        findNavController().navigate(action)
+        (requireActivity() as MainActivity).intentToPlaceDetailsActivity(
+            PlaceLogic.returnPlacesToVisit(
+                dbOperation
+            )[position].id
+        )
     }
 
 }

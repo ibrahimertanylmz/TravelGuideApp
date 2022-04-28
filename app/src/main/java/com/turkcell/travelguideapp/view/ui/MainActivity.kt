@@ -44,7 +44,6 @@ class MainActivity : AppCompatActivity() {
             "",
             setViewPagerVisible = true,
             setTabLayoutVisible = true,
-            setTabLayoutClickable = true,
             setBtnAddPlaceVisible = true,
             setBtnWideVisible = false
         )
@@ -54,9 +53,21 @@ class MainActivity : AppCompatActivity() {
         binding.includeTop.btnBack.setOnClickListener {
         }
         binding.includeBottom.btnAddPlace.setOnClickListener {
+            intentToAddActivity()
         }
         binding.includeBottom.btnWide.setOnClickListener {
         }
+    }
+
+    fun intentToAddActivity() {
+        val intent = Intent(this, AddActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun intentToPlaceDetailsActivity(id: Int) {
+        val intent = Intent(this, PlaceDetailsActivity::class.java)
+        intent.putExtra("place_id_for_place_details", id)
+        startActivity(intent)
     }
 
     fun changeMainActivityUI(
@@ -64,7 +75,6 @@ class MainActivity : AppCompatActivity() {
         titleString: String = "",
         setViewPagerVisible: Boolean,
         setTabLayoutVisible: Boolean,
-        setTabLayoutClickable: Boolean,
         setBtnAddPlaceVisible: Boolean,
         setBtnWideVisible: Boolean
     ) {
@@ -87,11 +97,6 @@ class MainActivity : AppCompatActivity() {
             binding.includeBottom.tabLayout.visibility = View.VISIBLE
         } else {
             binding.includeBottom.tabLayout.visibility = View.INVISIBLE
-        }
-        if (setTabLayoutClickable) {
-            binding.includeBottom.tabLayout.touchables.forEach { it.isClickable = true }
-        } else {
-            binding.includeBottom.tabLayout.touchables.forEach { it.isClickable = false }
         }
         if (setBtnAddPlaceVisible) {
             binding.includeBottom.llBottom.visibility = View.VISIBLE

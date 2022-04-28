@@ -30,7 +30,6 @@ class PlacesVisitedFragment : Fragment() {
         }
 
         initializeViews()
-        initializeEvents()
 
         return binding.root
     }
@@ -42,28 +41,19 @@ class PlacesVisitedFragment : Fragment() {
             titleString = getString(R.string.str_visited_places),
             setViewPagerVisible = true,
             setTabLayoutVisible = true,
-            setTabLayoutClickable = true,
             setBtnAddPlaceVisible = true,
             setBtnWideVisible = false
         )
 
         binding.rvPlaceVisited.adapter =
             PlaceAdapter(requireContext(), PlaceLogic.returnVisitedPlaces(dbOperation), ::itemClick)
-      /*
-        list = PlaceLogic.returnVisitedPlaces(dbOperation)
-        list.forEach {
-            it.imageList = ImageLogic.getImagesByPlaceId(requireContext(),it.id)
-        }
-        binding.rvPlaceVisited.adapter = PlaceAdapter(requireContext(), list, ::itemClick)
-        */
-    }
-
-    private fun initializeEvents() {
-        (requireActivity() as MainActivity).binding.includeBottom.btnAddPlace.setOnClickListener {
-            val action =
-                PlacesToVisitFragmentDirections.actionPlacesToVisitFragmentToAddPlaceFragment()
-            findNavController().navigate(action)
-        }
+        /*
+          list = PlaceLogic.returnVisitedPlaces(dbOperation)
+          list.forEach {
+              it.imageList = ImageLogic.getImagesByPlaceId(requireContext(),it.id)
+          }
+          binding.rvPlaceVisited.adapter = PlaceAdapter(requireContext(), list, ::itemClick)
+          */
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -74,11 +64,11 @@ class PlacesVisitedFragment : Fragment() {
     }
 
     private fun itemClick(position: Int) {
-        val action =
-            PlacesToVisitFragmentDirections.actionPlacesToVisitFragmentToPlaceDetailsFragment(
-                PlaceLogic.returnVisitedPlaces(dbOperation)[position].id
-            )
-        findNavController().navigate(action)
+        (requireActivity() as MainActivity).intentToPlaceDetailsActivity(
+            PlaceLogic.returnVisitedPlaces(
+                dbOperation
+            )[position].id
+        )
     }
 
 }

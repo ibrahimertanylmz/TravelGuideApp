@@ -3,7 +3,7 @@
     package="com.turkcell.travelguideapp">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -15,6 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelGuideApp">
+        <activity
+            android:name=".view.ui.PlaceDetailsActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -25,11 +28,14 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.ui.MainActivity"
-            android:exported="false"/>
+        <activity
+            android:name=".view.ui.MainActivity"
+            android:exported="false" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.turkcell.travelguideapp"
@@ -37,12 +43,16 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
-        <activity android:name=".view.ui.MapsActivity"
+
+        <activity
+            android:name=".view.ui.MapsActivity"
             android:exported="false"
-            android:label="Map">
-        </activity>
+            android:label="Map" />
+        <activity
+            android:name=".view.ui.AddActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

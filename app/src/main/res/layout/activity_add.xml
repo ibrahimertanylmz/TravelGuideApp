@@ -5,7 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E5E5E5"
-    tools:context=".view.ui.AddPlaceFragment">
+    tools:context=".view.ui.AddActivity">
+
+    <include
+        android:id="@+id/includeTop"
+        layout="@layout/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rwPhotos"
@@ -16,7 +25,7 @@
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/includeTop" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnAddLocation"
@@ -48,6 +57,20 @@
         app:layout_constraintTop_toBottomOf="@+id/btnAddLocation"
         tools:ignore="RtlSymmetry,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
+    <ImageView
+        android:id="@+id/imageCircle"
+        android:layout_width="16dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
+        android:backgroundTint="#FFFFFF"
+        android:src="@drawable/rv_oval_item_gray"
+        app:layout_constraintBottom_toBottomOf="@+id/spinnerPriority"
+        app:layout_constraintEnd_toEndOf="@+id/spinnerPriority"
+        app:layout_constraintTop_toTopOf="@+id/spinnerPriority"
+        tools:ignore="ContentDescription,ImageContrastCheck" />
+
     <EditText
         android:id="@+id/edtPlaceName"
         android:layout_width="0dp"
@@ -67,6 +90,20 @@
         app:layout_constraintStart_toStartOf="@+id/spinnerPriority"
         app:layout_constraintTop_toBottomOf="@+id/spinnerPriority"
         tools:ignore="RtlSymmetry,SmallSp,TextContrastCheck" />
+
+    <TextView
+        android:id="@+id/twPlaceName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/Location_Name"
+        android:textColor="#4B4848"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/edtPlaceName"
+        app:layout_constraintTop_toTopOf="@+id/edtPlaceName"
+        tools:ignore="SmallSp" />
 
     <EditText
         android:id="@+id/edtDefinition"
@@ -88,6 +125,20 @@
         app:layout_constraintStart_toStartOf="@+id/spinnerPriority"
         app:layout_constraintTop_toBottomOf="@+id/edtPlaceName"
         tools:ignore="RtlSymmetry,SmallSp,TextContrastCheck" />
+
+    <TextView
+        android:id="@+id/twDefinition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/tw_definition_text"
+        android:textColor="#4B4848"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/edtDefinition"
+        app:layout_constraintTop_toTopOf="@+id/edtDefinition"
+        tools:ignore="SmallSp" />
 
     <EditText
         android:id="@+id/edtDescription"
@@ -112,34 +163,6 @@
         tools:ignore="RtlHardcoded,RtlSymmetry,SmallSp,TextContrastCheck" />
 
     <TextView
-        android:id="@+id/twPlaceName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="12dp"
-        android:text="@string/Location_Name"
-        android:textColor="#4B4848"
-        android:textSize="10sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/edtPlaceName"
-        app:layout_constraintTop_toTopOf="@+id/edtPlaceName"
-        tools:ignore="SmallSp" />
-
-    <TextView
-        android:id="@+id/twDefinition"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="12dp"
-        android:text="@string/tw_definition_text"
-        android:textColor="#4B4848"
-        android:textSize="10sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/edtDefinition"
-        app:layout_constraintTop_toTopOf="@+id/edtDefinition"
-        tools:ignore="SmallSp" />
-
-    <TextView
         android:id="@+id/twDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -153,18 +176,13 @@
         app:layout_constraintTop_toTopOf="@+id/edtDescription"
         tools:ignore="SmallSp" />
 
-    <ImageView
-        android:id="@+id/imageCircle"
-        android:layout_width="16dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="5dp"
-        android:backgroundTint="#FFFFFF"
-        android:src="@drawable/rv_oval_item_gray"
-        app:layout_constraintBottom_toBottomOf="@+id/spinnerPriority"
-        app:layout_constraintEnd_toEndOf="@+id/spinnerPriority"
-        app:layout_constraintTop_toTopOf="@+id/spinnerPriority"
-        tools:ignore="ContentDescription,ImageContrastCheck" />
+    <include
+        android:id="@+id/includeBottom"
+        layout="@layout/bottom_bar"
+        android:elevation="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtDescription" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

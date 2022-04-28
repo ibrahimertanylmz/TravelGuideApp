@@ -75,6 +75,15 @@ class AddVisitationFragment : Fragment() {
     }
 
     private fun initializeViews() {
+
+        (requireActivity() as MainActivity).changeMainActivityUI(
+            setBackButtonVisible = true,
+            titleString = PlaceLogic.tmpPlace.name,
+            setViewPagerVisible = false,
+            setTabLayoutVisible = false,
+            setBtnAddPlaceVisible = true,
+            setBtnWideVisible = true
+        )
         /*
         (requireActivity() as MainActivity).changeMainActivityUI(
             setBackButtonVisible = true,
@@ -90,11 +99,7 @@ class AddVisitationFragment : Fragment() {
 
     private fun initializeEvents() {
         (requireActivity() as MainActivity).binding.includeTop.btnBack.setOnClickListener {
-            val action =
-                AddVisitationFragmentDirections.actionAddVisitationFragmentToPlaceDetailsFragment(
-                    placeId
-                )
-            findNavController().navigate(action)
+            Toast.makeText(requireContext(), "Feature not implemented", Toast.LENGTH_SHORT).show()
         }
 
         (requireActivity() as MainActivity).binding.includeBottom.btnWide.setOnClickListener {
