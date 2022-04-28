@@ -30,9 +30,7 @@ class TravelGuideOperation(context: Context) {
         }
     }
 
-
     fun addPlace(place: Place) {
-
         val cv = ContentValues()
         cv.put("Name", place.name)
         cv.put("Latitude", place.location.latitude)
@@ -46,6 +44,22 @@ class TravelGuideOperation(context: Context) {
         travelGuideDatabase!!.insert("Place", null, cv)
         close()
     }
+
+    fun updatePlace(id: Int, updatedLastVisitDate: String) {
+        val place = getPlaceFromId(id)
+        val cv = ContentValues()
+        cv.put("Name", place.name)
+        cv.put("Latitude", place.location.latitude)
+        cv.put("Longitude", place.location.longitude)
+        cv.put("Description", place.description)
+        cv.put("Definition", place.definition)
+        cv.put("Priority", place.priority.toString())
+        cv.put("LastVisitDate", updatedLastVisitDate)
+        open()
+        travelGuideDatabase!!.update("Place", cv, "Id = ?", arrayOf(place.id.toString()))
+        close()
+    }
+
 
     @SuppressLint("Range")
     fun getPlaceFromId(id: Int): Place {
@@ -161,28 +175,28 @@ class TravelGuideOperation(context: Context) {
     }
 
     @SuppressLint("Range")
-    fun getImagesByPlaceId(id: Int) : ArrayList<Bitmap> {
+    fun getImagesByPlaceId(id: Int): ArrayList<Bitmap> {
         val imageList = ArrayList<Bitmap>()
         open()
-        var cursor : Cursor = getImages(id)
-        if(cursor.moveToFirst()){
+        var cursor: Cursor = getImages(id)
+        if (cursor.moveToFirst()) {
             do {
                 val imageByteArray = cursor.getBlob(cursor.getColumnIndex("Data"))
-                val bitmap = BitmapFactory.decodeByteArray(imageByteArray,0,imageByteArray.size)
+                val bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.size)
                 imageList.add(bitmap)
-            }while (cursor.moveToNext())
+            } while (cursor.moveToNext())
         }
         close()
         return imageList
     }
 
-    fun addImage(bitmap: Bitmap, placeId: Int){
+    fun addImage(bitmap: Bitmap, placeId: Int) {
         val outputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG,50,outputStream)
+        bitmap.compress(Bitmap.CompressFormat.PNG, 50, outputStream)
         val byteArray = outputStream.toByteArray()
         val cv = ContentValues()
-        cv.put("Data",byteArray)
-        cv.put("PlaceId",placeId)
+        cv.put("Data", byteArray)
+        cv.put("PlaceId", placeId)
         open()
         travelGuideDatabase!!.insert("Image", null, cv)
         close()

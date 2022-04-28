@@ -12,11 +12,13 @@ import com.turkcell.travelguideapp.R
 import com.turkcell.travelguideapp.bll.ImageLogic
 import com.turkcell.travelguideapp.bll.PlaceLogic
 import com.turkcell.travelguideapp.databinding.FragmentPlacesVisitedBinding
+import com.turkcell.travelguideapp.model.Place
 import com.turkcell.travelguideapp.view.adapter.PlaceAdapter
 
 class PlacesVisitedFragment : Fragment() {
 
     private lateinit var binding: FragmentPlacesVisitedBinding
+    private var placeList = ArrayList<Place>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,6 +56,13 @@ class PlacesVisitedFragment : Fragment() {
           }
           binding.rvPlaceVisited.adapter = PlaceAdapter(requireContext(), list, ::itemClick)
           */
+
+        placeList = PlaceLogic.returnVisitedPlaces(dbOperation)
+        placeList.forEach {
+            it.imageList = ImageLogic.getImagesByPlaceId(requireContext(),it.id)
+        }
+        binding.rvPlaceVisited.adapter =
+            PlaceAdapter(requireContext(), placeList, ::itemClick)
     }
 
     @SuppressLint("NotifyDataSetChanged")
