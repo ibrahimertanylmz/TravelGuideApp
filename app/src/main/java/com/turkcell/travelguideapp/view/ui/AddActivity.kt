@@ -211,11 +211,11 @@ class AddActivity : AppCompatActivity() {
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-            //if (photoList.size== 1) {photoList.removeAt(0) }
             photoList.add(bitmap!!)
             val bitmapAdd = BitmapFactory.decodeResource(resources, R.drawable.add_photo)
             photoList.add(bitmapAdd)
             binding.rwPhotos.adapter?.notifyDataSetChanged()
+            binding.rwPhotos.getLayoutManager()?.scrollToPosition(photoList.size-1);
         }
     }
 
@@ -279,6 +279,7 @@ class AddActivity : AppCompatActivity() {
             val bitmapAdd = BitmapFactory.decodeResource(resources, R.drawable.add_photo)
             photoList.add(bitmapAdd)
             binding.rwPhotos.adapter?.notifyDataSetChanged()
+            binding.rwPhotos.getLayoutManager()?.scrollToPosition(photoList.size-1);
         }
     }
 
