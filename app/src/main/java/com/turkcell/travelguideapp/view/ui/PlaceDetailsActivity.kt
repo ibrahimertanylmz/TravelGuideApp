@@ -1,6 +1,7 @@
 package com.turkcell.travelguideapp.view.ui
 
 import android.graphics.Bitmap
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -77,20 +78,15 @@ class PlaceDetailsActivity : AppCompatActivity() {
         }
 
         binding.btnAddVisitation.setOnClickListener {
-            Toast.makeText(this, "Function not implemented!", Toast.LENGTH_SHORT).show()
-            /*
-            val action =
-                PlaceDetailsFragmentDirections.actionPlaceDetailsFragmentToAddVisitationFragment(
-                    PlaceLogic.tmpPlaceId
-                )
-            findNavController().navigate(action)
-
-             */
+            val intent = Intent(this, AddVisitationActivity::class.java)
+            intent.putExtra("place_id_for_add_visitation", PlaceLogic.tmpPlaceId)
+            startActivity(intent)
         }
 
         binding.btnShowLocation.setOnClickListener {
-            Toast.makeText(this, "Function not implemented!", Toast.LENGTH_SHORT).show()
-            //(requireActivity() as MainActivity).openMapsActivityFromPlaceDetailsFragment(PlaceLogic.tmpPlaceId)
+            val intent = Intent(this, MapsActivity::class.java)
+            intent.putExtra("placeId", PlaceLogic.tmpPlaceId)
+            startActivity(intent)
         }
 
 

@@ -152,27 +152,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private var resultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            /*
-            if (result.resultCode == RESULT_OK) {
-                //ltlngData = result.data
-                //MapLogic.tmpMap.lat = ltlngData!!.getDoubleExtra("fromMapsLocationLatitude", 0.0)
-                //MapLogic.tmpMap.long = ltlngData!!.getDoubleExtra("fromMapsLocationLongitude", 0.0)
-            } else if (result.resultCode == RESULT_CANCELED) {
-                //buraya geri dönülürse, AddPlaceFragment'a tekrar dön
-            }
-             */
-        }
-
-    fun openMapsActivityFromAddPlaceFragment() {
-        /*
-        val intent = Intent(this, MapsActivity::class.java)
-        resultLauncher.launch(intent)
-
-         */
-    }
-
     override fun onBackPressed() {
     }
 }
