@@ -291,7 +291,12 @@ class AddVisitationActivity : AppCompatActivity() {
     }
 
     private fun itemClick(position: Int) {
-        showPopUp(position)
+        if(position == (photoList.size -1) &&(photoList.size<10)){
+            showPopUp(position)
+        }else{
+            Toast.makeText(this, "10 taneden fazla fotoğraf eklenemez", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
