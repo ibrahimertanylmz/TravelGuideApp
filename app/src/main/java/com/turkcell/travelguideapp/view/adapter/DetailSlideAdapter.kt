@@ -7,14 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.turkcell.travelguideapp.R
 import com.turkcell.travelguideapp.view.viewholder.DetailSlideViewHolder
 
-class DetailSlideAdapter(var imageList:ArrayList<Bitmap>) : RecyclerView.Adapter<DetailSlideViewHolder>() {
+class DetailSlideAdapter(var imageList:ArrayList<Bitmap>, var itemClick:(position:Int)->Unit) : RecyclerView.Adapter<DetailSlideViewHolder>() {
 
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): DetailSlideViewHolder {
-        return DetailSlideViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_pager_item_page,parent,false))
+        return DetailSlideViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_pager_item_page,parent,false), itemClick)
     }
 
     override fun onBindViewHolder(holder:DetailSlideViewHolder, position: Int) {
