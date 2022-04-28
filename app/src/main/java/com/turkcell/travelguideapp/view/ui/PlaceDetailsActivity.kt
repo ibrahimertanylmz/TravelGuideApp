@@ -36,6 +36,8 @@ class PlaceDetailsActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        PlaceLogic.tmpPlace = PlaceLogic.getPlaceById(dbOperation, PlaceLogic.tmpPlaceId)
+        initializeViews()
         //setDefaults()
         //initializeViews()
     }
@@ -105,16 +107,13 @@ class PlaceDetailsActivity : AppCompatActivity() {
 
     private fun setupRvVisitHistory() {
         VisitationLogic.listVisitation.clear()
-        //VisitationLogic.listVisitation = PlaceLogic.getVisitationsOfPlace(PlaceLogic.tmpPlaceId, requireActivity())
-
-        VisitationLogic.listVisitation.add(Visitation("2002.22.22", "description1", 1))
-        VisitationLogic.listVisitation.add(Visitation("2002.22.22", "description1", 2))
-        VisitationLogic.listVisitation.add(Visitation("2002.22.22", "description1", 3))
-        VisitationLogic.listVisitation.add(Visitation("2002.22.22", "description1", 4))
+        VisitationLogic.listVisitation = PlaceLogic.getVisitationsOfPlace(PlaceLogic.tmpPlaceId, this)
+        val liste = PlaceLogic.getVisitationsOfPlace(PlaceLogic.tmpPlaceId, this)
         binding.rvVisitHistory.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvVisitHistory.adapter =
-            VisitationAdapter(this, VisitationLogic.listVisitation)
+            VisitationAdapter(this, liste)
+        binding.rvVisitHistory.adapter!!.notifyItemChanged(-1)
     }
 
     private fun addToList(image:Bitmap){

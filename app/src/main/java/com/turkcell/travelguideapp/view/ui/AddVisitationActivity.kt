@@ -87,6 +87,15 @@ class AddVisitationActivity : AppCompatActivity() {
                 photoList.forEach {
                     ImageLogic.addImage(this, it, placeId)
                 }
+                Toast.makeText(
+                    this,
+                    "Ziyaret Başarıyla Eklendi!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                //val intent = Intent(this, PlaceDetailsActivity::class.java)
+                //intent.putExtra("place_id_for_place_details", placeId)
+                //startActivity(intent)
+                finish()
             } else {
                 Toast.makeText(
                     this,
@@ -98,15 +107,14 @@ class AddVisitationActivity : AppCompatActivity() {
     }
 
     private fun initLm() {
-        currentPlace.imageList.clear()
         val lm = LinearLayoutManager(this)
         val bitmap = BitmapFactory.decodeResource(resources, R.drawable.add_photo)
-        currentPlace.imageList.add(bitmap)
+        photoList.add(bitmap)
         lm.orientation = LinearLayoutManager.HORIZONTAL
         binding.rwPhotosVisitation.layoutManager = lm
         binding.rwPhotosVisitation.adapter = PhotoAdapter(
             this,
-            currentPlace.imageList,
+            photoList,
             ::itemClick,
             ::itemDeleteClick,
             ::itemAddPhotoClick
@@ -122,7 +130,6 @@ class AddVisitationActivity : AppCompatActivity() {
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-            //if (photoList.size== 1) {photoList.removeAt(0) }
             photoList.add(bitmap!!)
             val bitmapAdd = BitmapFactory.decodeResource(resources, R.drawable.add_photo)
             photoList.add(bitmapAdd)
