@@ -1,108 +1,82 @@
 package com.turkcell.travelguideapp.view.ui
 
-import android.Manifest
-import android.content.DialogInterface
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.media.Image
 import android.net.Uri
 import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.provider.Settings
 import android.view.Gravity
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.turkcell.travelguideapp.R
 import com.turkcell.travelguideapp.bll.ImageLogic
 import com.turkcell.travelguideapp.bll.PlaceLogic
 import com.turkcell.travelguideapp.bll.VisitationLogic
-import com.turkcell.travelguideapp.databinding.FragmentAddVisitationBinding
+import com.turkcell.travelguideapp.databinding.ActivityAddVisitationBinding
 import com.turkcell.travelguideapp.databinding.PopUpBinding
 import com.turkcell.travelguideapp.model.Place
 import com.turkcell.travelguideapp.model.Visitation
 import com.turkcell.travelguideapp.view.adapter.PhotoAdapter
 import java.io.File
 import java.io.IOException
-import java.util.*
+import java.util.ArrayList
 
-class AddVisitationFragment : Fragment() {
-    private lateinit var binding: FragmentAddVisitationBinding
+class AddVisitationActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityAddVisitationBinding
+
     private var placeId: Int = -1
     private lateinit var currentPlace: Place
 
     private var photoList = ArrayList<Bitmap>()
-    lateinit var resimYolu : String
+    lateinit var resimYolu: String
     val requestCodeGallery = 1001
     val requestCodeCamera = 1002
     lateinit var resimUri: Uri
 
     @RequiresApi(Build.VERSION_CODES.N)
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
-        binding = FragmentAddVisitationBinding.inflate(inflater)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityAddVisitationBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         setDefaults()
         initializeViews()
         initializeEvents()
-
-        return binding.root
     }
 
     private fun setDefaults() {
-        placeId = requireArguments().getInt("place_id_for_add_visitation")
+        placeId = intent.getIntExtra("place_id_for_add_visitation", -1)
         currentPlace = PlaceLogic.getPlaceById(dbOperation, placeId)
     }
 
     private fun initializeViews() {
+        binding.includeTop.tvTopBarTitle.text = PlaceLogic.tmpPlace.name
+        binding.includeBottom.llBottom.visibility = View.INVISIBLE
+        binding.includeBottom.btnWide.visibility = View.VISIBLE
+        binding.includeBottom.tabLayout.visibility = View.INVISIBLE
 
-        (requireActivity() as MainActivity).changeMainActivityUI(
-            setBackButtonVisible = true,
-            titleString = PlaceLogic.tmpPlace.name,
-            setViewPagerVisible = false,
-            setTabLayoutVisible = false,
-            setBtnAddPlaceVisible = true,
-            setBtnWideVisible = true
-        )
-        /*
-        (requireActivity() as MainActivity).changeMainActivityUI(
-            setBackButtonVisible = true,
-            setTabLayoutVisibleAndBtnWideInvisible = false,
-            setViewPagerVisible = false,
-            titleString = currentPlace.name
-        )
-
-         */
-      
         initLm()
     }
 
     private fun initializeEvents() {
-        (requireActivity() as MainActivity).binding.includeTop.btnBack.setOnClickListener {
-            Toast.makeText(requireContext(), "Feature not implemented", Toast.LENGTH_SHORT).show()
+        binding.includeTop.btnBack.setOnClickListener {
+            onBackPressed()
         }
 
-        (requireActivity() as MainActivity).binding.includeBottom.btnWide.setOnClickListener {
+        binding.includeBottom.btnWide.setOnClickListener {
             if (binding.edtVisitDate.text.toString() != "" && binding.edtVisitDesc.text.toString() != "") {
                 val tmpVisitation = Visitation(
                     binding.edtVisitDate.text.toString(),
@@ -111,11 +85,11 @@ class AddVisitationFragment : Fragment() {
                 )
                 VisitationLogic.addVisitation(dbOperation, tmpVisitation)
                 photoList.forEach {
-                    ImageLogic.addImage(requireContext(),it,placeId)
+                    ImageLogic.addImage(this, it, placeId)
                 }
             } else {
                 Toast.makeText(
-                    requireContext(),
+                    this,
                     getString(R.string.please_fill_all_the_fields),
                     Toast.LENGTH_SHORT
                 ).show()
@@ -125,13 +99,13 @@ class AddVisitationFragment : Fragment() {
 
     private fun initLm() {
         currentPlace.imageList.clear()
-        val lm = LinearLayoutManager(requireContext())
+        val lm = LinearLayoutManager(this)
         val bitmap = BitmapFactory.decodeResource(resources, R.drawable.add_photo)
         currentPlace.imageList.add(bitmap)
         lm.orientation = LinearLayoutManager.HORIZONTAL
         binding.rwPhotosVisitation.layoutManager = lm
         binding.rwPhotosVisitation.adapter = PhotoAdapter(
-            requireContext(),
+            this,
             currentPlace.imageList,
             ::itemClick,
             ::itemDeleteClick,
@@ -139,11 +113,12 @@ class AddVisitationFragment : Fragment() {
         )
     }
 
-    var cameraRl = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-        if(it.resultCode == AppCompatActivity.RESULT_OK){
+    var cameraRl = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == AppCompatActivity.RESULT_OK) {
             var bitmap: Bitmap? = null
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, resimUri)
+                bitmap =
+                    MediaStore.Images.Media.getBitmap(this.contentResolver, resimUri)
             } catch (e: IOException) {
                 e.printStackTrace()
             }
@@ -155,31 +130,38 @@ class AddVisitationFragment : Fragment() {
         }
     }
 
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         var allAccepted = true
-        for( gr in grantResults){
-            if (gr != PackageManager.PERMISSION_GRANTED){
+        for (gr in grantResults) {
+            if (gr != PackageManager.PERMISSION_GRANTED) {
                 allAccepted = false
                 break
             }
         }
-        if(!allAccepted){
+        if (!allAccepted) {
             var neverShowAgain = false
-            for(permission in permissions){
-                if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), permission)){ }
-                else if(ContextCompat.checkSelfPermission(requireContext(), permission)== PackageManager.PERMISSION_GRANTED){ }
-                else{
+            for (permission in permissions) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+                } else if (ContextCompat.checkSelfPermission(
+                        this,
+                        permission
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
+                } else {
                     neverShowAgain = true
                     break
                 }
             }
-            if (neverShowAgain){
-                ImageLogic.showAlert(requireContext())
+            if (neverShowAgain) {
+                ImageLogic.showAlert(this)
             }
-        }else{
-            when(requestCode){
+        } else {
+            when (requestCode) {
                 requestCodeCamera ->
                     openCamera(0)
                 requestCodeGallery ->
@@ -188,13 +170,13 @@ class AddVisitationFragment : Fragment() {
         }
     }
 
-    var galleryRl = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-        if(it.resultCode == AppCompatActivity.RESULT_OK){
+    var galleryRl = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == AppCompatActivity.RESULT_OK) {
             resimUri = it!!.data!!.data!!
 
             var bitmap: Bitmap? = null
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, resimUri)
+                bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, resimUri)
             } catch (e: IOException) {
                 e.printStackTrace()
             }
@@ -206,13 +188,13 @@ class AddVisitationFragment : Fragment() {
         }
     }
 
-    private fun openGallery(position: Int){
+    private fun openGallery(position: Int) {
         setAddPhotoImage(position)
         val intentGallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
         galleryRl.launch(intentGallery)
     }
 
-    private fun showPopUp(position: Int){
+    private fun showPopUp(position: Int) {
         var bindingTwo = PopUpBinding.inflate(layoutInflater)
         val v = bindingTwo.root
         v.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
@@ -230,7 +212,7 @@ class AddVisitationFragment : Fragment() {
     }
 
     private fun checkCameraPermissions(position: Int){
-        val requestList = ImageLogic.checkCameraPermissions(requireContext())
+        val requestList = ImageLogic.checkCameraPermissions(this)
         if(requestList.size == 0){
             openCamera(position)
         }else{
@@ -239,7 +221,7 @@ class AddVisitationFragment : Fragment() {
     }
 
     private fun checkGalleryPermissions(position: Int){
-        val requestList = ImageLogic.checkGalleryPermissions(requireContext())
+        val requestList = ImageLogic.checkGalleryPermissions(this)
         if(requestList.size == 0){
             openGallery(position)
         }else{
@@ -251,19 +233,20 @@ class AddVisitationFragment : Fragment() {
         setAddPhotoImage(position)
         val intent  = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val dosya = createImageFile()
-        resimUri = FileProvider.getUriForFile(requireContext(), requireActivity().packageName, dosya)
+        resimUri = FileProvider.getUriForFile(this, this.packageName, dosya)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, resimUri)
         cameraRl.launch(intent)
     }
 
     @Throws(IOException::class)
     fun createImageFile(): File {
-        val dir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val dir = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile("resim", "jpg", dir).apply {
             resimYolu = absolutePath
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setAddPhotoImage(position: Int){
         if (position == photoList.size-1){
             if(photoList.size>0){
@@ -273,16 +256,16 @@ class AddVisitationFragment : Fragment() {
         binding.rwPhotosVisitation.adapter!!.notifyDataSetChanged()
     }
 
-    fun itemClick(position: Int) {
+    private fun itemClick(position: Int) {
         showPopUp(position)
     }
 
-    fun itemDeleteClick(position: Int) {
+    @SuppressLint("NotifyDataSetChanged")
+    private fun itemDeleteClick(position: Int) {
         photoList.removeAt(position)
         binding.rwPhotosVisitation.adapter!!.notifyDataSetChanged()
     }
 
-    fun itemAddPhotoClick(position: Int) {
-
+    private fun itemAddPhotoClick(position: Int) {
     }
 }

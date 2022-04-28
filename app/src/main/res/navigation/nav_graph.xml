@@ -14,14 +14,4 @@
         android:id="@+id/placesVisitedFragment"
         android:name="com.turkcell.travelguideapp.view.ui.PlacesVisitedFragment"
         android:label="PlacesVisitedFragment"/>
-    <fragment
-        android:id="@+id/addVisitationFragment"
-        android:name="com.turkcell.travelguideapp.view.ui.AddVisitationFragment"
-        android:label="fragment_add_visitation"
-        tools:layout="@layout/fragment_add_visitation">
-        <argument
-            android:name="place_id_for_add_visitation"
-            android:defaultValue="-1"
-            app:argType="integer" />
-    </fragment>
 </navigation>
