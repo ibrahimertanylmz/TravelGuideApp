@@ -294,7 +294,7 @@ class AddVisitationActivity : AppCompatActivity() {
         if(position == (photoList.size -1) &&(photoList.size<10)){
             showPopUp(position)
         }else{
-            Toast.makeText(this, "10 taneden fazla fotoğraf eklenemez", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "10 taneden fazla fotoğraf eklenemez", Toast.LENGTH_SHORT).show()
         }
 
     }
