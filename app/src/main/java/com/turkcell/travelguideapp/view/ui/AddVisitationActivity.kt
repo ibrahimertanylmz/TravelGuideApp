@@ -75,6 +75,10 @@ class AddVisitationActivity : AppCompatActivity() {
         binding.includeTop.btnBack.setOnClickListener {
             onBackPressed()
         }
+        
+        binding.edtVisitDate.setOnClickListener {
+            Toast.makeText(this, "Function not implemented", Toast.LENGTH_SHORT).show()
+        }
 
         binding.includeBottom.btnWide.setOnClickListener {
             if (binding.edtVisitDate.text.toString() != "" && binding.edtVisitDesc.text.toString() != "") {
