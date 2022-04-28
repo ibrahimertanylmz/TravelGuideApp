@@ -16,16 +16,13 @@ class SplashActivity : AppCompatActivity() {
 
         binding.apply {
             binding.ConstraintLayoutSplash.alpha = 0f
-            //UNUTMA
-            //binding.ConstraintLayoutSplash.animate().setDuration(2500).alpha(1f).withEndAction {
-            binding.ConstraintLayoutSplash.animate().setDuration(500).alpha(1f).withEndAction {
+            binding.ConstraintLayoutSplash.animate().setDuration(2500).alpha(1f).withEndAction {
                 val intent = Intent(this@SplashActivity, MainActivity::class.java)
                 startActivity(intent)
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
                 finish()
             }
         }
-
 
     }
 }
