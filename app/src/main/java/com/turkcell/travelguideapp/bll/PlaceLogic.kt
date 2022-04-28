@@ -97,6 +97,10 @@ object PlaceLogic {
         return TravelGuideOperation(context).getPlaceFromId(id)
     }
 
+    fun updateLastVisitDate(context: Context, id: Int, lastVisitDate: String){
+        TravelGuideOperation(context).updatePlace(id,lastVisitDate)
+    }
+
     fun getVisitationsOfPlace(placeId: Int, context: Context): ArrayList<Visitation> {
         return TravelGuideOperation(context).getVisitationsByPlaceId(placeId)
     }

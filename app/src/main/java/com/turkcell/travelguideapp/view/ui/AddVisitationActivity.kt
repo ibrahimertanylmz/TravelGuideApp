@@ -98,9 +98,7 @@ class AddVisitationActivity : AppCompatActivity() {
                     "Ziyaret Başarıyla Eklendi!",
                     Toast.LENGTH_SHORT
                 ).show()
-                //val intent = Intent(this, PlaceDetailsActivity::class.java)
-                //intent.putExtra("place_id_for_place_details", placeId)
-                //startActivity(intent)
+                PlaceLogic.updateLastVisitDate(this, placeId, binding.edtVisitDate.text.toString() )
                 finish()
             } else {
                 Toast.makeText(
