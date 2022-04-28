@@ -127,7 +127,7 @@ class PlaceDetailsActivity : AppCompatActivity() {
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvVisitHistory.adapter =
             VisitationAdapter(this, liste)
-        binding.rvVisitHistory.adapter!!.notifyItemChanged(-1)
+        binding.rvVisitHistory.adapter!!.notifyDataSetChanged()
     }
 
     fun itemClick(i: Int) {

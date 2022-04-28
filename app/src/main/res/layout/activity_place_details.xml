@@ -164,7 +164,6 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -176,7 +175,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
-
         <TextView
             android:id="@+id/tvShortDescription"
             android:layout_width="wrap_content"
@@ -226,11 +224,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvVisitHistory"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="80dp"
         android:layout_marginStart="18dp"
         android:layout_marginTop="13dp"
         android:layout_marginEnd="17dp"
-        app:layout_constraintBottom_toBottomOf="@+id/includeBottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
