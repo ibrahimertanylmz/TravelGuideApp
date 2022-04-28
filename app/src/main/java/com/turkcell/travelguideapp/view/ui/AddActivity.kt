@@ -46,6 +46,8 @@ class AddActivity : AppCompatActivity() {
     private lateinit var resimUri: Uri
     private lateinit var resimYolu: String
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddBinding.inflate(layoutInflater)
@@ -72,7 +74,7 @@ class AddActivity : AppCompatActivity() {
         }
 
         binding.btnAddLocation.setOnClickListener {
-            Toast.makeText(this, "Feature not implemented!", Toast.LENGTH_SHORT).show()
+            openMapsActivityFromAddPlaceActivity()
         }
 
         binding.includeBottom.btnWide.setOnClickListener {
@@ -118,6 +120,21 @@ class AddActivity : AppCompatActivity() {
         } else {
             binding.edtPlaceName.error = getString(R.string.This_field_cannot_be_empty)
         }
+    }
+
+    private var resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val ltlngData = result.data
+                MapLogic.tmpMap.lat = ltlngData!!.getDoubleExtra("fromMapsLocationLatitude", 0.0)
+                MapLogic.tmpMap.long = ltlngData!!.getDoubleExtra("fromMapsLocationLongitude", 0.0)
+            } else if (result.resultCode == RESULT_CANCELED) {
+            }
+        }
+
+    private fun openMapsActivityFromAddPlaceActivity() {
+        val intent = Intent(this, MapsActivity::class.java)
+        resultLauncher.launch(intent)
     }
 
     private fun spinnerListOperations() {

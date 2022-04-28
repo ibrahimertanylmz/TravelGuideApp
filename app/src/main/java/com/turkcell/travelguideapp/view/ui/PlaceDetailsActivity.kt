@@ -62,8 +62,9 @@ class PlaceDetailsActivity : AppCompatActivity() {
         }
 
         binding.btnShowLocation.setOnClickListener {
-            Toast.makeText(this, "Function not implemented!", Toast.LENGTH_SHORT).show()
-            //(requireActivity() as MainActivity).openMapsActivityFromPlaceDetailsFragment(PlaceLogic.tmpPlaceId)
+            val intent = Intent(this, MapsActivity::class.java)
+            intent.putExtra("placeId", PlaceLogic.tmpPlaceId)
+            startActivity(intent)
         }
 
 
