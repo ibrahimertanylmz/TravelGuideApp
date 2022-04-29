@@ -1,26 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.ui.PlaceDetailsFragment"
     android:background="#E5E5E5"
-    >
+    tools:context=".view.ui.PlaceDetailsActivity">
 
+    <include
+        android:id="@+id/includeTop"
+        layout="@layout/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager2"
         android:layout_width="0dp"
         android:layout_height="200dp"
+        android:background="@drawable/image_placeholder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toBottomOf="@+id/includeTop"></androidx.viewpager2.widget.ViewPager2>
 
+    <me.relex.circleindicator.CircleIndicator3
+        android:id="@+id/indicator"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        app:ci_drawable="@drawable/blue_radius"
+        app:ci_drawable_unselected="@drawable/white_radius"
+        app:layout_constraintBottom_toBottomOf="@+id/viewPager2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-    </androidx.viewpager2.widget.ViewPager2>
+    </me.relex.circleindicator.CircleIndicator3>
 
     <TextView
         android:id="@+id/tvPhotoDate"
@@ -30,13 +45,45 @@
         android:layout_marginBottom="4dp"
         android:background="@drawable/text_background"
         android:padding="6dp"
-        android:text="12.10.2020"
         android:textAlignment="center"
         android:textColor="#4B4848"
         android:textSize="10sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/viewPager2"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="SmallSp" />
+
+    <TextView
+        android:id="@+id/tvPriority"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginBottom="13dp"
+        android:background="@drawable/text_background"
+        android:gravity="center_vertical"
+        android:paddingStart="5dp"
+        android:text="@string/text_priority"
+        android:textColor="#4B4848"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewPager2"
+        tools:ignore="RtlSymmetry,SmallSp,TextContrastCheck" />
+
+    <ImageView
+        android:id="@+id/imageViewPriority"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="4dp"
+        android:src="@drawable/rv_oval_item_blue"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPriority"
+        app:layout_constraintEnd_toEndOf="@+id/tvPriority"
+        app:layout_constraintTop_toTopOf="@+id/tvPriority"
+        tools:ignore="ContentDescription,ImageContrastCheck" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnAddVisitation"
@@ -45,14 +92,14 @@
         android:layout_marginTop="13dp"
         android:layout_marginEnd="17dp"
         android:background="@drawable/blue_button_background"
-        android:text="@string/ziyaret_ekle"
+        android:text="@string/Add_Visitation"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="10sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewPager2"
-        tools:ignore="TouchTargetSizeCheck" />
+        tools:ignore="SmallSp,TouchTargetSizeCheck,TextContrastCheck" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
 
@@ -67,6 +114,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnAddVisitation">
 
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/Place__brief_definition"
+            android:textColor="#4B4848"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/tvDefinition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="9dp"
+            android:text="@string/Brief_place_definition"
+            android:textColor="#9E9E9E"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvDescription"
+            tools:ignore="SmallSp,TextContrastCheck" />
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnShowLocation"
             android:layout_width="50dp"
@@ -75,7 +152,7 @@
             android:layout_marginEnd="4dp"
             android:background="@drawable/blue_button_background"
             android:padding="2dp"
-            android:text="@string/konum_goster"
+            android:text="@string/Show_Location"
             android:textAlignment="center"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
@@ -83,39 +160,10 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <TextView
-            android:id="@+id/tvDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
-            android:layout_marginTop="12dp"
-            android:text="Yer kısa tanım"
-            android:textColor="#4B4848"
-            android:textSize="10sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvDescriptionInformation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="9dp"
-            android:text="Yer kısa tanım bilgisi"
-            android:textColor="#9E9E9E"
-            android:textSize="10sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDescription" />
+            tools:ignore="SmallSp,TouchTargetSizeCheck,TextContrastCheck" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -127,19 +175,19 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
-
         <TextView
             android:id="@+id/tvShortDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
             android:layout_marginTop="12dp"
-            android:text="Yer kısa tanım"
+            android:text="@string/Place_short_description"
             android:textColor="#4B4848"
             android:textSize="10sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SmallSp" />
 
         <TextView
             android:id="@+id/tvShortDescriptionMax3"
@@ -149,13 +197,14 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="45dp"
             android:maxLines="3"
-            android:text="Kısa açıklama en fazla 3 satır"
+            android:text="@string/Brief_description_max_3_lines"
             android:textColor="#9E9E9E"
             android:textSize="10sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvShortDescription" />
+            app:layout_constraintTop_toBottomOf="@+id/tvShortDescription"
+            tools:ignore="SmallSp,TextContrastCheck" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -164,47 +213,32 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="9dp"
-        android:text="Ziyaret Geçmiş"
+        android:text="@string/Visitation_History"
         android:textColor="#4B4848"
         android:textSize="10sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        tools:ignore="SmallSp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvVisitVistory"
+        android:id="@+id/rvVisitHistory"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="80dp"
         android:layout_marginStart="18dp"
         android:layout_marginTop="13dp"
         android:layout_marginEnd="17dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="100dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginBottom="13dp"
-        android:background="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewPager2" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="6dp"
-        android:layout_marginBottom="4dp"
-        android:src="@drawable/rv_oval_item_blue"
-        app:layout_constraintBottom_toBottomOf="@+id/spinner"
-        app:layout_constraintEnd_toEndOf="@+id/spinner"
-        app:layout_constraintTop_toTopOf="@+id/spinner" />
+    <include
+        android:id="@+id/includeBottom"
+        layout="@layout/bottom_bar"
+        android:elevation="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

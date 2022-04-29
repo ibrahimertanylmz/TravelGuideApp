@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E5E5E5"
+    tools:context=".view.ui.AddActivity">
+
+    <include
+        android:id="@+id/includeTop"
+        layout="@layout/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rwPhotos"
+        android:layout_width="match_parent"
+        android:layout_height="128dp"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/includeTop" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnAddLocation"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="19dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@color/ui_hud"
+        android:text="@string/add_location"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rwPhotos"
+        tools:ignore="SmallSp,TextContrastCheck,TouchTargetSizeCheck" />
+
+    <Spinner
+        android:id="@+id/spinnerPriority"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/text_background"
+        android:paddingStart="14dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnAddLocation"
+        tools:ignore="RtlSymmetry,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+    <ImageView
+        android:id="@+id/imageCircle"
+        android:layout_width="16dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
+        android:backgroundTint="#FFFFFF"
+        android:src="@drawable/rv_oval_item_gray"
+        app:layout_constraintBottom_toBottomOf="@+id/spinnerPriority"
+        app:layout_constraintEnd_toEndOf="@+id/spinnerPriority"
+        app:layout_constraintTop_toTopOf="@+id/spinnerPriority"
+        tools:ignore="ContentDescription,ImageContrastCheck" />
+
+    <EditText
+        android:id="@+id/edtPlaceName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:background="@drawable/text_background"
+        android:ems="10"
+        android:hint="@string/edt_place_name"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        android:paddingStart="14dp"
+        android:paddingTop="33dp"
+        android:paddingBottom="9dp"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/spinnerPriority"
+        app:layout_constraintStart_toStartOf="@+id/spinnerPriority"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerPriority"
+        tools:ignore="RtlSymmetry,SmallSp,TextContrastCheck" />
+
+    <TextView
+        android:id="@+id/twPlaceName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/Location_Name"
+        android:textColor="#4B4848"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/edtPlaceName"
+        app:layout_constraintTop_toTopOf="@+id/edtPlaceName"
+        tools:ignore="SmallSp" />
+
+    <EditText
+        android:id="@+id/edtDefinition"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:background="@drawable/text_background"
+        android:ems="10"
+        android:hint="@string/edt_definition_hint"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        android:paddingStart="14dp"
+        android:paddingTop="33dp"
+        android:paddingBottom="9dp"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/spinnerPriority"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/spinnerPriority"
+        app:layout_constraintTop_toBottomOf="@+id/edtPlaceName"
+        tools:ignore="RtlSymmetry,SmallSp,TextContrastCheck" />
+
+    <TextView
+        android:id="@+id/twDefinition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/tw_definition_text"
+        android:textColor="#4B4848"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/edtDefinition"
+        app:layout_constraintTop_toTopOf="@+id/edtDefinition"
+        tools:ignore="SmallSp" />
+
+    <EditText
+        android:id="@+id/edtDescription"
+        android:layout_width="0dp"
+        android:layout_height="156dp"
+        android:layout_marginTop="11dp"
+        android:background="@drawable/text_background"
+        android:ems="10"
+        android:gravity="clip_vertical"
+        android:hint="@string/edt_description_hint"
+        android:importantForAutofill="no"
+        android:inputType="textMultiLine"
+        android:paddingLeft="14dp"
+        android:paddingTop="33dp"
+        android:paddingBottom="9dp"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/spinnerPriority"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/spinnerPriority"
+        app:layout_constraintTop_toBottomOf="@+id/edtDefinition"
+        tools:ignore="RtlHardcoded,RtlSymmetry,SmallSp,TextContrastCheck" />
+
+    <TextView
+        android:id="@+id/twDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/tw_description_text"
+        android:textColor="#4B4848"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/edtDescription"
+        app:layout_constraintTop_toTopOf="@+id/edtDescription"
+        tools:ignore="SmallSp" />
+
+    <include
+        android:id="@+id/includeBottom"
+        layout="@layout/bottom_bar"
+        android:elevation="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtDescription" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

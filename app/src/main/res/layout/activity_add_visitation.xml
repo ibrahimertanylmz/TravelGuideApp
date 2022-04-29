@@ -4,9 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="clip_vertical"
     android:background="#E5E5E5"
-    tools:context=".view.ui.AddVisitationFragment">
+    tools:context=".view.ui.AddVisitationActivity">
+
+    <include
+        android:id="@+id/includeTop"
+        layout="@layout/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rwPhotosVisitation"
@@ -17,18 +25,22 @@
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/includeTop" />
 
     <EditText
         android:id="@+id/edtVisitDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
-        android:background="#FFFFFF"
+        android:background="@drawable/text_background"
+        android:clickable="false"
+        android:focusable="false"
+        android:editable="false"
         android:ems="10"
         android:hint="@string/visit_date_text"
-        android:inputType="textPersonName"
-        android:paddingLeft="14dp"
+        android:importantForAutofill="no"
+        android:inputType="none"
+        android:paddingStart="14dp"
         android:paddingTop="33dp"
         android:paddingBottom="9dp"
         android:textSize="10sp"
@@ -36,28 +48,6 @@
         app:layout_constraintEnd_toEndOf="@+id/rwPhotosVisitation"
         app:layout_constraintStart_toStartOf="@+id/rwPhotosVisitation"
         app:layout_constraintTop_toBottomOf="@+id/rwPhotosVisitation" />
-
-    <EditText
-        android:id="@+id/edtVisitDesc"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginBottom="300dp"
-        android:background="#FFFFFF"
-        android:ems="10"
-        android:gravity="clip_vertical"
-        android:hint="@string/edt_desc_hint"
-        android:inputType="textPersonName"
-        android:paddingLeft="14dp"
-        android:paddingTop="33dp"
-        android:paddingBottom="9dp"
-        android:textSize="10sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/rwPhotosVisitation"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/rwPhotosVisitation"
-        app:layout_constraintTop_toBottomOf="@+id/edtVisitDate" />
 
     <TextView
         android:id="@+id/twVisitDate"
@@ -70,7 +60,31 @@
         android:textSize="10sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/edtVisitDate"
-        app:layout_constraintTop_toTopOf="@+id/edtVisitDate" />
+        app:layout_constraintTop_toTopOf="@+id/edtVisitDate"
+        tools:ignore="SmallSp" />
+
+    <EditText
+        android:id="@+id/edtVisitDesc"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="21dp"
+        android:background="@drawable/text_background"
+        android:ems="10"
+        android:gravity="clip_vertical"
+        android:hint="@string/edt_desc_hint"
+        android:importantForAutofill="no"
+        android:inputType="textMultiLine"
+        android:maxLines="3"
+        android:paddingStart="14dp"
+        android:paddingTop="33dp"
+        android:paddingBottom="9dp"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/rwPhotosVisitation"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/rwPhotosVisitation"
+        app:layout_constraintTop_toBottomOf="@+id/edtVisitDate"
+        tools:ignore="RtlSymmetry,SmallSp" />
 
     <TextView
         android:id="@+id/twVisitDesc"
@@ -83,7 +97,15 @@
         android:textSize="10sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/edtVisitDesc"
-        app:layout_constraintTop_toTopOf="@+id/edtVisitDesc" />
+        app:layout_constraintTop_toTopOf="@+id/edtVisitDesc"
+        tools:ignore="SmallSp" />
 
+    <include
+        android:id="@+id/includeBottom"
+        layout="@layout/bottom_bar"
+        android:elevation="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

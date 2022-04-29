@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/placesToVisitFragment">
+
+    <fragment
+        android:id="@+id/placesToVisitFragment"
+        android:name="com.turkcell.travelguideapp.view.ui.PlacesToVisitFragment"
+        android:label="fragment_places_to_visit"
+        tools:layout="@layout/fragment_places_to_visit"/>
+    <fragment
+        android:id="@+id/placesVisitedFragment"
+        android:name="com.turkcell.travelguideapp.view.ui.PlacesVisitedFragment"
+        android:label="PlacesVisitedFragment"/>
+</navigation>
